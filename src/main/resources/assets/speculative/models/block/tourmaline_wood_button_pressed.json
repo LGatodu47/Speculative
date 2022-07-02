@@ -1,0 +1,6 @@
+{
+    "parent": "block/button_pressed",
+    "textures": {
+        "texture": "speculative:block/tourmaline_planks"
+    }
+}

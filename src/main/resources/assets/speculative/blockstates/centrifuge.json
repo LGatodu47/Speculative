@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "facing=north,lit=false" : { "model": "speculative:block/centrifuge" },
+	"facing=east,lit=false" : { "model": "speculative:block/centrifuge", "y": 90},
+	"facing=south,lit=false" : { "model": "speculative:block/centrifuge", "y": 180},
+	"facing=west,lit=false" : { "model": "speculative:block/centrifuge", "y": 270},
+	
+	"facing=north,lit=true" : { "model": "speculative:block/lit_centrifuge" },
+	"facing=east,lit=true" : { "model": "speculative:block/lit_centrifuge", "y": 90},
+	"facing=south,lit=true" : { "model": "speculative:block/lit_centrifuge", "y": 180},
+	"facing=west,lit=true" : { "model": "speculative:block/lit_centrifuge", "y": 270}
+  }
+}

@@ -1,0 +1,7 @@
+{
+	"replace": false,
+	"values": [
+		"speculative:speculo_cobblestone_wall",
+		"speculative:speculo_sandstone_wall"
+	]
+}

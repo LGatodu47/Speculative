@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "age=1" : { "model": "speculative:block/sulfuric_glue" },
+	"age=0" : { "model": "speculative:block/sulfuric_glue" }
+  }
+}

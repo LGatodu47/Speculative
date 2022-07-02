@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "speculative:block/tourmaline_tree_sapling"
+  }
+}

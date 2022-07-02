@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "speculative:block/stripped_speculo_log_top",
+        "side": "speculative:block/stripped_speculo_log"
+    }
+}

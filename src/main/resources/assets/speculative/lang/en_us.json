@@ -1,0 +1,124 @@
+{
+	"block.speculative.speculo_ore" : "Speculo Ore",
+	"block.speculative.speculo_block": "Speculo Block",
+	"block.speculative.speculo_world_speculo_ore": "Speculo Ore",
+	"block.speculative.radioactive_diamond_ore": "Radioactive Diamond Ore",
+	"block.speculative.radioactive_diamond_block": "Radioactive Diamond Block",
+	"block.speculative.uranium_ore": "Uranium Ore",
+	"block.speculative.graphite_ore": "Graphite Ore",
+	"block.speculative.graphite_block": "Graphite Block",
+	"block.speculative.uranium_238_block": "Uranium 238 Block",
+	"block.speculative.uranium_235_block": "Uranium 235 Block",
+	"block.speculative.uranium_234_block": "Uranium 234 Block",
+	
+	"block.speculative.speculoos_summoner": "Speculoos Summoner",
+	"block.speculative.centrifuge": "Centrifuge",
+	"block.speculative.nuclear_workbench": "Nuclear Workbench",
+	"block.speculative.speculo_boss_summoner": "Speculo Boss Summoner",
+
+	"block.speculative.speculo_grass": "Speculo Grass",
+	"block.speculative.speculo_dirt": "Speculo Dirt",
+	"block.speculative.speculo_stone": "Speculo Stone",
+	"block.speculative.speculo_flower": "Speculo Flower",
+	
+	"block.speculative.speculo_cobblestone": "Speculo Cobblestone",
+	"block.speculative.speculo_cobblestone_stairs": "Speculo Cobblestone Stairs",
+	"block.speculative.speculo_cobblestone_slab": "Speculo Cobblestone Slab",
+	"block.speculative.speculo_cobblestone_wall": "Speculo Cobblestone Wall",
+	
+	"block.speculative.speculo_log": "Speculo Log",
+	"block.speculative.stripped_speculo_log": "Stripped Speculo Log",
+	"block.speculative.speculo_bark": "Speculo Bark",
+	"block.speculative.stripped_speculo_bark": "Stripped Speculo Bark",
+	"block.speculative.speculo_leaves": "Speculo Leaves",
+	
+	"block.speculative.speculo_planks": "Speculo Planks",
+	"block.speculative.speculo_wood_stairs": "Speculo Wood Stairs",
+	"block.speculative.speculo_wood_slab": "Speculo Wood Slabs",
+	"block.speculative.speculo_wood_fence": "Speculo Wood Fence",
+	"block.speculative.speculo_wood_fence_gate": "Speculo Wood Fence Gate",
+	"block.speculative.speculo_wood_standing_sign": "Speculo Wood Sign",
+	"block.speculative.speculo_wood_wall_sign": "Speculo Wood Sign",
+	"block.speculative.speculo_wood_trapdoor": "Speculo Wood Trapdoor",
+	"block.speculative.speculo_wood_pressure_plate": "Speculo Wood Pressure Plate",
+	
+	"block.speculative.speculo_tree_sapling": "Speculo Sapling",
+	
+	"block.speculative.sulfuric_glue": "Sulfuric Glue",
+	
+	"block.speculative.mango_bush": "Mango Bush",
+	
+	"block.speculative.speculo_sand": "Speculo Sand",
+	"block.speculative.speculo_sandstone" : "Speculo Sandstone",
+	"block.speculative.cut_speculo_sandstone" : "Cut Speculo Sandstone",
+	"block.speculative.chiseled_speculo_sandstone" : "Chiseled Speculo Sandstone",
+	"block.speculative.speculo_sandstone_stairs" : "Speculo Sandstone Stairs",
+	"block.speculative.speculo_sandstone_slab" : "Speculo Sandstone Slab",
+	"block.speculative.speculo_sandstone_wall" : "Speculo Sandstone Wall",
+	
+	"block.speculative.greenstone_torch": "Greenstone Torch",
+	"block.speculative.greenstone_wall_torch": "Greenstone Wall Torch",
+	
+	"block.speculative.tourmaline_log": "Tourmaline Log",
+	"block.speculative.stripped_tourmaline_log": "Stripped Tourmaline Log",
+	"block.speculative.tourmaline_bark": "Tourmaline Bark",
+	"block.speculative.stripped_tourmaline_bark": "Stripped Tourmaline Bark",
+	
+	"block.speculative.tourmaline_planks": "Tourmaline Planks",
+	"block.speculative.tourmaline_wood_stairs": "Tourmaline Wood Stairs",
+	"block.speculative.tourmaline_wood_slab": "Tourmaline Wood Slabs",
+	"block.speculative.tourmaline_wood_fence": "Tourmaline Wood Fence",
+	"block.speculative.tourmaline_wood_fence_gate": "Tourmaline Wood Fence Gate",
+	"block.speculative.tourmaline_wood_standing_sign": "Tourmaline Wood Sign",
+	"block.speculative.tourmaline_wood_wall_sign": "Tourmaline Wood Sign",
+	"block.speculative.tourmaline_wood_trapdoor": "Tourmaline Wood Trapdoor",
+	"block.speculative.tourmaline_wood_pressure_plate": "Tourmaline Wood Pressure Plate",
+	
+	"block.speculative.tourmaline_leaves": "Tourmaline Leaves",
+	"block.speculative.tourmaline_tree_sapling": "Tourmaline Sapling",
+
+	"block.speculative.speculo_tnt": "Speculo TNT",
+
+	"fluid.speculative.sulfuric_water": "Sulfuric Water",
+	"fluid.speculative.unstable_water": "Unstable Water",
+	"fluid.speculative.liquid_nitrogen": "Liquid Nitrogen",
+	
+	"effect.speculative.sulfuric_speed": "Sulfuric Speed",
+
+	"container.speculative.speculoos_summoner": "Speculoos Summoner",
+	"container.speculative.centrifuge": "Centrifuge",
+	"container.speculative.nuclear_workbench": "Nuclear Workbench",
+
+	"item.speculative.speculo_gem" : "Speculo Gem",
+	"item.speculative.orange_fruit" : "Orange Fruit",
+	"item.speculative.sulfuric_water_bucket" : "Sulfuric Water Bucket",
+	"item.speculative.speculoos" : "Speculoos",
+	"item.speculative.radioactive_diamond" : "Radioactive Diamond",
+	"item.speculative.uranium_238" : "Uranium 238",
+	"item.speculative.uranium_235" : "Uranium 235",
+	"item.speculative.uranium_234" : "Uranium 234",
+	"item.speculative.graphite_ingot" : "Graphite Ingot",
+	"item.speculative.uraninite_ingot" : "Uraninite Ingot",
+	"item.speculative.speculo_pig_spawn_egg" : "Speculo Pig Spawn Egg",
+	"item.speculative.strange_mango" : "Strange Mango",
+	"item.speculative.greenstone_torch": "Greenstone Torch",
+	"item.speculative.unstable_water_bucket": "Unstable Water Bucket",
+	"item.speculative.speculo_porkchop": "Speculo Porkchop",
+	"item.speculative.cooked_speculo_porkchop": "Cooked Speculo Porkchop",
+	"item.speculative.liquid_nitrogen_bucket": "Liquid Nitrogen Bucket",
+	"item.speculative.speculo_wood_sign": "Speculo Wood Sign",
+	"item.speculative.tourmaline_wood_sign": "Tourmaline Wood Sign",
+
+	"itemGroup.speculative.display_name" : "Speculative",
+	
+	"effect.speculative.cs_blindness" : "C6 Blindness",
+	
+	"biome.speculative.speculo_plains": "Speculo Plains",
+	"biome.speculative.speculo_forest": "Speculo Forest",
+	"biome.speculative.speculo_mountains": "Speculo Mountains",
+	"biome.speculative.speculo_desert": "Speculo Desert",
+
+	"tooltip.speculative.uranium_block.not_radioactive": "This block is not radioactive.",
+	"tooltip.speculative.uranium_block.radioactive": "☢ This block is radioactive.",
+	"tooltip.speculative.uranium_block.radiation_time": "Will emit radiations for %d ticks."
+}

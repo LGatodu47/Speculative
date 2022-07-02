@@ -1,0 +1,53 @@
+{
+    "item.sulfuric_water_bucket.empty":
+    {
+        "category": "player",
+        "subtitle": "item.sulfuric_water_bucket.empty",
+        "sounds": [
+            {
+                "name": "speculative:items/sulfuric_water_empty1",
+                "stream": true
+            },
+			{
+                "name": "speculative:items/sulfuric_water_empty2",
+                "stream": true
+            },
+			{
+                "name": "speculative:items/sulfuric_water_empty3",
+                "stream": true
+            }
+        ]
+    },
+
+	"item.sulfuric_water_bucket.fill":
+    {
+        "category": "player",
+        "subtitle": "item.sulfuric_water_bucket.fill",
+        "sounds": [
+            {
+                "name": "speculative:items/sulfuric_water_fill1",
+                "stream": true
+            },
+			{
+                "name": "speculative:items/sulfuric_water_fill2",
+                "stream": true
+            },
+			{
+                "name": "speculative:items/sulfuric_water_fill3",
+                "stream": true
+            }
+        ]
+    },
+	
+	"block.sulfuric_water.ambient":
+	{
+		"category": "blocks",
+		"subtitle": "block.sulfuric_water.ambient",
+		"sounds": [
+			{
+				"name": "speculative:blocks/sulfuric_water_ambient",
+				"stream": "true"
+			}
+		]
+	}
+}

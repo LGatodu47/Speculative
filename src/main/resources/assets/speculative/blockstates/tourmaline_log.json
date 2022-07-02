@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "speculative:block/tourmaline_log" },
+        "axis=z":   { "model": "speculative:block/tourmaline_log", "x": 90 },
+        "axis=x":   { "model": "speculative:block/tourmaline_log", "x": 90, "y": 90 }
+    }
+}

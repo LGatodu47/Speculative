@@ -1,0 +1,7 @@
+{
+	"replace": false,
+	"values": [
+    	"speculative:unstable_water_still",
+    	"speculative:unstable_water_flowing"
+	]
+}

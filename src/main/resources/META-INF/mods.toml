@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+license = "All Rights Reserved"
+#issueTrackerURL="http://my.issue.tracker/"
+
+[[mods]]
+modId = "speculative"
+version = "${file.jarVersion}"
+displayName = "Speculative"
+#updateJSONURL="http://myurl.me/"
+#displayURL="http://example.com/"
+#logoFile="speculative.png"
+#credits="Thanks for this example mod goes to Java"
+authors = "LGatodu47"
+description = '''
+A mod filled with new ores, blocks, dimensions, biomes, items and much more!
+'''
+
+[[dependencies.speculative]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.speculative]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,1.17)"
+ordering = "NONE"
+side = "BOTH"

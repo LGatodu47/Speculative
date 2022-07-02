@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y": { "model": "speculative:block/tourmaline_bark" },
+        "axis=z": { "model": "speculative:block/tourmaline_bark", "x": 90 },
+        "axis=x": { "model": "speculative:block/tourmaline_bark", "x": 90, "y": 90 }
+    }
+}

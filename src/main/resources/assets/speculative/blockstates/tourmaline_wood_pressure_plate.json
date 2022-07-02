@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "speculative:block/tourmaline_wood_pressure_plate" },
+        "powered=true": { "model": "speculative:block/tourmaline_wood_pressure_plate_down" }
+    }
+}

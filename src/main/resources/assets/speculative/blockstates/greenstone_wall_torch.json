@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=east": { "model": "speculative:block/greenstone_wall_torch" },
+        "facing=south": { "model": "speculative:block/greenstone_wall_torch", "y": 90 },
+        "facing=west": { "model": "speculative:block/greenstone_wall_torch", "y": 180 },
+        "facing=north": { "model": "speculative:block/greenstone_wall_torch", "y": 270 }
+    }
+}

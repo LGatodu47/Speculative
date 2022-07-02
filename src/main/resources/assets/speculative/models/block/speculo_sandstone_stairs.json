@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "speculative:block/speculo_sandstone_bottom",
+        "top": "speculative:block/speculo_sandstone_top",
+        "side": "speculative:block/speculo_sandstone"
+    }
+}

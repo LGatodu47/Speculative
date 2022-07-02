@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "speculative:block/nuclear_workbench_bottom",
+    "up": "speculative:block/nuclear_workbench_top",
+    "down": "speculative:block/nuclear_workbench_bottom",
+    "north": "speculative:block/nuclear_workbench_side",
+    "south": "speculative:block/nuclear_workbench_side",
+    "east": "speculative:block/nuclear_workbench_side",
+    "west": "speculative:block/nuclear_workbench_side"
+  }
+}

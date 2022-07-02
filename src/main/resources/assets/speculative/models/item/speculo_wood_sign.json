@@ -1,0 +1,6 @@
+{
+  "parent" : "minecraft:item/generated",
+  "textures": {
+    "layer0": "speculative:item/speculo_wood_sign"
+  }
+}

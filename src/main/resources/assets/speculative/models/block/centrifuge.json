@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "speculative:block/centrifuge_top",
+    "front": "speculative:block/centrifuge_front",
+    "side": "speculative:block/centrifuge_side"
+  }
+}

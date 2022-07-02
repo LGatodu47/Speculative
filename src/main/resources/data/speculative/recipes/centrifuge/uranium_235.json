@@ -1,0 +1,13 @@
+{
+	"type": "speculative:centrifuge",
+	"output": {
+		"item": "speculative:uranium_235"
+	},
+	"input1": {
+		"item": "speculative:uranium_238"
+	},
+	"input2": {
+		"item": "speculative:radioactive_diamond",
+		"amount": 3
+	}
+}

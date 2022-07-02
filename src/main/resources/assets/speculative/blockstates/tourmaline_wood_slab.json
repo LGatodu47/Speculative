@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "speculative:block/tourmaline_wood_slab" },
+        "type=top": { "model": "speculative:block/tourmaline_wood_slab_top" },
+        "type=double": { "model": "speculative:block/tourmaline_planks" }
+    }
+}

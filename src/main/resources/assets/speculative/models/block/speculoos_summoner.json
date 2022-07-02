@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "speculative:block/speculoos_summoner_side",
+    "up": "speculative:block/speculoos_summoner_top",
+    "down": "speculative:block/speculoos_summoner_side",
+    "north": "speculative:block/speculoos_summoner_side",
+    "south": "speculative:block/speculoos_summoner_side",
+    "east": "speculative:block/speculoos_summoner_side",
+    "west": "speculative:block/speculoos_summoner_side"
+  }
+}

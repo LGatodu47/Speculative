@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y": { "model": "speculative:block/stripped_speculo_bark" },
+        "axis=z": { "model": "speculative:block/stripped_speculo_bark", "x": 90 },
+        "axis=x": { "model": "speculative:block/stripped_speculo_bark", "x": 90, "y": 90 }
+    }
+}

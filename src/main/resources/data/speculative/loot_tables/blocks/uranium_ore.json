@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 100,
+          "quality": 1,
+          "name": "speculative:uranium_238"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "quality": 10,
+          "name": "speculative:uranium_235"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "quality": 50,
+          "name": "speculative:uranium_234"
+        }
+      ]
+    }
+  ]
+}

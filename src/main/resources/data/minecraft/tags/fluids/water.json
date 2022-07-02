@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+	"speculative:sulfuric_water_still",
+    "speculative:sulfuric_water_flowing",
+    "speculative:unstable_water_still",
+    "speculative:unstable_water_flowing",
+    "speculative:liquid_nitrogen_still",
+    "speculative:liquid_nitrogen_flowing"
+  ]
+}

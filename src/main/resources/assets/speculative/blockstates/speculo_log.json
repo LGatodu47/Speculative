@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "speculative:block/speculo_log" },
+        "axis=z":   { "model": "speculative:block/speculo_log", "x": 90 },
+        "axis=x":   { "model": "speculative:block/speculo_log", "x": 90, "y": 90 }
+    }
+}

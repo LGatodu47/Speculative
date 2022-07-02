@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "speculative:speculo_porkchop"
+  },
+  "result": "speculative:cooked_speculo_porkchop",
+  "experience": 0.35,
+  "cookingtime": 200
+}
