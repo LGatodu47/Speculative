@@ -27,33 +27,33 @@ import net.minecraftforge.common.util.Lazy;
 import java.util.Set;
 
 public class SpeculoDesertBiome extends SpeculoWorldBiome {
-    public static final Lazy<SurfaceBuilderConfig> DESERT_SURFACE = Lazy.of(() -> new SurfaceBuilderConfig(SpeculativeBlocks.SPECULO_SAND.get().getDefaultState(), SpeculativeBlocks.SPECULO_SAND.get().getDefaultState(), SpeculativeBlocks.SPECULO_BLOCK.get().getDefaultState()));
+    public static final Lazy<SurfaceBuilderConfig> DESERT_SURFACE = Lazy.of(() -> new SurfaceBuilderConfig(SpeculativeBlocks.SPECULO_SAND.get().defaultBlockState(), SpeculativeBlocks.SPECULO_SAND.get().defaultBlockState(), SpeculativeBlocks.SPECULO_BLOCK.get().defaultBlockState()));
     public static final Lazy<ConfiguredFeature<?, ?>> BUSHES = Lazy.of(() -> Feature.RANDOM_PATCH
-            .withConfiguration(new BlockClusterFeatureConfig.Builder(
-                    new SimpleBlockStateProvider(SpeculativeBlocks.MANGO_BUSH.get().getDefaultState()), new SimpleBlockPlacer())
+            .configured(new BlockClusterFeatureConfig.Builder(
+                    new SimpleBlockStateProvider(SpeculativeBlocks.MANGO_BUSH.get().defaultBlockState()), new SimpleBlockPlacer())
                     .tries(32)
-                    .xSpread(3)
-                    .ySpread(2)
-                    .zSpread(3)
+                    .xspread(3)
+                    .yspread(2)
+                    .zspread(3)
                     .whitelist(ImmutableSet.of(SpeculativeBlocks.SPECULO_SAND.get(), SpeculativeBlocks.MANGO_BUSH.get())).build())
-            .withPlacement(Placement.CHANCE.configure(new ChanceConfig(40)))
-            .withPlacement(Placement.HEIGHTMAP.configure(NoPlacementConfig.INSTANCE))
-            .square());
+            .decorated(Placement.CHANCE.configured(new ChanceConfig(40)))
+            .decorated(Placement.HEIGHTMAP.configured(NoPlacementConfig.INSTANCE))
+            .squared());
     public static final Lazy<ConfiguredFeature<?, ?>> UNSTABLE_WATER_LAKES = Lazy.of(() -> SpeculativeFeatures.OASIS
-            .withConfiguration(new BlockStateFeatureConfig(SpeculativeFluids.UNSTABLE_WATER.getBlock().get().getDefaultState()))
-            .withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(16))));
+            .configured(new BlockStateFeatureConfig(SpeculativeFluids.UNSTABLE_WATER.getBlock().get().defaultBlockState()))
+            .decorated(Placement.WATER_LAKE.configured(new ChanceConfig(16))));
 
     @Override
     protected Biome.Builder create() {
-        return new Biome.Builder().category(Biome.Category.DESERT).precipitation(Biome.RainType.NONE).depth(0.0625F).scale(0.025F).temperature(0.8F).downfall(0.0F);
+        return new Biome.Builder().biomeCategory(Biome.Category.DESERT).precipitation(Biome.RainType.NONE).depth(0.0625F).scale(0.025F).temperature(0.8F).downfall(0.0F);
     }
 
     @Override
     protected BiomeGenerationSettings.Builder configureGeneration() {
         BiomeGenerationSettings.Builder builder = new SpeculativeGenerationSettingsBuilder().withLazyStructure(SpeculativeStructures.Configured.CONFIGURED_SPECULO_PYRAMID);
-        builder.withSurfaceBuilder(SurfaceBuilder.DEFAULT.func_242929_a(DESERT_SURFACE.get()));
-        builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, BUSHES.get());
-        builder.withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, UNSTABLE_WATER_LAKES.get());
+        builder.surfaceBuilder(SurfaceBuilder.DEFAULT.configured(DESERT_SURFACE.get()));
+        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, BUSHES.get());
+        builder.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, UNSTABLE_WATER_LAKES.get());
         DefaultSpeculativeFeatures.addSpeculoworldOres(builder);
         DefaultSpeculativeFeatures.addSpeculoworldCarvers(builder);
         return builder;
@@ -61,7 +61,7 @@ public class SpeculoDesertBiome extends SpeculoWorldBiome {
 
     @Override
     protected BiomeAmbience.Builder configureAmbience() {
-        return super.configureAmbience().setFogColor(16766346).withSkyColor(16766346);
+        return super.configureAmbience().fogColor(16766346).skyColor(16766346);
     }
 
     @Override

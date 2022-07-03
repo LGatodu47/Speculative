@@ -17,9 +17,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class BossSummonerBlock extends Block {
     public BossSummonerBlock() {
-        super(Properties.create(Material.GLASS, MaterialColor.GOLD).hardnessAndResistance(-1).setLightLevel(state -> 12).noDrops().notSolid());
+        super(Properties.of(Material.GLASS, MaterialColor.GOLD).strength(-1).lightLevel(state -> 12).noDrops().noOcclusion());
     }
 
     @Override
@@ -33,9 +35,9 @@ public class BossSummonerBlock extends Block {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!worldIn.isRemote) {
-            TileEntity tile = worldIn.getTileEntity(pos);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (!worldIn.isClientSide) {
+            TileEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof BossSummonerTileEntity) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (BossSummonerTileEntity) tile, pos);
             }

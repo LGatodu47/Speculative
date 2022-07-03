@@ -38,16 +38,16 @@ public class CentrifugeRecipe implements IRecipe<RecipeWrapper> {
 
     @Override
     public boolean matches(RecipeWrapper inv, World worldIn) {
-        return input1.test(inv.getStackInSlot(0)) && input2.test(inv.getStackInSlot(1));
+        return input1.test(inv.getItem(0)) && input2.test(inv.getItem(1));
     }
 
     @Override
-    public ItemStack getCraftingResult(RecipeWrapper inv) {
+    public ItemStack assemble(RecipeWrapper inv) {
         return this.output.copy();
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return this.output;
     }
 
@@ -62,13 +62,13 @@ public class CentrifugeRecipe implements IRecipe<RecipeWrapper> {
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.from(Ingredient.EMPTY, input1.ingredient, input2.ingredient);
+        return NonNullList.of(Ingredient.EMPTY, input1.ingredient, input2.ingredient);
     }
 
     public StackedIngredient getInput1() {
@@ -81,31 +81,31 @@ public class CentrifugeRecipe implements IRecipe<RecipeWrapper> {
 
     public static class Serializer extends AbstractRecipeSerializer<CentrifugeRecipe> {
         @Override
-        public CentrifugeRecipe read(ResourceLocation id, JsonObject json) {
-            StackedIngredient input1 = StackedIngredient.deserialize(JSONUtils.getJsonObject(json, "input1"));
-            StackedIngredient input2 = StackedIngredient.deserialize(JSONUtils.getJsonObject(json, "input2"));
+        public CentrifugeRecipe fromJson(ResourceLocation id, JsonObject json) {
+            StackedIngredient input1 = StackedIngredient.deserialize(JSONUtils.getAsJsonObject(json, "input1"));
+            StackedIngredient input2 = StackedIngredient.deserialize(JSONUtils.getAsJsonObject(json, "input2"));
 
             if (!json.has("output"))
                 throw new JsonSyntaxException("Missing output, expected to find a string or object");
-            ItemStack output = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "output"), true);
+            ItemStack output = CraftingHelper.getItemStack(JSONUtils.getAsJsonObject(json, "output"), true);
 
             return new CentrifugeRecipe(id, input1, input2, output);
         }
 
         @Override
-        public CentrifugeRecipe read(ResourceLocation id, PacketBuffer buffer) {
+        public CentrifugeRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer) {
             StackedIngredient input1 = StackedIngredient.read(buffer);
             StackedIngredient input2 = StackedIngredient.read(buffer);
-            ItemStack output = buffer.readItemStack();
+            ItemStack output = buffer.readItem();
 
             return new CentrifugeRecipe(id, input1, input2, output);
         }
 
         @Override
-        public void write(PacketBuffer buffer, CentrifugeRecipe recipe) {
+        public void toNetwork(PacketBuffer buffer, CentrifugeRecipe recipe) {
             recipe.getInput1().write(buffer);
             recipe.getInput2().write(buffer);
-            buffer.writeItemStack(recipe.getRecipeOutput(), false);
+            buffer.writeItemStack(recipe.getResultItem(), false);
         }
     }
 
@@ -124,7 +124,7 @@ public class CentrifugeRecipe implements IRecipe<RecipeWrapper> {
 
         void write(PacketBuffer buffer) {
             buffer.writeInt(amount);
-            ingredient.write(buffer);
+            ingredient.toNetwork(buffer);
         }
 
         static StackedIngredient deserialize(JsonElement json) {
@@ -137,19 +137,19 @@ public class CentrifugeRecipe implements IRecipe<RecipeWrapper> {
             if(json.isJsonObject()) {
                 JsonObject obj = json.getAsJsonObject();
 
-                if(JSONUtils.hasField(obj, "amount")) {
-                    amount = JSONUtils.getInt(obj, "amount");
+                if(JSONUtils.isValidNode(obj, "amount")) {
+                    amount = JSONUtils.getAsInt(obj, "amount");
                 }
 
-                if(JSONUtils.hasField(obj, "ingredient")) {
-                    ingredient = Ingredient.deserialize(obj.get("ingredient"));
+                if(JSONUtils.isValidNode(obj, "ingredient")) {
+                    ingredient = Ingredient.fromJson(obj.get("ingredient"));
                 }
                 else {
-                    ingredient = Ingredient.deserialize(obj);
+                    ingredient = Ingredient.fromJson(obj);
                 }
             }
             else {
-                ingredient = Ingredient.deserialize(json);
+                ingredient = Ingredient.fromJson(json);
             }
 
             return new StackedIngredient(ingredient, amount);
@@ -157,7 +157,7 @@ public class CentrifugeRecipe implements IRecipe<RecipeWrapper> {
 
         static StackedIngredient read(PacketBuffer buffer) {
             int amount = buffer.readVarInt();
-            Ingredient ingredient = Ingredient.read(buffer);
+            Ingredient ingredient = Ingredient.fromNetwork(buffer);
             return new StackedIngredient(ingredient, amount);
         }
     }

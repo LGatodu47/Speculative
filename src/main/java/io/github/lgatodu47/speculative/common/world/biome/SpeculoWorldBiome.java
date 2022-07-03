@@ -15,27 +15,27 @@ import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 public abstract class SpeculoWorldBiome extends SpeculativeBiome {
     @Override
     protected BiomeGenerationSettings.Builder configureGeneration() {
-        return new BiomeGenerationSettings.Builder().withSurfaceBuilder(SurfaceBuilder.DEFAULT.func_242929_a(new SurfaceBuilderConfig(
-                SpeculativeBlocks.SPECULO_GRASS.get().getDefaultState(),
-                SpeculativeBlocks.SPECULO_DIRT.get().getDefaultState(),
-                Blocks.GRAVEL.getDefaultState()
+        return new BiomeGenerationSettings.Builder().surfaceBuilder(SurfaceBuilder.DEFAULT.configured(new SurfaceBuilderConfig(
+                SpeculativeBlocks.SPECULO_GRASS.get().defaultBlockState(),
+                SpeculativeBlocks.SPECULO_DIRT.get().defaultBlockState(),
+                Blocks.GRAVEL.defaultBlockState()
         )));
     }
 
     @Override
     protected BiomeAmbience.Builder configureAmbience() {
         return new BiomeAmbience.Builder()
-                .withGrassColor(12411136)
-                .withFoliageColor(12411136)
-                .withSkyColor(9194771)
-                .setFogColor(9194771)
-                .setWaterColor(5057024)
-                .setWaterFogColor(3283968);
+                .grassColorOverride(12411136)
+                .foliageColorOverride(12411136)
+                .skyColor(9194771)
+                .fogColor(9194771)
+                .waterColor(5057024)
+                .waterFogColor(3283968);
     }
 
     @Override
     protected MobSpawnInfo.Builder configureMobSpawns() {
         return new MobSpawnInfo.Builder()
-                .withSpawner(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(SpeculativeEntityTypes.SPECULO_PIG.get(), 1, 2, 4));
+                .addSpawn(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(SpeculativeEntityTypes.SPECULO_PIG.get(), 1, 2, 4));
     }
 }

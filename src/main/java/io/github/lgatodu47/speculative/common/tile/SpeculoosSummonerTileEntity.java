@@ -38,21 +38,21 @@ public class SpeculoosSummonerTileEntity extends LockableLootTileEntity implemen
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return 1;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
-        super.write(nbt);
-        nbt.put("Content", getStack().write(new CompoundNBT()));
+    public CompoundNBT save(CompoundNBT nbt) {
+        super.save(nbt);
+        nbt.put("Content", getStack().save(new CompoundNBT()));
         return nbt;
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
-        setStack(ItemStack.read(nbt.getCompound("Content")));
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
+        setStack(ItemStack.of(nbt.getCompound("Content")));
     }
 
     @Override
@@ -60,8 +60,8 @@ public class SpeculoosSummonerTileEntity extends LockableLootTileEntity implemen
         if (getStack().getItem().equals(Items.DIAMOND)) {
             int diamondCount = getStack().getCount();
             setStack(new ItemStack(SpeculativeItems.SPECULO_GEM.get(), diamondCount));
-            this.world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1.0F, 0.5F + this.world.rand.nextFloat(), false);
-            markDirty();
+            this.level.playLocalSound(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundCategory.BLOCKS, 1.0F, 0.5F + this.level.random.nextFloat(), false);
+            setChanged();
         }
     }
 
@@ -85,21 +85,21 @@ public class SpeculoosSummonerTileEntity extends LockableLootTileEntity implemen
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 1, this.write(new CompoundNBT()));
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 1, this.save(new CompoundNBT()));
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
+        this.load(level.getBlockState(pkt.getPos()), pkt.getTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        return this.write(new CompoundNBT());
+        return this.save(new CompoundNBT());
     }
 
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-        this.read(state, tag);
+        this.load(state, tag);
     }
 }

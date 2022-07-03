@@ -10,7 +10,7 @@ import java.util.Set;
 
 public abstract class SpeculativeBiome {
     public final Biome build() {
-        return create().withGenerationSettings(configureGeneration().build()).setEffects(configureAmbience().build()).withMobSpawnSettings(configureMobSpawns().build()).build();
+        return create().generationSettings(configureGeneration().build()).specialEffects(configureAmbience().build()).mobSpawnSettings(configureMobSpawns().build()).build();
     }
 
     protected abstract Biome.Builder create();

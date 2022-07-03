@@ -14,7 +14,7 @@ import java.util.Set;
 public class SpeculoMountainsBiome extends SpeculoWorldBiome {
     @Override
     protected Biome.Builder create() {
-        return new Biome.Builder().precipitation(Biome.RainType.RAIN).temperature(0.3F).category(Biome.Category.EXTREME_HILLS).depth(1.25F).scale(0.75F).downfall(0.2F);
+        return new Biome.Builder().precipitation(Biome.RainType.RAIN).temperature(0.3F).biomeCategory(Biome.Category.EXTREME_HILLS).depth(1.25F).scale(0.75F).downfall(0.2F);
     }
 
     @Override
@@ -23,8 +23,8 @@ public class SpeculoMountainsBiome extends SpeculoWorldBiome {
         DefaultSpeculativeFeatures.addSpeculoMountainsCarvers(builder);
         DefaultSpeculativeFeatures.addSpeculoworldOres(builder);
         DefaultSpeculativeFeatures.addSpeculoworldFlowers(builder);
-        builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(Features.Configs.GRASS_PATCH_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT));
-        DefaultBiomeFeatures.withFrozenTopLayer(builder);
+        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.configured(Features.Configs.DEFAULT_GRASS_CONFIG).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE));
+        DefaultBiomeFeatures.addSurfaceFreezing(builder);
         return builder;
     }
 

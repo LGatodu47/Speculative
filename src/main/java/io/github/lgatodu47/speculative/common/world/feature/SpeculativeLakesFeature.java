@@ -22,16 +22,16 @@ public class SpeculativeLakesFeature extends Feature<BlockStateFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
-        while (pos.getY() > 5 && worldIn.isAirBlock(pos)) {
-            pos = pos.down();
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+        while (pos.getY() > 5 && worldIn.isEmptyBlock(pos)) {
+            pos = pos.below();
         }
 
         if (pos.getY() <= 4) {
             return false;
         } else {
-            pos = pos.down(4);
-            if (!worldIn.func_241827_a(SectionPos.from(pos), Structure.VILLAGE).findAny().isPresent()) {
+            pos = pos.below(4);
+            if (!worldIn.startsForFeature(SectionPos.of(pos), Structure.VILLAGE).findAny().isPresent()) {
                 return false;
             } else {
                 boolean[] aboolean = new boolean[2048];
@@ -67,12 +67,12 @@ public class SpeculativeLakesFeature extends Feature<BlockStateFeatureConfig> {
                                     && (k1 < 15 && aboolean[((k1 + 1) * 16 + l2) * 8 + k] || k1 > 0 && aboolean[((k1 - 1) * 16 + l2) * 8 + k] || l2 < 15 && aboolean[(k1 * 16 + l2 + 1) * 8 + k]
                                     || l2 > 0 && aboolean[(k1 * 16 + (l2 - 1)) * 8 + k] || k < 7 && aboolean[(k1 * 16 + l2) * 8 + k + 1] || k > 0 && aboolean[(k1 * 16 + l2) * 8 + (k - 1)]);
                             if (flag) {
-                                Material material = worldIn.getBlockState(pos.add(k1, k, l2)).getMaterial();
+                                Material material = worldIn.getBlockState(pos.offset(k1, k, l2)).getMaterial();
                                 if (k >= 4 && material.isLiquid()) {
                                     return false;
                                 }
 
-                                if (k < 4 && !material.isSolid() && worldIn.getBlockState(pos.add(k1, k, l2)) != config.state) {
+                                if (k < 4 && !material.isSolid() && worldIn.getBlockState(pos.offset(k1, k, l2)) != config.state) {
                                     return false;
                                 }
                             }
@@ -84,7 +84,7 @@ public class SpeculativeLakesFeature extends Feature<BlockStateFeatureConfig> {
                     for (int i3 = 0; i3 < 16; ++i3) {
                         for (int i4 = 0; i4 < 8; ++i4) {
                             if (aboolean[(l1 * 16 + i3) * 8 + i4]) {
-                                worldIn.setBlockState(pos.add(l1, i4, i3), i4 >= 4 ? Blocks.CAVE_AIR.getDefaultState() : config.state, 2);
+                                worldIn.setBlock(pos.offset(l1, i4, i3), i4 >= 4 ? Blocks.CAVE_AIR.defaultBlockState() : config.state, 2);
                             }
                         }
                     }
@@ -94,10 +94,10 @@ public class SpeculativeLakesFeature extends Feature<BlockStateFeatureConfig> {
                     for (int j3 = 0; j3 < 16; ++j3) {
                         for (int j4 = 4; j4 < 8; ++j4) {
                             if (aboolean[(i2 * 16 + j3) * 8 + j4]) {
-                                BlockPos blockpos = pos.add(i2, j4 - 1, j3);
-                                if (isDirt(worldIn.getBlockState(blockpos).getBlock()) && worldIn.getLightFor(LightType.SKY, pos.add(i2, j4, j3)) > 0) {
+                                BlockPos blockpos = pos.offset(i2, j4 - 1, j3);
+                                if (isDirt(worldIn.getBlockState(blockpos).getBlock()) && worldIn.getBrightness(LightType.SKY, pos.offset(i2, j4, j3)) > 0) {
                                     Biome biome = worldIn.getBiome(blockpos);
-                                    worldIn.setBlockState(blockpos, biome.getGenerationSettings().getSurfaceBuilderConfig().getTop().getBlock().getDefaultState(), 2);
+                                    worldIn.setBlock(blockpos, biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial().getBlock().defaultBlockState(), 2);
                                 }
                             }
                         }

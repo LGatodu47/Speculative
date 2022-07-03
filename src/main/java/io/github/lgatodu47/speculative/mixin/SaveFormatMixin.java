@@ -17,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(SaveFormat.class)
 public class SaveFormatMixin {
-    @Redirect(method = "lambda$getReader$4", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/storage/ServerWorldInfo;decodeWorldInfo(Lcom/mojang/serialization/Dynamic;Lcom/mojang/datafixers/DataFixer;ILnet/minecraft/nbt/CompoundNBT;Lnet/minecraft/world/WorldSettings;Lnet/minecraft/world/storage/VersionData;Lnet/minecraft/world/gen/settings/DimensionGeneratorSettings;Lcom/mojang/serialization/Lifecycle;)Lnet/minecraft/world/storage/ServerWorldInfo;"))
-    private static ServerWorldInfo redirect_decodeWorldInfo(Dynamic<INBT> dynamic, DataFixer dataFixer, int version, CompoundNBT playerNBT, WorldSettings worldSettings, VersionData versionData, DimensionGeneratorSettings generatorSettings, Lifecycle lifecycle) {
-        ServerWorldInfo info = ServerWorldInfo.decodeWorldInfo(dynamic, dataFixer, version, playerNBT, worldSettings, versionData, generatorSettings, lifecycle);
+    @Redirect(method = "lambda$getReader$4", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/storage/ServerWorldInfo;parse(Lcom/mojang/serialization/Dynamic;Lcom/mojang/datafixers/DataFixer;ILnet/minecraft/nbt/CompoundNBT;Lnet/minecraft/world/WorldSettings;Lnet/minecraft/world/storage/VersionData;Lnet/minecraft/world/gen/settings/DimensionGeneratorSettings;Lcom/mojang/serialization/Lifecycle;)Lnet/minecraft/world/storage/ServerWorldInfo;"))
+    private static ServerWorldInfo redirect_parse(Dynamic<INBT> dynamic, DataFixer dataFixer, int version, CompoundNBT playerNBT, WorldSettings worldSettings, VersionData versionData, DimensionGeneratorSettings generatorSettings, Lifecycle lifecycle) {
+        ServerWorldInfo info = ServerWorldInfo.parse(dynamic, dataFixer, version, playerNBT, worldSettings, versionData, generatorSettings, lifecycle);
         ExtendedServerWorldInfo.get(info).deserializeDimensionWorldInfo(dynamic);
         return info;
     }

@@ -23,17 +23,19 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class NuclearWorkbenchBlock extends Block {
     private static final ITextComponent TITLE = new TranslationTextComponent("container." + Speculative.MODID + ".nuclear_workbench");
 
     public NuclearWorkbenchBlock() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(8.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE).sound(SoundType.NETHERITE));
+        super(Properties.of(Material.METAL).strength(8.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE).sound(SoundType.NETHERITE_BLOCK));
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if(!world.isRemote) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, state.getContainer(world, pos));
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
+        if(!world.isClientSide) {
+            NetworkHooks.openGui((ServerPlayerEntity) player, state.getMenuProvider(world, pos));
             return ActionResultType.CONSUME;
         }
 
@@ -42,7 +44,7 @@ public class NuclearWorkbenchBlock extends Block {
 
     @Nullable
     @Override
-    public INamedContainerProvider getContainer(BlockState state, World world, BlockPos pos) {
-        return new SimpleNamedContainerProvider((windowId, playerInv, player) -> new NuclearWorkbenchContainer(windowId, playerInv, IWorldPosCallable.of(world, pos)), TITLE);
+    public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedContainerProvider((windowId, playerInv, player) -> new NuclearWorkbenchContainer(windowId, playerInv, IWorldPosCallable.create(world, pos)), TITLE);
     }
 }

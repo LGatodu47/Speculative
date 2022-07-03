@@ -42,22 +42,22 @@ public class UraniumBlockTileEntity extends TileEntity implements ITickableTileE
     public void tick() {
         if(currentRadiationTime > 0) {
             if(currentRadiationTime % 20 == 0) {
-                if(!world.isRemote) {
-                    world.getEntitiesWithinAABB(PlayerEntity.class, AxisAlignedBB.fromVector(Vector3d.copy(pos)).grow(8)).forEach(player -> {
+                if(!level.isClientSide) {
+                    level.getEntitiesOfClass(PlayerEntity.class, AxisAlignedBB.unitCubeFromLowerCorner(Vector3d.atLowerCornerOf(worldPosition)).inflate(8)).forEach(player -> {
                         if(!(player.isCreative() || player.isSpectator()) && RANDOM.nextInt(4) == 0) {
-                            player.addPotionEffect(new EffectInstance(Effects.WITHER, 100));
+                            player.addEffect(new EffectInstance(Effects.WITHER, 100));
                         }
                     });
                 }
             }
 
             if(currentRadiationTime % radiationCap == 0) {
-                if(!world.isRemote) {
+                if(!level.isClientSide) {
                     BlockPos pos = getRandomPos();
-                    if(!world.isAirBlock(pos)) {
-                        BlockState state = world.getBlockState(pos);
-                        if(!state.isIn(SpeculativeBlocks.Tags.URANIUM_PROOF) && state.isSolid()) {
-                            world.setBlockState(pos, ForgeRegistries.BLOCKS.getValue(SpeculativeUtils.getRandomElement(RANDOM, ForgeRegistries.BLOCKS.getKeys())).getDefaultState());
+                    if(!level.isEmptyBlock(pos)) {
+                        BlockState state = level.getBlockState(pos);
+                        if(!state.is(SpeculativeBlocks.Tags.URANIUM_PROOF) && state.canOcclude()) {
+                            level.setBlockAndUpdate(pos, ForgeRegistries.BLOCKS.getValue(SpeculativeUtils.getRandomElement(RANDOM, ForgeRegistries.BLOCKS.getKeys())).defaultBlockState());
                         }
                     }
                 }
@@ -67,9 +67,9 @@ public class UraniumBlockTileEntity extends TileEntity implements ITickableTileE
             --currentRadiationTime;
         }
         else {
-            world.setBlockState(getPos(), SpeculativeBlocks.URANIUM_238_BLOCK.get().getDefaultState());
+            level.setBlockAndUpdate(getBlockPos(), SpeculativeBlocks.URANIUM_238_BLOCK.get().defaultBlockState());
             if(!isRemoved()) {
-                remove();
+                setRemoved();
             }
         }
     }
@@ -85,16 +85,16 @@ public class UraniumBlockTileEntity extends TileEntity implements ITickableTileE
     }
 
     private BlockPos getRandomBlockRecursive(IntSupplier generator, int level) {
-        BlockPos result = getPos().add(generator.getAsInt(), generator.getAsInt(), generator.getAsInt());
-        if(world.isAirBlock(result) && level < 5) {
+        BlockPos result = getBlockPos().offset(generator.getAsInt(), generator.getAsInt(), generator.getAsInt());
+        if(this.level.isEmptyBlock(result) && level < 5) {
             result = getRandomBlockRecursive(generator, level + 1);
         }
         return result;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
-        super.write(nbt);
+    public CompoundNBT save(CompoundNBT nbt) {
+        super.save(nbt);
         return serialize(nbt);
     }
 
@@ -105,8 +105,8 @@ public class UraniumBlockTileEntity extends TileEntity implements ITickableTileE
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
         deserialize(nbt);
     }
 
@@ -117,22 +117,22 @@ public class UraniumBlockTileEntity extends TileEntity implements ITickableTileE
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
+        load(level.getBlockState(pkt.getPos()), pkt.getTag());
     }
 
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-        read(state, tag);
+        load(state, tag);
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        return write(new CompoundNBT());
+        return save(new CompoundNBT());
     }
 
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(pos, 0, write(new CompoundNBT()));
+        return new SUpdateTileEntityPacket(worldPosition, 0, save(new CompoundNBT()));
     }
 }

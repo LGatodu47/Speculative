@@ -69,7 +69,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
                     }
                 }
 
-                if (!input.test(inv.getStackInSlot(x + y * inv.getWidth()))) {
+                if (!input.test(inv.getItem(x + y * inv.getWidth()))) {
                     return false;
                 }
             }
@@ -79,17 +79,17 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
+    public ItemStack assemble(CraftingInventory inv) {
         return this.result.copy();
     }
 
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return false;
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public ItemStack getResultItem() {
         return this.result;
     }
 
@@ -124,38 +124,38 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
     }
 
     public static class Serializer extends AbstractRecipeSerializer<NuclearWorkbenchShapedRecipe> {
-        public NuclearWorkbenchShapedRecipe read(ResourceLocation recipeId, JsonObject json) {
-            Map<String, Ingredient> key = deserializeKey(JSONUtils.getJsonObject(json, "key"));
-            String[] pattern = shrink(patternFromJson(JSONUtils.getJsonArray(json, "pattern"), 3, 3));
+        public NuclearWorkbenchShapedRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+            Map<String, Ingredient> key = deserializeKey(JSONUtils.getAsJsonObject(json, "key"));
+            String[] pattern = shrink(patternFromJson(JSONUtils.getAsJsonArray(json, "pattern"), 3, 3));
             int recipeWidth = pattern[0].length();
             int recipeHeight = pattern.length;
             NonNullList<Ingredient> ingredients = deserializeIngredients(pattern, key, recipeWidth, recipeHeight);
-            ItemStack result = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
+            ItemStack result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
             return new NuclearWorkbenchShapedRecipe(recipeId, ingredients, result, recipeWidth, recipeHeight);
         }
 
-        public NuclearWorkbenchShapedRecipe read(ResourceLocation id, PacketBuffer buffer) {
+        public NuclearWorkbenchShapedRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer) {
             int recipeWidth = buffer.readVarInt();
             int recipeHeight = buffer.readVarInt();
             NonNullList<Ingredient> ingredients = NonNullList.withSize(recipeWidth * recipeHeight, Ingredient.EMPTY);
 
             for (int k = 0; k < ingredients.size(); ++k) {
-                ingredients.set(k, Ingredient.read(buffer));
+                ingredients.set(k, Ingredient.fromNetwork(buffer));
             }
 
-            ItemStack result = buffer.readItemStack();
+            ItemStack result = buffer.readItem();
             return new NuclearWorkbenchShapedRecipe(id, ingredients, result, recipeWidth, recipeHeight);
         }
 
-        public void write(PacketBuffer buffer, NuclearWorkbenchShapedRecipe recipe) {
+        public void toNetwork(PacketBuffer buffer, NuclearWorkbenchShapedRecipe recipe) {
             buffer.writeVarInt(recipe.recipeWidth);
             buffer.writeVarInt(recipe.recipeHeight);
 
             for (Ingredient ingredient : recipe.ingredients) {
-                ingredient.write(buffer);
+                ingredient.toNetwork(buffer);
             }
 
-            buffer.writeItemStack(recipe.result);
+            buffer.writeItem(recipe.result);
         }
 
         private static NonNullList<Ingredient> deserializeIngredients(String[] pattern, Map<String, Ingredient> keys, int patternWidth, int patternHeight) {
@@ -244,7 +244,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
                 throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
             } else {
                 for (int i = 0; i < rows.length; ++i) {
-                    String row = JSONUtils.getString(array.get(i), "pattern[" + i + "]");
+                    String row = JSONUtils.convertToString(array.get(i), "pattern[" + i + "]");
                     if (row.length() > maxWidth) {
                         throw new JsonSyntaxException("Invalid pattern: too many columns, " + maxWidth + " is maximum");
                     }
@@ -272,7 +272,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
                     throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
                 }
 
-                map.put(entry.getKey(), Ingredient.deserialize(entry.getValue()));
+                map.put(entry.getKey(), Ingredient.fromJson(entry.getValue()));
             }
 
             map.put(" ", Ingredient.EMPTY);

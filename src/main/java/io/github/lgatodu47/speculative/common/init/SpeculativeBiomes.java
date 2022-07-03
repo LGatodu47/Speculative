@@ -46,11 +46,11 @@ public class SpeculativeBiomes {
     }
 
     private static void addBiomeTypes(RegistryObject<Biome> biome, Type... types) {
-        BiomeDictionary.addTypes(RegistryKey.getOrCreateKey(ForgeRegistries.Keys.BIOMES, biome.getId()), types);
+        BiomeDictionary.addTypes(RegistryKey.create(ForgeRegistries.Keys.BIOMES, biome.getId()), types);
     }
 
     private static void addOverworldBiomeTypes(RegistryObject<Biome> biome, BiomeManager.BiomeType type, int weight, Type... types) {
-        RegistryKey<Biome> key = RegistryKey.getOrCreateKey(ForgeRegistries.Keys.BIOMES, biome.getId());
+        RegistryKey<Biome> key = RegistryKey.create(ForgeRegistries.Keys.BIOMES, biome.getId());
         BiomeDictionary.addTypes(key, types);
         BiomeManager.addBiome(type, new BiomeManager.BiomeEntry(key, weight));
     }

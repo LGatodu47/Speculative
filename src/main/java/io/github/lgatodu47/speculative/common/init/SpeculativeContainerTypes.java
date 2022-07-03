@@ -29,7 +29,7 @@ public class SpeculativeContainerTypes {
     }
 
     private static <T extends TileEntity> T getTileEntity(Class<T> clazz, PlayerInventory playerInv, PacketBuffer data) {
-        TileEntity tile = playerInv.player.world.getTileEntity(data.readBlockPos());
+        TileEntity tile = playerInv.player.level.getBlockEntity(data.readBlockPos());
         if (clazz.isInstance(tile)) {
             return clazz.cast(tile);
         }

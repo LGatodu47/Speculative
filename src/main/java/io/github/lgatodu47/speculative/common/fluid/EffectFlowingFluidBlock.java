@@ -11,6 +11,8 @@ import net.minecraft.world.World;
 
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class EffectFlowingFluidBlock extends FlowingFluidBlock {
     private final Supplier<EffectInstance> effect;
 
@@ -20,9 +22,9 @@ public class EffectFlowingFluidBlock extends FlowingFluidBlock {
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         if (entityIn instanceof LivingEntity) {
-            ((LivingEntity) entityIn).addPotionEffect(effect.get());
+            ((LivingEntity) entityIn).addEffect(effect.get());
         }
     }
 }

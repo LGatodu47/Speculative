@@ -14,27 +14,29 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class SpeculoTNTBlock extends TNTBlock {
     public SpeculoTNTBlock() {
-        super(Properties.from(Blocks.TNT));
+        super(Properties.copy(Blocks.TNT));
     }
 
     @Override
-    public void onExplosionDestroy(World world, BlockPos pos, Explosion explosionIn) {
-        if (!world.isRemote) {
-            SpeculoTNTEntity tnt = new SpeculoTNTEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, explosionIn.getExplosivePlacedBy());
-            tnt.setFuse((short)(world.rand.nextInt(tnt.getFuse() / 4) + tnt.getFuse() / 8));
-            world.addEntity(tnt);
-            world.playSound(null, tnt.getPosX(), tnt.getPosY(), tnt.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+    public void wasExploded(World world, BlockPos pos, Explosion explosionIn) {
+        if (!world.isClientSide) {
+            SpeculoTNTEntity tnt = new SpeculoTNTEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, explosionIn.getSourceMob());
+            tnt.setFuse((short)(world.random.nextInt(tnt.getLife() / 4) + tnt.getLife() / 8));
+            world.addFreshEntity(tnt);
+            world.playSound(null, tnt.getX(), tnt.getY(), tnt.getZ(), SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 
     @Override
     public void catchFire(BlockState state, World world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             SpeculoTNTEntity tnt = new SpeculoTNTEntity(world, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, igniter);
-            world.addEntity(tnt);
-            world.playSound(null, tnt.getPosX(), tnt.getPosY(), tnt.getPosZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.addFreshEntity(tnt);
+            world.playSound(null, tnt.getX(), tnt.getY(), tnt.getZ(), SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 }

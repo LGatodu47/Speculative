@@ -17,10 +17,10 @@ public class SpeculoWorldTeleporter implements ITeleporter {
     @Nullable
     @Override
     public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
-        int x = MathHelper.floor(entity.getPosX());
-        int z = MathHelper.floor(entity.getPosZ());
-        int y = destWorld.getChunk(x >> 4, z >> 4).getTopBlockY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x & 15, z & 15) + 1;
-        return new PortalInfo(new Vector3d(x + 0.5, y, z + 0.5), Vector3d.ZERO, entity.rotationYaw, entity.rotationPitch);
+        int x = MathHelper.floor(entity.getX());
+        int z = MathHelper.floor(entity.getZ());
+        int y = destWorld.getChunk(x >> 4, z >> 4).getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x & 15, z & 15) + 1;
+        return new PortalInfo(new Vector3d(x + 0.5, y, z + 0.5), Vector3d.ZERO, entity.yRot, entity.xRot);
     }
 
     @Override

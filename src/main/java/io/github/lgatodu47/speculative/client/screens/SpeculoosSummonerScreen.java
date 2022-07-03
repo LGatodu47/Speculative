@@ -19,22 +19,22 @@ public class SpeculoosSummonerScreen extends ContainerScreen<SpeculoosSummonerCo
     @Override
     protected void init() {
         super.init();
-        this.playerInventoryTitleY = 70;
+        this.inventoryLabelY = 70;
     }
 
     @Override
     public void render(MatrixStack stack, final int mouseX, final int mouseY, final float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(stack, mouseX, mouseY);
+        this.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(TEXTURE);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        this.blit(stack, x, y, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(TEXTURE);
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        this.blit(stack, x, y, 0, 0, this.imageWidth, this.imageHeight);
     }
 }

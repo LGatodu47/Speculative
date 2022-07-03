@@ -19,18 +19,18 @@ import java.util.Set;
 public class SpeculoForestBiome extends SpeculoWorldBiome {
     @Override
     protected Biome.Builder create() {
-        return new Biome.Builder().precipitation(Biome.RainType.RAIN).temperature(0.7F).category(Biome.Category.FOREST).depth(0.105F).scale(0.205F).downfall(0.6F);
+        return new Biome.Builder().precipitation(Biome.RainType.RAIN).temperature(0.7F).biomeCategory(Biome.Category.FOREST).depth(0.105F).scale(0.205F).downfall(0.6F);
     }
 
     @Override
     protected BiomeGenerationSettings.Builder configureGeneration() {
         BiomeGenerationSettings.Builder builder = super.configureGeneration();
-        builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.TREE.withConfiguration(SpeculoTree.SPECULO_FANCY_TREE_CONFIG).withChance(0.33333334F)), Feature.TREE.withConfiguration(SpeculoTree.SPECULO_TREE_CONFIG))).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(10, 0.1F, 1))));
+        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.configured(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.TREE.configured(SpeculoTree.SPECULO_FANCY_TREE_CONFIG).weighted(0.33333334F)), Feature.TREE.configured(SpeculoTree.SPECULO_TREE_CONFIG))).decorated(Features.Placements.HEIGHTMAP_SQUARE).decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(10, 0.1F, 1))));
         DefaultSpeculativeFeatures.addSpeculoworldCarvers(builder);
         DefaultSpeculativeFeatures.addSpeculoworldOres(builder);
         DefaultSpeculativeFeatures.addSpeculoworldFlowers(builder);
-        builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(Features.Configs.GRASS_PATCH_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).count(2));
-        DefaultBiomeFeatures.withFrozenTopLayer(builder);
+        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.configured(Features.Configs.DEFAULT_GRASS_CONFIG).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).count(2));
+        DefaultBiomeFeatures.addSurfaceFreezing(builder);
         return builder;
     }
 

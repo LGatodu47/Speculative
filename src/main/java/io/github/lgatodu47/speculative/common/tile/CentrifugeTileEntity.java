@@ -42,28 +42,28 @@ public class CentrifugeTileEntity extends SpeculativeLockableTileEntity implemen
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
         this.currentFuseTime = nbt.getInt("CurrentFuseTime");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
-        super.write(nbt);
+    public CompoundNBT save(CompoundNBT nbt) {
+        super.save(nbt);
         nbt.putInt("CurrentFuseTime", this.currentFuseTime);
         return nbt;
     }
 
     @Override
     public void tick() {
-        if(world == null) {
+        if(level == null) {
             return;
         }
 
         boolean update = false;
 
-        if (!world.isRemote) {
-            if (world.isBlockPowered(pos) && !inv.getStackInSlot(0).isEmpty() && !inv.getStackInSlot(1).isEmpty()) {
+        if (!level.isClientSide) {
+            if (level.hasNeighborSignal(worldPosition) && !inv.getStackInSlot(0).isEmpty() && !inv.getStackInSlot(1).isEmpty()) {
                 Optional<CentrifugeRecipe> recipe = findRecipe(SpeculativeRecipeSerializers.CENTRIFUGE_TYPE, CentrifugeRecipe.class, new RecipeWrapper(inv));
 
                 if (recipe.isPresent() && this.canFuse(recipe.get())) {
@@ -73,24 +73,24 @@ public class CentrifugeTileEntity extends SpeculativeLockableTileEntity implemen
                         this.fuse(recipe.get());
                         update = true;
                     }
-                    world.setBlockState(pos, this.getBlockState().with(CentrifugeBlock.LIT, true));
+                    level.setBlockAndUpdate(worldPosition, this.getBlockState().setValue(CentrifugeBlock.LIT, true));
                 } else {
                     this.currentFuseTime = 0;
-                    world.setBlockState(pos, this.getBlockState().with(CentrifugeBlock.LIT, false));
+                    level.setBlockAndUpdate(worldPosition, this.getBlockState().setValue(CentrifugeBlock.LIT, false));
                 }
-            } else if (!world.isBlockPowered(pos) && this.currentFuseTime > 0) {
+            } else if (!level.hasNeighborSignal(worldPosition) && this.currentFuseTime > 0) {
                 this.currentFuseTime = MathHelper.clamp(this.currentFuseTime - 2, 0, this.totalFuseTime);
-                world.setBlockState(pos, this.getBlockState().with(CentrifugeBlock.LIT, false));
+                level.setBlockAndUpdate(worldPosition, this.getBlockState().setValue(CentrifugeBlock.LIT, false));
             }
         }
 
         if (update) {
-            this.markDirty();
+            this.setChanged();
         }
     }
 
     private boolean canFuse(CentrifugeRecipe recipe) {
-        ItemStack result = recipe.getRecipeOutput();
+        ItemStack result = recipe.getResultItem();
         ItemStack output = inv.getStackInSlot(2);
 
         if (result.isEmpty()) {
@@ -99,10 +99,10 @@ public class CentrifugeTileEntity extends SpeculativeLockableTileEntity implemen
         if (output.isEmpty()) {
             return true;
         }
-        if (!output.isItemEqual(result)) {
+        if (!output.sameItem(result)) {
             return false;
         }
-        if (output.getCount() + result.getCount() <= this.getInventoryStackLimit() && output.getCount() + result.getCount() <= output.getMaxStackSize()) {
+        if (output.getCount() + result.getCount() <= this.getMaxStackSize() && output.getCount() + result.getCount() <= output.getMaxStackSize()) {
             return true;
         }
 
@@ -113,7 +113,7 @@ public class CentrifugeTileEntity extends SpeculativeLockableTileEntity implemen
         if (this.canFuse(recipe)) {
             ItemStack input1 = inv.getStackInSlot(0);
             ItemStack input2 = inv.getStackInSlot(1);
-            ItemStack result = recipe.getRecipeOutput();
+            ItemStack result = recipe.getResultItem();
             ItemStack output = inv.getStackInSlot(2);
 
             if (output.isEmpty()) {

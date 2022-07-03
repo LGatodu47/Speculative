@@ -21,7 +21,7 @@ public final class SpeculativeUtils {
 
     @OnlyIn(Dist.CLIENT)
     public static Set<IRecipe<?>> findRecipesByType(IRecipeType<?> type) {
-        ClientWorld world = Minecraft.getInstance().world;
+        ClientWorld world = Minecraft.getInstance().level;
         return world != null ? world.getRecipeManager().getRecipes().stream().filter(recipe -> recipe.getType() == type).collect(Collectors.toSet()) : Collections.emptySet();
     }
 

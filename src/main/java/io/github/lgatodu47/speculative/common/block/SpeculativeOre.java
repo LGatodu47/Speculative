@@ -8,12 +8,14 @@ import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class SpeculativeOre extends OreBlock {
     protected int minXp;
     protected int maxXp;
 
     public SpeculativeOre(float hardness, float resistance, int harvestLevel) {
-        super(Properties.create(Material.ROCK).hardnessAndResistance(hardness, resistance).harvestLevel(harvestLevel).harvestTool(ToolType.PICKAXE).sound(SoundType.STONE));
+        super(Properties.of(Material.STONE).strength(hardness, resistance).harvestLevel(harvestLevel).harvestTool(ToolType.PICKAXE).sound(SoundType.STONE));
     }
 
     public SpeculativeOre xp(int min, int max) {
@@ -23,7 +25,7 @@ public class SpeculativeOre extends OreBlock {
     }
 
     @Override
-    protected int getExperience(Random rand) {
+    protected int xpOnDrop(Random rand) {
         if ((minXp < 1 || maxXp < 1) || (maxXp - minXp <= 0)) {
             return 0;
         }

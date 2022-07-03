@@ -6,6 +6,8 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
+import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
+
 public class SpeculativeFlowingFluid extends ForgeFlowingFluid {
     private final boolean isSource;
     private final FluidAttributes.Builder attributes;
@@ -22,11 +24,11 @@ public class SpeculativeFlowingFluid extends ForgeFlowingFluid {
     }
 
     @Override
-    public int getLevel(FluidState state) {
+    public int getAmount(FluidState state) {
         if (this.isSource) {
             return 8;
         }
-        return state.get(LEVEL_1_8);
+        return state.getValue(LEVEL);
     }
 
     @Override
@@ -35,10 +37,10 @@ public class SpeculativeFlowingFluid extends ForgeFlowingFluid {
     }
 
     @Override
-    protected void fillStateContainer(Builder<Fluid, FluidState> builder) {
-        super.fillStateContainer(builder);
+    protected void createFluidStateDefinition(Builder<Fluid, FluidState> builder) {
+        super.createFluidStateDefinition(builder);
         if (!this.isSource) {
-            builder.add(LEVEL_1_8);
+            builder.add(LEVEL);
         }
     }
 

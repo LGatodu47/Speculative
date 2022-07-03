@@ -34,18 +34,18 @@ public class DimensionWorldInfo implements IServerWorldInfo, ExtendedServerWorld
     }
 
     @Override
-    public int getSpawnX() {
-        return this.delegate.getSpawnX();
+    public int getXSpawn() {
+        return this.delegate.getXSpawn();
     }
 
     @Override
-    public int getSpawnY() {
-        return this.delegate.getSpawnY();
+    public int getYSpawn() {
+        return this.delegate.getYSpawn();
     }
 
     @Override
-    public int getSpawnZ() {
-        return this.delegate.getSpawnZ();
+    public int getZSpawn() {
+        return this.delegate.getZSpawn();
     }
 
     @Override
@@ -64,8 +64,8 @@ public class DimensionWorldInfo implements IServerWorldInfo, ExtendedServerWorld
     }
 
     @Override
-    public String getWorldName() {
-        return this.configuration.getWorldName();
+    public String getLevelName() {
+        return this.configuration.getLevelName();
     }
 
     @Override
@@ -104,15 +104,15 @@ public class DimensionWorldInfo implements IServerWorldInfo, ExtendedServerWorld
     }
 
     @Override
-    public void setSpawnX(int x) {
+    public void setXSpawn(int x) {
     }
 
     @Override
-    public void setSpawnY(int y) {
+    public void setYSpawn(int y) {
     }
 
     @Override
-    public void setSpawnZ(int z) {
+    public void setZSpawn(int z) {
     }
 
     @Override
@@ -163,8 +163,8 @@ public class DimensionWorldInfo implements IServerWorldInfo, ExtendedServerWorld
     }
 
     @Override
-    public boolean areCommandsAllowed() {
-        return this.configuration.areCommandsAllowed();
+    public boolean getAllowCommands() {
+        return this.configuration.getAllowCommands();
     }
 
     @Override
@@ -177,17 +177,17 @@ public class DimensionWorldInfo implements IServerWorldInfo, ExtendedServerWorld
     }
 
     @Override
-    public GameRules getGameRulesInstance() {
-        return this.configuration.getGameRulesInstance();
+    public GameRules getGameRules() {
+        return this.configuration.getGameRules();
     }
 
     @Override
-    public WorldBorder.Serializer getWorldBorderSerializer() {
-        return this.delegate.getWorldBorderSerializer();
+    public WorldBorder.Serializer getWorldBorder() {
+        return this.delegate.getWorldBorder();
     }
 
     @Override
-    public void setWorldBorderSerializer(WorldBorder.Serializer serializer) {
+    public void setWorldBorder(WorldBorder.Serializer serializer) {
     }
 
     @Override
@@ -224,13 +224,13 @@ public class DimensionWorldInfo implements IServerWorldInfo, ExtendedServerWorld
     }
 
     @Override
-    public void setWanderingTraderID(UUID id) {
+    public void setWanderingTraderId(UUID id) {
     }
 
     @Override
-    public void addToCrashReport(CrashReportCategory category) {
-        category.addDetail("Derived", true);
-        this.delegate.addToCrashReport(category);
+    public void fillCrashReportCategory(CrashReportCategory category) {
+        category.setDetail("Derived", true);
+        this.delegate.fillCrashReportCategory(category);
     }
 
     public CompoundNBT serializeData() {

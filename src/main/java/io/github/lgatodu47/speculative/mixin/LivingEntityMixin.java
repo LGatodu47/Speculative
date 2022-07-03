@@ -16,7 +16,7 @@ public class LivingEntityMixin {
     private float redirect_getSlipperiness(BlockState state, IWorldReader reader, BlockPos pos, Entity entity) {
         float slipperiness = state.getSlipperiness(reader, pos, entity);
 
-        if(((LivingEntity) (Object) this).isPotionActive(SpeculativeEffects.SULFURIC_SPEED.get())) {
+        if(((LivingEntity) (Object) this).hasEffect(SpeculativeEffects.SULFURIC_SPEED.get())) {
             slipperiness = 0.98F;
         }
 

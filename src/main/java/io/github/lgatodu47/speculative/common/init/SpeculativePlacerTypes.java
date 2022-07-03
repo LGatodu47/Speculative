@@ -25,7 +25,7 @@ public final class SpeculativePlacerTypes {
         @SuppressWarnings("unchecked")
         private static <P extends AbstractTrunkPlacer> TrunkPlacerType<P> register(String name, Codec<P> codec) {
             if(REGISTER == null) {
-                REGISTER = ObfuscationReflectionHelper.findMethod(TrunkPlacerType.class, "func_236928_a_", String.class, Codec.class);
+                REGISTER = ObfuscationReflectionHelper.findMethod(TrunkPlacerType.class, "register", String.class, Codec.class);
                 REGISTER.setAccessible(true);
             }
 

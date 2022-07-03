@@ -20,10 +20,10 @@ public class BushPatchFeature extends Feature<BlockStateFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
-        if (reader.getBlockState(pos.down()).getBlock().equals(SpeculativeBlocks.SPECULO_SAND.get()) && reader.isAirBlock(pos)) {
+    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+        if (reader.getBlockState(pos.below()).getBlock().equals(SpeculativeBlocks.SPECULO_SAND.get()) && reader.isEmptyBlock(pos)) {
             List<BlockPos> poses = calcPoses(pos, rand.nextInt(3) + 1);
-            poses.forEach(position -> reader.setBlockState(position, config.state, 2));
+            poses.forEach(position -> reader.setBlock(position, config.state, 2));
             return true;
         }
 
@@ -32,7 +32,7 @@ public class BushPatchFeature extends Feature<BlockStateFeatureConfig> {
 
     private static List<BlockPos> calcPoses(BlockPos origin, int scale) {
         List<BlockPos> posList = new ArrayList<>();
-        BlockPos up = origin.up();
+        BlockPos up = origin.above();
 
         posList.add(origin);
 
@@ -42,8 +42,8 @@ public class BushPatchFeature extends Feature<BlockStateFeatureConfig> {
             }
 
             for (int i = 0; i < scale; i++) {
-                posList.add(origin.offset(direction, i + 1));
-                posList.add(up.offset(direction, i));
+                posList.add(origin.relative(direction, i + 1));
+                posList.add(up.relative(direction, i));
             }
         }
 

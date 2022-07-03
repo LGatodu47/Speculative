@@ -22,9 +22,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class SpeculoosSummonerBlock extends Block {
     public SpeculoosSummonerBlock() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(4.0F, 5.0F).harvestLevel(1).harvestTool(ToolType.PICKAXE).sound(SoundType.METAL));
+        super(Properties.of(Material.METAL).strength(4.0F, 5.0F).harvestLevel(1).harvestTool(ToolType.PICKAXE).sound(SoundType.METAL));
     }
 
     @Override
@@ -39,9 +41,9 @@ public class SpeculoosSummonerBlock extends Block {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult result) {
-        if (!worldIn.isRemote) {
-            TileEntity tile = worldIn.getTileEntity(pos);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult result) {
+        if (!worldIn.isClientSide) {
+            TileEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof SpeculoosSummonerTileEntity) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (SpeculoosSummonerTileEntity) tile, pos);
                 return ActionResultType.SUCCESS;
@@ -51,19 +53,19 @@ public class SpeculoosSummonerBlock extends Block {
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            TileEntity tile = worldIn.getTileEntity(pos);
+            TileEntity tile = worldIn.getBlockEntity(pos);
             if (tile instanceof SpeculoosSummonerTileEntity) {
-                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((SpeculoosSummonerTileEntity) tile).getStack());
+                InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((SpeculoosSummonerTileEntity) tile).getStack());
             }
 
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
+            super.onRemove(state, worldIn, pos, newState, isMoving);
         }
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 }

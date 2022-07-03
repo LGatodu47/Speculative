@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ResourceLoadProgressGui.class)
 public class ResourceLoadProgressGuiMixin {
-    @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ColorHelper$PackedColor;packColor(IIII)I"))
+    @Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ColorHelper$PackedColor;color(IIII)I"))
     private static int redirect_packColor(int alpha, int red, int green, int blue) {
-        return ColorHelper.PackedColor.packColor(alpha, 20, 20, 20);
+        return ColorHelper.PackedColor.color(alpha, 20, 20, 20);
     }
 }

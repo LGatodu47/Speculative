@@ -29,7 +29,7 @@ public class DevCommand {
     //@SuppressWarnings("unchecked")
     private static int spawnStructure(CommandContext<CommandSource> ctx) {
         try {
-            ServerPlayerEntity player = ctx.getSource().asPlayer();
+            ServerPlayerEntity player = ctx.getSource().getPlayerOrException();
             //String structure = StringArgumentType.getString(ctx, "structureName");
 
             //if (structure.equalsIgnoreCase("oasis"))
@@ -54,15 +54,15 @@ public class DevCommand {
 								return pos;
 							}
 						}).apply(player));*/
-            SpeculativeFeatures.OASIS.withConfiguration(new BlockStateFeatureConfig(SpeculativeFluids.UNSTABLE_WATER.getBlock().get().getDefaultState())).generate(player.getServerWorld(), player.getServerWorld().getChunkProvider().getChunkGenerator(), player.getServerWorld().getRandom(), (new Function<ServerPlayerEntity, BlockPos>() {
+            SpeculativeFeatures.OASIS.configured(new BlockStateFeatureConfig(SpeculativeFluids.UNSTABLE_WATER.getBlock().get().defaultBlockState())).place(player.getLevel(), player.getLevel().getChunkSource().getGenerator(), player.getLevel().getRandom(), (new Function<ServerPlayerEntity, BlockPos>() {
                 @Override
                 public BlockPos apply(ServerPlayerEntity player) {
-                    BlockPos pos = player.getPosition();
+                    BlockPos pos = player.blockPosition();
 
                     if (pos.getY() - 4 > 4) {
-                        pos = pos.down(4);
+                        pos = pos.below(4);
                     } else {
-                        pos = pos.up(4);
+                        pos = pos.above(4);
                     }
 
                     return pos;

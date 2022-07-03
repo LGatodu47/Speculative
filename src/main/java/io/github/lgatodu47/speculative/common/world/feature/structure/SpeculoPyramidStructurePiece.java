@@ -61,15 +61,15 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
     }
 
     private void setupPiece(TemplateManager manager) {
-        Template template = manager.getTemplateDefaulted(new ResourceLocation(Speculative.MODID, "speculo_pyramid"));
+        Template template = manager.getOrCreate(new ResourceLocation(Speculative.MODID, "speculo_pyramid"));
         PlacementSettings placementSettings = (new PlacementSettings()).setRotation(rot).setMirror(Mirror.NONE);
 
         this.setup(template, templatePosition, placementSettings);
     }
 
     @Override
-    protected void readAdditional(CompoundNBT tagCompound) {
-        super.readAdditional(tagCompound);
+    protected void addAdditionalSaveData(CompoundNBT tagCompound) {
+        super.addAdditionalSaveData(tagCompound);
         tagCompound.putString("Rot", this.rot.name());
     }
 
@@ -94,8 +94,8 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
     @Override
     protected void handleDataMarker(String function, BlockPos pos, IServerWorld worldIn, Random rand, MutableBoundingBox sbb) {
         if (function.startsWith("Loot")) {
-            BlockPos chestPos = pos.down();
-            if (sbb.isVecInside(chestPos)) {
+            BlockPos chestPos = pos.below();
+            if (sbb.isInside(chestPos)) {
                 createLoot(pos, rand);
 
                 String chestLootTable;
@@ -111,22 +111,22 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
                     return;
                 }
 
-                TileEntity tile = worldIn.getTileEntity(chestPos);
+                TileEntity tile = worldIn.getBlockEntity(chestPos);
 
                 if (tile instanceof ChestTileEntity) {
                     ChestTileEntity chest = (ChestTileEntity) tile;
                     chest.setLootTable(new ResourceLocation(Speculative.MODID, chestLootTable), rand.nextLong());
                 }
 
-                BlockPos dispenserPos = pos.offset(worldIn.getBlockState(chestPos).get(ChestBlock.FACING).getOpposite());
-                TileEntity tile2 = worldIn.getTileEntity(dispenserPos);
+                BlockPos dispenserPos = pos.relative(worldIn.getBlockState(chestPos).getValue(ChestBlock.FACING).getOpposite());
+                TileEntity tile2 = worldIn.getBlockEntity(dispenserPos);
 
                 if (tile2 instanceof DispenserTileEntity) {
                     DispenserTileEntity dispenser = (DispenserTileEntity) tile2;
                     dispenser.setLootTable(new ResourceLocation(Speculative.MODID, dispenserLootTable), rand.nextLong());
                 }
 
-                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
             }
         }
     }

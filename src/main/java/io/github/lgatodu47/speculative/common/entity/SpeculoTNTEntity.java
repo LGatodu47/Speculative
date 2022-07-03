@@ -19,24 +19,24 @@ public class SpeculoTNTEntity extends TNTEntity {
 
     public SpeculoTNTEntity(World worldIn, double x, double y, double z, @Nullable LivingEntity igniter) {
         this(SpeculativeEntityTypes.SPECULO_TNT.get(), worldIn);
-        this.setPosition(x, y, z);
-        double d0 = worldIn.rand.nextDouble() * (double)((float)Math.PI * 2F);
-        this.setMotion(-Math.sin(d0) * 0.02D, (double)0.2F, -Math.cos(d0) * 0.02D);
+        this.setPos(x, y, z);
+        double d0 = worldIn.random.nextDouble() * (double)((float)Math.PI * 2F);
+        this.setDeltaMovement(-Math.sin(d0) * 0.02D, (double)0.2F, -Math.cos(d0) * 0.02D);
         setFuse(200);
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
         this.igniter = igniter;
     }
 
     @Override
     protected void explode() {
-        this.world.createExplosion(this, this.getPosX(), this.getPosYHeight(0.0625D), this.getPosZ(), 12.0F, Explosion.Mode.BREAK);
+        this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 12.0F, Explosion.Mode.BREAK);
     }
 
     @Override
     @Nullable
-    public LivingEntity getIgniter() {
+    public LivingEntity getOwner() {
         return igniter;
     }
 }

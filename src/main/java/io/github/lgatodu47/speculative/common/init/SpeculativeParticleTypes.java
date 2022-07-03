@@ -24,6 +24,6 @@ public class SpeculativeParticleTypes
 	@SubscribeEvent
 	public static void registerParticleFactories(ParticleFactoryRegisterEvent event)
 	{
-		Minecraft.getInstance().particles.registerFactory(SpeculativeParticleTypes.GREEN_FLAME.get(), FlameParticle.Factory::new);
+		Minecraft.getInstance().particleEngine.register(SpeculativeParticleTypes.GREEN_FLAME.get(), FlameParticle.Factory::new);
 	}
 }

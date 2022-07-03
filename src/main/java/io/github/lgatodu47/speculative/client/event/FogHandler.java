@@ -24,10 +24,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class FogHandler {
     @SubscribeEvent
     public static void changeFogDensity(FogDensity event) {
-        Entity entity = event.getInfo().getRenderViewEntity();
-        if (entity.world != null && entity.world.isRemote()) { // The world should always be client, but we never really know
-            if (entity.world.getDimensionKey().equals(SpeculativeWorlds.SPECULO_WORLD)) {
-                float density = getDensity(Minecraft.getInstance().gameSettings.renderDistanceChunks, (ClientWorld) entity.world, event.getInfo()) * 0.03F;
+        Entity entity = event.getInfo().getEntity();
+        if (entity.level != null && entity.level.isClientSide()) { // The world should always be client, but we never really know
+            if (entity.level.dimension().equals(SpeculativeWorlds.SPECULO_WORLD)) {
+                float density = getDensity(Minecraft.getInstance().options.renderDistance, (ClientWorld) entity.level, event.getInfo()) * 0.03F;
                 if(density >= 0.005F) { // 0.005 is near the default value
                     event.setDensity(density);
                     event.setCanceled(true); // We need to cancel the event in order to apply our fog density.
@@ -38,13 +38,13 @@ public class FogHandler {
 
     private static float getDensity(int renderDistanceChunks, ClientWorld world, ActiveRenderInfo info) {
         BiomeManager manager = world.getBiomeManager();
-        Vector3d areaVec = info.getProjectedView().subtract(2, 2, 2).scale(0.25);
+        Vector3d areaVec = info.getPosition().subtract(2, 2, 2).scale(0.25);
 
         // These are a bunch of magic numbers taken from vanilla, I don't know what all that's stuff means, but I guess you can try to decode it by yourself :)
         float factor = 1F - (float) Math.pow(0.25F + 0.75F * (float) renderDistanceChunks / 32F, 0.25);
-        int hasBiome = checkBiomes(SpeculativeBiomes.SPECULO_DESERT, world.getBiome(info.getBlockPos())) ? 1 : 0;
+        int hasBiome = checkBiomes(SpeculativeBiomes.SPECULO_DESERT, world.getBiome(info.getBlockPosition())) ? 1 : 0;
         // Normally I wouldn't need to use vectors, but I'm doing it because of this pretty useful vanilla function
-        Vector3d scaleVec = CubicSampler.func_240807_a_(areaVec, (x, y, z) -> checkBiomes(SpeculativeBiomes.SPECULO_DESERT, manager.getBiomeAtPosition(x, y, z))
+        Vector3d scaleVec = CubicSampler.gaussianSampleVec3(areaVec, (x, y, z) -> checkBiomes(SpeculativeBiomes.SPECULO_DESERT, manager.getNoiseBiomeAtQuart(x, y, z))
                 ? new Vector3d(1, 1, 1)
                 : Vector3d.ZERO);
 
@@ -57,8 +57,8 @@ public class FogHandler {
 
     @SubscribeEvent
     public static void changeFogColor(FogColors event) {
-        Entity entity = event.getInfo().getRenderViewEntity();
-        if(entity.isInWater() && event.getInfo().getFluidState().isTagged(SpeculativeFluids.Tags.UNSTABLE_WATER)) {
+        Entity entity = event.getInfo().getEntity();
+        if(entity.isInWater() && event.getInfo().getFluidInCamera().is(SpeculativeFluids.Tags.UNSTABLE_WATER)) {
             // Unstable Water colors
             event.setRed(0.204F);
             event.setGreen(1F);

@@ -36,27 +36,27 @@ public class SpeculativeStructures {
     public static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Speculative.MODID);
 
     public static final RegistryObject<Structure<NoFeatureConfig>> SPECULO_PYRAMID = STRUCTURES.register("speculo_pyramid", () -> new SpeculoPyramidStructure(NoFeatureConfig.CODEC));
-    public static final IStructurePieceType SPECULO_PYRAMID_PIECE = IStructurePieceType.register(SpeculoPyramidStructurePiece::new, "speculative:speculo_pyramid_piece");
+    public static final IStructurePieceType SPECULO_PYRAMID_PIECE = IStructurePieceType.setPieceId(SpeculoPyramidStructurePiece::new, "speculative:speculo_pyramid_piece");
 
     public static void setupStructures() {
-        Structure.NAME_STRUCTURE_BIMAP.put(SPECULO_PYRAMID.getId().toString(), SPECULO_PYRAMID.get());
+        Structure.STRUCTURES_REGISTRY.put(SPECULO_PYRAMID.getId().toString(), SPECULO_PYRAMID.get());
 //        setupMapSpacingAndLand(SPECULO_PYRAMID.get(), new StructureSeparationSettings(32, 8, 354978923), false);
     }
 
     public static <F extends Structure<?>> void setupMapSpacingAndLand(F structure, StructureSeparationSettings separationSettings, boolean transformSurroundingLand) {
         if (transformSurroundingLand) {
-            Structure.field_236384_t_ = ImmutableList.<Structure<?>>builder().addAll(Structure.field_236384_t_).add(structure).build();
+            Structure.NOISE_AFFECTING_FEATURES = ImmutableList.<Structure<?>>builder().addAll(Structure.NOISE_AFFECTING_FEATURES).add(structure).build();
         }
 
-        DimensionStructuresSettings.field_236191_b_ = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder().putAll(DimensionStructuresSettings.field_236191_b_).put(structure, separationSettings).build();
+        DimensionStructuresSettings.DEFAULTS = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder().putAll(DimensionStructuresSettings.DEFAULTS).put(structure, separationSettings).build();
 
-        WorldGenRegistries.NOISE_SETTINGS.getEntries().forEach(settings -> {
-            Map<Structure<?>, StructureSeparationSettings> structureMap = settings.getValue().getStructures().func_236195_a_();
+        WorldGenRegistries.NOISE_GENERATOR_SETTINGS.entrySet().forEach(settings -> {
+            Map<Structure<?>, StructureSeparationSettings> structureMap = settings.getValue().structureSettings().structureConfig();
 
             if (structureMap instanceof ImmutableMap) {
                 Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(structureMap);
                 tempMap.put(structure, separationSettings);
-                settings.getValue().getStructures().field_236193_d_ = tempMap;
+                settings.getValue().structureSettings().structureConfig = tempMap;
             } else {
                 structureMap.put(structure, separationSettings);
             }
@@ -72,21 +72,21 @@ public class SpeculativeStructures {
 
             try {
                 if (GETCODEC_METHOD == null)
-                    GETCODEC_METHOD = ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
+                    GETCODEC_METHOD = ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "codec");
                 @SuppressWarnings("unchecked")
-                ResourceLocation rl = Registry.CHUNK_GENERATOR_CODEC.getKey((Codec<? extends ChunkGenerator>) GETCODEC_METHOD.invoke(serverWorld.getChunkProvider().generator));
+                ResourceLocation rl = Registry.CHUNK_GENERATOR.getKey((Codec<? extends ChunkGenerator>) GETCODEC_METHOD.invoke(serverWorld.getChunkSource().generator));
                 if (rl != null && rl.getNamespace().equals("terraforged"))
                     return;
             } catch (Exception e) {
-                Speculative.LOGGER.error("Was unable to check if " + serverWorld.getDimensionKey().getLocation() + " is using Terraforged's ChunkGenerator.");
+                Speculative.LOGGER.error("Was unable to check if " + serverWorld.dimension().location() + " is using Terraforged's ChunkGenerator.");
             }
 
-            if (serverWorld.getChunkProvider().getChunkGenerator() instanceof FlatChunkGenerator && serverWorld.getDimensionKey().equals(World.OVERWORLD))
+            if (serverWorld.getChunkSource().getGenerator() instanceof FlatChunkGenerator && serverWorld.dimension().equals(World.OVERWORLD))
                 return;
 
-            Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_());
-//            tempMap.putIfAbsent(SpeculativeStructures.SPECULO_PYRAMID.get(), DimensionStructuresSettings.field_236191_b_.get(SpeculativeStructures.SPECULO_PYRAMID.get()));
-            serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
+            Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
+//            tempMap.putIfAbsent(SpeculativeStructures.SPECULO_PYRAMID.get(), DimensionStructuresSettings.DEFAULTS.get(SpeculativeStructures.SPECULO_PYRAMID.get()));
+            serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
         }
     }
 
@@ -96,7 +96,7 @@ public class SpeculativeStructures {
         public static final Supplier<StructureFeature<?, ?>> CONFIGURED_SPECULO_PYRAMID = register("configured_speculo_pyramid", SpeculativeStructures.SPECULO_PYRAMID, NoFeatureConfig.INSTANCE);
 
         private static <FC extends IFeatureConfig, F extends Structure<FC>> Supplier<StructureFeature<?, ?>> register(String name, Supplier<F> structure, FC config) {
-            Supplier<StructureFeature<?, ?>> sup = () -> structure.get().withConfiguration(config);
+            Supplier<StructureFeature<?, ?>> sup = () -> structure.get().configured(config);
             CONFIGURED_STRUCTURES_MAP.put(name, sup);
             return sup;
         }
@@ -104,7 +104,7 @@ public class SpeculativeStructures {
         public static void registerConfiguredStructures() {
             CONFIGURED_STRUCTURES_MAP.forEach((name, configured) -> {
                 Registry.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(Speculative.MODID, name), configured.get());
-                FlatGenerationSettings.STRUCTURES.put(configured.get().field_236268_b_, configured.get());
+                FlatGenerationSettings.STRUCTURE_FEATURES.put(configured.get().feature, configured.get());
             });
         }
     }

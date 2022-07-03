@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class SpeculativeGenerationSettingsBuilder extends BiomeGenerationSettings.Builder {
     public SpeculativeGenerationSettingsBuilder withLazyFeature(GenerationStage.Decoration stage, Supplier<ConfiguredFeature<?, ?>> feature) {
-        return (SpeculativeGenerationSettingsBuilder) withFeature(stage.ordinal(), feature);
+        return (SpeculativeGenerationSettingsBuilder) addFeature(stage.ordinal(), feature);
     }
 
     public SpeculativeGenerationSettingsBuilder withLazyCarver(GenerationStage.Carving stage, Supplier<ConfiguredCarver<?>> carver) {
@@ -20,7 +20,7 @@ public class SpeculativeGenerationSettingsBuilder extends BiomeGenerationSetting
     }
 
     public SpeculativeGenerationSettingsBuilder withLazyStructure(Supplier<StructureFeature<?, ?>> structure) {
-        this.structures.add(structure);
+        this.structureStarts.add(structure);
         return this;
     }
 

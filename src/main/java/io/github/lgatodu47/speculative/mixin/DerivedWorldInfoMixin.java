@@ -16,16 +16,16 @@ import java.util.function.Supplier;
 
 @Mixin(DerivedWorldInfo.class)
 public class DerivedWorldInfoMixin implements ExtendedServerWorldInfo {
-    @Shadow @Final private IServerWorldInfo delegate;
+    @Shadow @Final private IServerWorldInfo wrapped;
 
     @Override
     public void addDimensionWorldInfo(RegistryKey<World> world, DimensionWorldInfo info) {
-        ExtendedServerWorldInfo.get(this.delegate).addDimensionWorldInfo(world, info);
+        ExtendedServerWorldInfo.get(this.wrapped).addDimensionWorldInfo(world, info);
     }
 
     @Override
     public DimensionWorldInfo getDimensionWorldInfo(RegistryKey<World> world, Supplier<DimensionWorldInfo> defaultValue) {
-        return ExtendedServerWorldInfo.get(this.delegate).getDimensionWorldInfo(world, defaultValue);
+        return ExtendedServerWorldInfo.get(this.wrapped).getDimensionWorldInfo(world, defaultValue);
     }
 
     @Override

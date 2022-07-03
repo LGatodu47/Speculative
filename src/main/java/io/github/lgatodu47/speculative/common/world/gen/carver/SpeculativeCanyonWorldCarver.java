@@ -13,7 +13,7 @@ public class SpeculativeCanyonWorldCarver extends CanyonWorldCarver {
     }
 
     @Override
-    protected boolean isCarvable(BlockState state) {
-        return state.isIn(SpeculativeBlocks.Tags.CARVABLE_BLOCKS);
+    protected boolean canReplaceBlock(BlockState state) {
+        return state.is(SpeculativeBlocks.Tags.CARVABLE_BLOCKS);
     }
 }

@@ -102,12 +102,12 @@ public class Speculative {
                 .stream()
                 .map(RegistryObject::get)
                 .filter(block -> !(block instanceof FlowingFluidBlock || block instanceof StandingSignBlock || block instanceof WallSignBlock || block instanceof TorchBlock))
-                .forEach(block -> registry.register(new BlockItem(block, new Item.Properties().group(tab())).setRegistryName(block.getRegistryName())));
+                .forEach(block -> registry.register(new BlockItem(block, new Item.Properties().tab(tab())).setRegistryName(block.getRegistryName())));
     }
 
     private static final Lazy<ItemGroup> GROUP = Lazy.of(() -> new ItemGroup("speculative.display_name") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(SpeculativeBlocks.SPECULO_ORE.get());
         }
     });

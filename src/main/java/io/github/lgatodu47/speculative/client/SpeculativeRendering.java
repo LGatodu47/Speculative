@@ -21,22 +21,22 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public final class SpeculativeRendering {
     public static void registerBlockRenderLayers() {
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_TREE_SAPLING.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_FLOWER.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_WOOD_STANDING_SIGN.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_WOOD_WALL_SIGN.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.MANGO_BUSH.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.GREENSTONE_TORCH.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.GREENSTONE_WALL_TORCH.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.TOURMALINE_TREE_SAPLING.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_BOSS_SUMMONER.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_TREE_SAPLING.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_FLOWER.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_WOOD_STANDING_SIGN.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_WOOD_WALL_SIGN.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.MANGO_BUSH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.GREENSTONE_TORCH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.GREENSTONE_WALL_TORCH.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.TOURMALINE_TREE_SAPLING.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(SpeculativeBlocks.SPECULO_BOSS_SUMMONER.get(), RenderType.cutout());
     }
 
     public static void registerContainerScreens() {
-        ScreenManager.registerFactory(SpeculativeContainerTypes.SPECULOOS_SUMMONER.get(), SpeculoosSummonerScreen::new);
-        ScreenManager.registerFactory(SpeculativeContainerTypes.CENTRIFUGE_CONTAINER.get(), CentrifugeScreen::new);
-        ScreenManager.registerFactory(SpeculativeContainerTypes.BOSS_SUMMONER.get(), BossSummonerScreen::new);
-        ScreenManager.registerFactory(SpeculativeContainerTypes.NUCLEAR_WORKBENCH.get(), NuclearWorkbenchScreen::new);
+        ScreenManager.register(SpeculativeContainerTypes.SPECULOOS_SUMMONER.get(), SpeculoosSummonerScreen::new);
+        ScreenManager.register(SpeculativeContainerTypes.CENTRIFUGE_CONTAINER.get(), CentrifugeScreen::new);
+        ScreenManager.register(SpeculativeContainerTypes.BOSS_SUMMONER.get(), BossSummonerScreen::new);
+        ScreenManager.register(SpeculativeContainerTypes.NUCLEAR_WORKBENCH.get(), NuclearWorkbenchScreen::new);
     }
 
     public static void registerEntityRenderers() {

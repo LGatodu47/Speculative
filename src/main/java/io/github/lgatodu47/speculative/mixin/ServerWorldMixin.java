@@ -15,18 +15,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ServerWorldMixin {
     @Shadow
     @Final
-    private IServerWorldInfo serverWorldInfo;
+    private IServerWorldInfo serverLevelData;
 
     @Shadow
     public abstract void setDayTime(long time);
 
-    @Inject(method = "tickWorld", at = @At("TAIL"))
-    private void inject_tickWorld(CallbackInfo ci) {
-        if (this.serverWorldInfo instanceof DimensionWorldInfo) {
-            this.serverWorldInfo.setGameTime(this.serverWorldInfo.getGameTime() + 1L);
+    @Inject(method = "tickTime", at = @At("TAIL"))
+    private void inject_tickTime(CallbackInfo ci) {
+        if (this.serverLevelData instanceof DimensionWorldInfo) {
+            this.serverLevelData.setGameTime(this.serverLevelData.getGameTime() + 1L);
 
-            if (this.serverWorldInfo.getGameRulesInstance().getBoolean(GameRules.DO_DAYLIGHT_CYCLE)) {
-                this.setDayTime(this.serverWorldInfo.getDayTime() + 1L);
+            if (this.serverLevelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
+                this.setDayTime(this.serverLevelData.getDayTime() + 1L);
             }
         }
     }

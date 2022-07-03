@@ -18,20 +18,20 @@ public class NuclearWorkbenchScreen extends ContainerScreen<NuclearWorkbenchCont
     @Override
     protected void init() {
         super.init();
-        this.titleX = 29;
+        this.titleLabelX = 29;
     }
 
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         super.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        super.renderHoveredTooltip(stack, mouseX, mouseY);
+        super.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(TEXTURE);
-        this.blit(matrixStack, this.guiLeft, (this.height - this.ySize) / 2, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(TEXTURE);
+        this.blit(matrixStack, this.leftPos, (this.height - this.imageHeight) / 2, 0, 0, this.imageWidth, this.imageHeight);
     }
 }

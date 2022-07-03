@@ -24,12 +24,12 @@ import java.util.concurrent.Executor;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-    @Shadow @Final protected IServerConfiguration serverConfig;
+    @Shadow @Final protected IServerConfiguration worldData;
 
-    @ModifyArg(method = "func_240787_a_", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ServerWorld;<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/storage/SaveFormat$LevelSave;Lnet/minecraft/world/storage/IServerWorldInfo;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/world/DimensionType;Lnet/minecraft/world/chunk/listener/IChunkStatusListener;Lnet/minecraft/world/gen/ChunkGenerator;ZJLjava/util/List;Z)V", ordinal = 1), index = 3)
+    @ModifyArg(method = "createLevels", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ServerWorld;<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/storage/SaveFormat$LevelSave;Lnet/minecraft/world/storage/IServerWorldInfo;Lnet/minecraft/util/RegistryKey;Lnet/minecraft/world/DimensionType;Lnet/minecraft/world/chunk/listener/IChunkStatusListener;Lnet/minecraft/world/gen/ChunkGenerator;ZJLjava/util/List;Z)V", ordinal = 1), index = 3)
     private IServerWorldInfo modifyArg_ServerWorldInit(MinecraftServer server, Executor executor, SaveFormat.LevelSave save, IServerWorldInfo info, RegistryKey<World> dimension, DimensionType dimensionType, IChunkStatusListener statusListener, ChunkGenerator chunkGenerator, boolean isDebug, long seed, List<ISpecialSpawner> specialSpawners, boolean shouldBeTicking) {
         if(DimensionUtil.hasDimensionWorldInfo(dimension)) {
-            return ExtendedServerWorldInfo.get(this.serverConfig.getServerWorldInfo()).getDimensionWorldInfo(dimension, () -> new DimensionWorldInfo(this.serverConfig, this.serverConfig.getServerWorldInfo()));
+            return ExtendedServerWorldInfo.get(this.worldData.overworldData()).getDimensionWorldInfo(dimension, () -> new DimensionWorldInfo(this.worldData, this.worldData.overworldData()));
         }
 
         return info;

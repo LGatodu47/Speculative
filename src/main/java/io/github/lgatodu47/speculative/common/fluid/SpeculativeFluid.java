@@ -50,7 +50,7 @@ public class SpeculativeFluid {
         private String stillFluidName;
         private String flowingFluidName;
         private final FluidAttributes.Builder attributesBuilder;
-        private AbstractBlock.Properties blockProperties = Block.Properties.create(Material.WATER).hardnessAndResistance(100F).noDrops();
+        private AbstractBlock.Properties blockProperties = Block.Properties.of(Material.WATER).strength(100F).noDrops();
         private UnaryOperator<ForgeFlowingFluid.Properties> fluidPropertiesOperator = UnaryOperator.identity();
         private FluidFactory stillFactory = SpeculativeFlowingFluid::new;
         private FluidFactory flowingFactory = SpeculativeFlowingFluid::new;

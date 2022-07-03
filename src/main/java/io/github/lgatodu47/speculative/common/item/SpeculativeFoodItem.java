@@ -8,12 +8,14 @@ import net.minecraft.util.SoundEvent;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.Item.Properties;
+
 public class SpeculativeFoodItem extends Item {
-    private SoundEvent eatSound = super.getEatSound();
+    private SoundEvent eatSound = super.getEatingSound();
     private int eatTicks = 32;
 
     public SpeculativeFoodItem(Food food) {
-        super(new Properties().group(Speculative.tab()).food(food));
+        super(new Properties().tab(Speculative.tab()).food(food));
     }
 
     public SpeculativeFoodItem sounds(@Nonnull SoundEvent event) {
@@ -27,7 +29,7 @@ public class SpeculativeFoodItem extends Item {
     }
 
     @Override
-    public SoundEvent getEatSound() {
+    public SoundEvent getEatingSound() {
         return eatSound;
     }
 

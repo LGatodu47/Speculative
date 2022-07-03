@@ -43,12 +43,12 @@ public class BossSummonerTileEntity extends SpeculativeLockableTileEntity implem
     public void tick() {
         checkActivate();
 
-        int x = this.pos.getX();
-        int y = this.pos.getY();
-        int z = this.pos.getZ();
+        int x = this.worldPosition.getX();
+        int y = this.worldPosition.getY();
+        int z = this.worldPosition.getZ();
         BlockPos pos;
         if (this.beamHeight < y) {
-            pos = this.pos;
+            pos = this.worldPosition;
             this.beams = Lists.newArrayList();
             this.beamHeight = pos.getY() - 1;
         } else {
@@ -56,19 +56,19 @@ public class BossSummonerTileEntity extends SpeculativeLockableTileEntity implem
         }
 
         ExtendedBeamSegment beam = this.beams.isEmpty() ? null : this.beams.get(this.beams.size() - 1);
-        int height = this.world.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
+        int height = this.level.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
 
         if (activated) {
             for (int i1 = 0; i1 < 10 && pos.getY() <= height; ++i1) {
-                float[] color = DyeColor.WHITE.getColorComponentValues();
+                float[] color = DyeColor.WHITE.getTextureDiffuseColors();
                 if (this.beams.size() <= 1) {
                     beam = new ExtendedBeamSegment(color);
                     this.beams.add(beam);
                 } else if (beam != null) {
-                    beam.incrementHeight();
+                    beam.increaseHeight();
                 }
 
-                pos = pos.up();
+                pos = pos.above();
                 ++this.beamHeight;
             }
         }
@@ -76,7 +76,7 @@ public class BossSummonerTileEntity extends SpeculativeLockableTileEntity implem
 
         if (this.beamHeight >= height) {
             this.beamHeight = -1;
-            if (!this.world.isRemote) {
+            if (!this.level.isClientSide) {
                 if (activated) {
                     //this.playSound(SoundEvents.BLOCK_BEACON_ACTIVATE);
 
@@ -108,8 +108,8 @@ public class BossSummonerTileEntity extends SpeculativeLockableTileEntity implem
         }
 
         @Override
-        public void incrementHeight() {
-            super.incrementHeight();
+        public void increaseHeight() {
+            super.increaseHeight();
         }
     }
 }

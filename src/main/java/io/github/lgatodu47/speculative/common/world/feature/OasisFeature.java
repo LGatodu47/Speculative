@@ -24,17 +24,17 @@ public class OasisFeature extends Feature<BlockStateFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
-        while (pos.getY() > 5 && worldIn.isAirBlock(pos)) {
-            pos = pos.down();
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+        while (pos.getY() > 5 && worldIn.isEmptyBlock(pos)) {
+            pos = pos.below();
         }
 
         if (pos.getY() <= 4) {
             return false;
         } else {
-            pos = pos.down(4);
+            pos = pos.below(4);
             ChunkPos chunkpos = new ChunkPos(pos);
-            if (!worldIn.getChunk(chunkpos.x, chunkpos.z, ChunkStatus.STRUCTURE_REFERENCES).getStructureReferences().get(Structure.VILLAGE).isEmpty()) {
+            if (!worldIn.getChunk(chunkpos.x, chunkpos.z, ChunkStatus.STRUCTURE_REFERENCES).getAllReferences().get(Structure.VILLAGE).isEmpty()) {
                 return false;
             } else {
                 boolean[] poses = new boolean[2048];
@@ -70,12 +70,12 @@ public class OasisFeature extends Feature<BlockStateFeatureConfig> {
                                     && (x < 15 && poses[((x + 1) * 16 + z) * 8 + y] || x > 0 && poses[((x - 1) * 16 + z) * 8 + y] || z < 15 && poses[(x * 16 + z + 1) * 8 + y]
                                     || z > 0 && poses[(x * 16 + (z - 1)) * 8 + y] || y < 7 && poses[(x * 16 + z) * 8 + y + 1] || y > 0 && poses[(x * 16 + z) * 8 + (y - 1)]);
                             if (flag) {
-                                Material material = worldIn.getBlockState(pos.add(x, y, z)).getMaterial();
+                                Material material = worldIn.getBlockState(pos.offset(x, y, z)).getMaterial();
                                 if (y >= 4 && material.isLiquid()) {
                                     return false;
                                 }
 
-                                if (y < 4 && !material.isSolid() && worldIn.getBlockState(pos.add(x, y, z)) != config.state) {
+                                if (y < 4 && !material.isSolid() && worldIn.getBlockState(pos.offset(x, y, z)) != config.state) {
                                     return false;
                                 }
                             }
@@ -87,7 +87,7 @@ public class OasisFeature extends Feature<BlockStateFeatureConfig> {
                     for (int z = 0; z < 16; ++z) {
                         for (int y = 0; y < 8; ++y) {
                             if (poses[(x * 16 + z) * 8 + y]) {
-                                worldIn.setBlockState(pos.add(x, y, z), y >= 4 ? Blocks.CAVE_AIR.getDefaultState() : config.state, 2);
+                                worldIn.setBlock(pos.offset(x, y, z), y >= 4 ? Blocks.CAVE_AIR.defaultBlockState() : config.state, 2);
                             }
                         }
                     }
@@ -98,13 +98,13 @@ public class OasisFeature extends Feature<BlockStateFeatureConfig> {
                     for (int z = 0; z < 16; ++z) {
                         for (int y = 4; y < 8; ++y) {
                             if (poses[(x * 16 + z) * 8 + y]) {
-                                BlockPos blockpos = pos.add(x, y - 1, z);
-                                if (isDirt(worldIn.getBlockState(blockpos).getBlock()) || worldIn.getBlockState(blockpos).getBlock().equals(SpeculativeBlocks.SPECULO_SAND.get()) && worldIn.getLightFor(LightType.SKY, pos.add(x, y, z)) > 0) {
+                                BlockPos blockpos = pos.offset(x, y - 1, z);
+                                if (isDirt(worldIn.getBlockState(blockpos).getBlock()) || worldIn.getBlockState(blockpos).getBlock().equals(SpeculativeBlocks.SPECULO_SAND.get()) && worldIn.getBrightness(LightType.SKY, pos.offset(x, y, z)) > 0) {
                                     Biome biome = worldIn.getBiome(blockpos);
-                                    worldIn.setBlockState(blockpos, biome.getGenerationSettings().getSurfaceBuilderConfig().getTop().getBlock().getDefaultState(), 2);
+                                    worldIn.setBlock(blockpos, biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial().getBlock().defaultBlockState(), 2);
                                     if (!treePlaced) {
-                                        worldIn.setBlockState(blockpos, Blocks.GRASS_BLOCK.getDefaultState(), 2);
-                                        treePlaced = Feature.TREE.withConfiguration(TourmalineTree.CONFIG).generate(worldIn, generator, rand, blockpos.add(0, 1, 0));
+                                        worldIn.setBlock(blockpos, Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+                                        treePlaced = Feature.TREE.configured(TourmalineTree.CONFIG).place(worldIn, generator, rand, blockpos.offset(0, 1, 0));
                                     }
                                 }
                             }

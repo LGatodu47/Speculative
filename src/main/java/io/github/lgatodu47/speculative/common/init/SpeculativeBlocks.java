@@ -53,82 +53,82 @@ public class SpeculativeBlocks {
     public static final RegistryObject<Block> SPECULO_STONE = BLOCKS.register("speculo_stone", stone());
 
     public static final RegistryObject<Block> SPECULO_COBBLESTONE = BLOCKS.register("speculo_cobblestone", cobblestone());
-    public static final RegistryObject<Block> SPECULO_COBBLESTONE_STAIRS = BLOCKS.register("speculo_cobblestone_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.SPECULO_COBBLESTONE.get().getDefaultState(), Block.Properties.from(SpeculativeBlocks.SPECULO_COBBLESTONE.get())));
-    public static final RegistryObject<Block> SPECULO_COBBLESTONE_SLAB = BLOCKS.register("speculo_cobblestone_slab", () -> new SlabBlock(Properties.from(SpeculativeBlocks.SPECULO_COBBLESTONE.get())));
-    public static final RegistryObject<Block> SPECULO_COBBLESTONE_WALL = BLOCKS.register("speculo_cobblestone_wall", () -> new WallBlock(Properties.from(SpeculativeBlocks.SPECULO_COBBLESTONE.get())));
+    public static final RegistryObject<Block> SPECULO_COBBLESTONE_STAIRS = BLOCKS.register("speculo_cobblestone_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.SPECULO_COBBLESTONE.get().defaultBlockState(), Block.Properties.copy(SpeculativeBlocks.SPECULO_COBBLESTONE.get())));
+    public static final RegistryObject<Block> SPECULO_COBBLESTONE_SLAB = BLOCKS.register("speculo_cobblestone_slab", () -> new SlabBlock(Properties.copy(SpeculativeBlocks.SPECULO_COBBLESTONE.get())));
+    public static final RegistryObject<Block> SPECULO_COBBLESTONE_WALL = BLOCKS.register("speculo_cobblestone_wall", () -> new WallBlock(Properties.copy(SpeculativeBlocks.SPECULO_COBBLESTONE.get())));
 
-    public static final RegistryObject<Block> SPECULO_FLOWER = BLOCKS.register("speculo_flower", () -> new FlowerBlock(Effects.FIRE_RESISTANCE, 20, Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> SPECULO_FLOWER = BLOCKS.register("speculo_flower", () -> new FlowerBlock(Effects.FIRE_RESISTANCE, 20, Properties.of(Material.PLANT).noCollission().strength(0.0F).sound(SoundType.GRASS)));
 
-    public static final RegistryObject<Block> STRIPPED_SPECULO_LOG = BLOCKS.register("stripped_speculo_log", () -> new RotatedPillarBlock(Properties.from(Blocks.STRIPPED_ACACIA_LOG)));
-    public static final RegistryObject<Block> SPECULO_LOG = BLOCKS.register("speculo_log", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_SPECULO_LOG, Properties.from(Blocks.ACACIA_LOG)));
-    public static final RegistryObject<Block> STRIPPED_SPECULO_BARK = BLOCKS.register("stripped_speculo_bark", () -> new RotatedPillarBlock(Properties.from(Blocks.STRIPPED_ACACIA_WOOD)));
-    public static final RegistryObject<Block> SPECULO_BARK = BLOCKS.register("speculo_bark", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_SPECULO_BARK, Properties.from(Blocks.ACACIA_WOOD)));
+    public static final RegistryObject<Block> STRIPPED_SPECULO_LOG = BLOCKS.register("stripped_speculo_log", () -> new RotatedPillarBlock(Properties.copy(Blocks.STRIPPED_ACACIA_LOG)));
+    public static final RegistryObject<Block> SPECULO_LOG = BLOCKS.register("speculo_log", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_SPECULO_LOG, Properties.copy(Blocks.ACACIA_LOG)));
+    public static final RegistryObject<Block> STRIPPED_SPECULO_BARK = BLOCKS.register("stripped_speculo_bark", () -> new RotatedPillarBlock(Properties.copy(Blocks.STRIPPED_ACACIA_WOOD)));
+    public static final RegistryObject<Block> SPECULO_BARK = BLOCKS.register("speculo_bark", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_SPECULO_BARK, Properties.copy(Blocks.ACACIA_WOOD)));
 
-    public static final RegistryObject<Block> SPECULO_PLANKS = BLOCKS.register("speculo_planks", () -> new Block(Properties.from(Blocks.ACACIA_PLANKS)));
-    public static final RegistryObject<Block> SPECULO_WOOD_STAIRS = BLOCKS.register("speculo_wood_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.SPECULO_PLANKS.get().getDefaultState(), Block.Properties.from(Blocks.ACACIA_STAIRS)));
-    public static final RegistryObject<Block> SPECULO_WOOD_SLAB = BLOCKS.register("speculo_wood_slab", () -> new SlabBlock(Properties.from(Blocks.ACACIA_SLAB)));
-    public static final RegistryObject<Block> SPECULO_WOOD_FENCE = BLOCKS.register("speculo_wood_fence", () -> new FenceBlock(Properties.from(Blocks.ACACIA_FENCE)));
-    public static final RegistryObject<Block> SPECULO_WOOD_FENCE_GATE = BLOCKS.register("speculo_wood_fence_gate", () -> new FenceGateBlock(Properties.from(Blocks.ACACIA_FENCE_GATE)));
-    public static final RegistryObject<Block> SPECULO_WOOD_STANDING_SIGN = BLOCKS.register("speculo_wood_standing_sign", () -> new StandingSignBlock(Properties.from(Blocks.ACACIA_SIGN), SpeculativeWoodTypes.SPECULO_WOOD));
-    public static final RegistryObject<Block> SPECULO_WOOD_WALL_SIGN = BLOCKS.register("speculo_wood_wall_sign", () -> new WallSignBlock(Properties.from(Blocks.ACACIA_WALL_SIGN), SpeculativeWoodTypes.SPECULO_WOOD));
-    public static final RegistryObject<Block> SPECULO_WOOD_TRAPDOOR = BLOCKS.register("speculo_wood_trapdoor", () -> new TrapDoorBlock(Properties.from(Blocks.ACACIA_TRAPDOOR)));
-    public static final RegistryObject<Block> SPECULO_WOOD_PRESSURE_PLATE = BLOCKS.register("speculo_wood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(Blocks.ACACIA_PRESSURE_PLATE)));
+    public static final RegistryObject<Block> SPECULO_PLANKS = BLOCKS.register("speculo_planks", () -> new Block(Properties.copy(Blocks.ACACIA_PLANKS)));
+    public static final RegistryObject<Block> SPECULO_WOOD_STAIRS = BLOCKS.register("speculo_wood_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.SPECULO_PLANKS.get().defaultBlockState(), Block.Properties.copy(Blocks.ACACIA_STAIRS)));
+    public static final RegistryObject<Block> SPECULO_WOOD_SLAB = BLOCKS.register("speculo_wood_slab", () -> new SlabBlock(Properties.copy(Blocks.ACACIA_SLAB)));
+    public static final RegistryObject<Block> SPECULO_WOOD_FENCE = BLOCKS.register("speculo_wood_fence", () -> new FenceBlock(Properties.copy(Blocks.ACACIA_FENCE)));
+    public static final RegistryObject<Block> SPECULO_WOOD_FENCE_GATE = BLOCKS.register("speculo_wood_fence_gate", () -> new FenceGateBlock(Properties.copy(Blocks.ACACIA_FENCE_GATE)));
+    public static final RegistryObject<Block> SPECULO_WOOD_STANDING_SIGN = BLOCKS.register("speculo_wood_standing_sign", () -> new StandingSignBlock(Properties.copy(Blocks.ACACIA_SIGN), SpeculativeWoodTypes.SPECULO_WOOD));
+    public static final RegistryObject<Block> SPECULO_WOOD_WALL_SIGN = BLOCKS.register("speculo_wood_wall_sign", () -> new WallSignBlock(Properties.copy(Blocks.ACACIA_WALL_SIGN), SpeculativeWoodTypes.SPECULO_WOOD));
+    public static final RegistryObject<Block> SPECULO_WOOD_TRAPDOOR = BLOCKS.register("speculo_wood_trapdoor", () -> new TrapDoorBlock(Properties.copy(Blocks.ACACIA_TRAPDOOR)));
+    public static final RegistryObject<Block> SPECULO_WOOD_PRESSURE_PLATE = BLOCKS.register("speculo_wood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.copy(Blocks.ACACIA_PRESSURE_PLATE)));
 
-    public static final RegistryObject<Block> SPECULO_LEAVES = BLOCKS.register("speculo_leaves", () -> new LeavesBlock(Properties.from(Blocks.ACACIA_LEAVES)));
-    public static final RegistryObject<Block> SPECULO_TREE_SAPLING = BLOCKS.register("speculo_tree_sapling", () -> new SaplingBlock(new SpeculoTree(), Properties.from(Blocks.ACACIA_SAPLING)));
+    public static final RegistryObject<Block> SPECULO_LEAVES = BLOCKS.register("speculo_leaves", () -> new LeavesBlock(Properties.copy(Blocks.ACACIA_LEAVES)));
+    public static final RegistryObject<Block> SPECULO_TREE_SAPLING = BLOCKS.register("speculo_tree_sapling", () -> new SaplingBlock(new SpeculoTree(), Properties.copy(Blocks.ACACIA_SAPLING)));
 
-    public static final RegistryObject<Block> SPECULO_SAND = BLOCKS.register("speculo_sand", () -> new SandBlock(16222542, Properties.create(Material.SAND, MaterialColor.ADOBE).hardnessAndResistance(0.5F).sound(SoundType.SAND)));
+    public static final RegistryObject<Block> SPECULO_SAND = BLOCKS.register("speculo_sand", () -> new SandBlock(16222542, Properties.of(Material.SAND, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.SAND)));
     public static final RegistryObject<Block> SPECULO_SANDSTONE = BLOCKS.register("speculo_sandstone", stone());
     public static final RegistryObject<Block> CUT_SPECULO_SANDSTONE = BLOCKS.register("cut_speculo_sandstone", stone());
     public static final RegistryObject<Block> CHISELED_SPECULO_SANDSTONE = BLOCKS.register("chiseled_speculo_sandstone", stone());
-    public static final RegistryObject<Block> SPECULO_SANDSTONE_STAIRS = BLOCKS.register("speculo_sandstone_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.SPECULO_SANDSTONE.get().getDefaultState(), Block.Properties.from(SpeculativeBlocks.SPECULO_SANDSTONE.get())));
-    public static final RegistryObject<Block> SPECULO_SANDSTONE_SLAB = BLOCKS.register("speculo_sandstone_slab", () -> new SlabBlock(Properties.from(SpeculativeBlocks.SPECULO_SANDSTONE.get())));
-    public static final RegistryObject<Block> SPECULO_SANDSTONE_WALL = BLOCKS.register("speculo_sandstone_wall", () -> new WallBlock(Properties.from(SpeculativeBlocks.SPECULO_SANDSTONE.get())));
+    public static final RegistryObject<Block> SPECULO_SANDSTONE_STAIRS = BLOCKS.register("speculo_sandstone_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.SPECULO_SANDSTONE.get().defaultBlockState(), Block.Properties.copy(SpeculativeBlocks.SPECULO_SANDSTONE.get())));
+    public static final RegistryObject<Block> SPECULO_SANDSTONE_SLAB = BLOCKS.register("speculo_sandstone_slab", () -> new SlabBlock(Properties.copy(SpeculativeBlocks.SPECULO_SANDSTONE.get())));
+    public static final RegistryObject<Block> SPECULO_SANDSTONE_WALL = BLOCKS.register("speculo_sandstone_wall", () -> new WallBlock(Properties.copy(SpeculativeBlocks.SPECULO_SANDSTONE.get())));
 
     public static final RegistryObject<Block> MANGO_BUSH = BLOCKS.register("mango_bush", MangoBush::new);
 
-    public static final RegistryObject<Block> GREENSTONE_TORCH = BLOCKS.register("greenstone_torch", () -> new SpeculativeTorchBlock(Properties.from(Blocks.TORCH).setLightLevel(state -> 9)));
-    public static final RegistryObject<Block> GREENSTONE_WALL_TORCH = BLOCKS.register("greenstone_wall_torch", () -> new SpeculativeTorchBlock.SpeculativeWallTorchBlock(Properties.from(Blocks.WALL_TORCH).setLightLevel(state -> 9)));
+    public static final RegistryObject<Block> GREENSTONE_TORCH = BLOCKS.register("greenstone_torch", () -> new SpeculativeTorchBlock(Properties.copy(Blocks.TORCH).lightLevel(state -> 9)));
+    public static final RegistryObject<Block> GREENSTONE_WALL_TORCH = BLOCKS.register("greenstone_wall_torch", () -> new SpeculativeTorchBlock.SpeculativeWallTorchBlock(Properties.copy(Blocks.WALL_TORCH).lightLevel(state -> 9)));
 
-    public static final RegistryObject<Block> STRIPPED_TOURMALINE_LOG = BLOCKS.register("stripped_tourmaline_log", logBlock(MaterialColor.GREEN, MaterialColor.GREEN));
-    public static final RegistryObject<Block> TOURMALINE_LOG = BLOCKS.register("tourmaline_log", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_TOURMALINE_LOG, Properties.from(SpeculativeBlocks.STRIPPED_TOURMALINE_LOG.get())));
-    public static final RegistryObject<Block> STRIPPED_TOURMALINE_BARK = BLOCKS.register("stripped_tourmaline_bark", () -> new RotatedPillarBlock(Properties.from(SpeculativeBlocks.STRIPPED_SPECULO_LOG.get())));
-    public static final RegistryObject<Block> TOURMALINE_BARK = BLOCKS.register("tourmaline_bark", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_TOURMALINE_BARK, Properties.from(SpeculativeBlocks.STRIPPED_SPECULO_LOG.get())));
+    public static final RegistryObject<Block> STRIPPED_TOURMALINE_LOG = BLOCKS.register("stripped_tourmaline_log", logBlock(MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN));
+    public static final RegistryObject<Block> TOURMALINE_LOG = BLOCKS.register("tourmaline_log", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_TOURMALINE_LOG, Properties.copy(SpeculativeBlocks.STRIPPED_TOURMALINE_LOG.get())));
+    public static final RegistryObject<Block> STRIPPED_TOURMALINE_BARK = BLOCKS.register("stripped_tourmaline_bark", () -> new RotatedPillarBlock(Properties.copy(SpeculativeBlocks.STRIPPED_SPECULO_LOG.get())));
+    public static final RegistryObject<Block> TOURMALINE_BARK = BLOCKS.register("tourmaline_bark", () -> new StrippableLog(SpeculativeBlocks.STRIPPED_TOURMALINE_BARK, Properties.copy(SpeculativeBlocks.STRIPPED_SPECULO_LOG.get())));
 
-    public static final RegistryObject<Block> TOURMALINE_PLANKS = BLOCKS.register("tourmaline_planks", () -> new Block(Properties.create(Material.WOOD, MaterialColor.GREEN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_STAIRS = BLOCKS.register("tourmaline_wood_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.TOURMALINE_PLANKS.get().getDefaultState(), Block.Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_SLAB = BLOCKS.register("tourmaline_wood_slab", () -> new SlabBlock(Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_FENCE = BLOCKS.register("tourmaline_wood_fence", () -> new FenceBlock(Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_FENCE_GATE = BLOCKS.register("tourmaline_wood_fence_gate", () -> new FenceGateBlock(Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_STANDING_SIGN = BLOCKS.register("tourmaline_wood_standing_sign", () -> new StandingSignBlock(Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get()), SpeculativeWoodTypes.TOURMALINE_WOOD));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_WALL_SIGN = BLOCKS.register("tourmaline_wood_wall_sign", () -> new WallSignBlock(Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get()), SpeculativeWoodTypes.TOURMALINE_WOOD));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_TRAPDOOR = BLOCKS.register("tourmaline_wood_trapdoor", () -> new TrapDoorBlock(Properties.from(SpeculativeBlocks.TOURMALINE_PLANKS.get()).notSolid()));
-    public static final RegistryObject<Block> TOURMALINE_WOOD_PRESSURE_PLATE = BLOCKS.register("tourmaline_wood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.create(Material.WOOD, MaterialColor.GREEN).hardnessAndResistance(0.5F).doesNotBlockMovement().sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> TOURMALINE_PLANKS = BLOCKS.register("tourmaline_planks", () -> new Block(Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_STAIRS = BLOCKS.register("tourmaline_wood_stairs", () -> new StairsBlock(() -> SpeculativeBlocks.TOURMALINE_PLANKS.get().defaultBlockState(), Block.Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_SLAB = BLOCKS.register("tourmaline_wood_slab", () -> new SlabBlock(Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_FENCE = BLOCKS.register("tourmaline_wood_fence", () -> new FenceBlock(Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_FENCE_GATE = BLOCKS.register("tourmaline_wood_fence_gate", () -> new FenceGateBlock(Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get())));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_STANDING_SIGN = BLOCKS.register("tourmaline_wood_standing_sign", () -> new StandingSignBlock(Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get()), SpeculativeWoodTypes.TOURMALINE_WOOD));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_WALL_SIGN = BLOCKS.register("tourmaline_wood_wall_sign", () -> new WallSignBlock(Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get()), SpeculativeWoodTypes.TOURMALINE_WOOD));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_TRAPDOOR = BLOCKS.register("tourmaline_wood_trapdoor", () -> new TrapDoorBlock(Properties.copy(SpeculativeBlocks.TOURMALINE_PLANKS.get()).noOcclusion()));
+    public static final RegistryObject<Block> TOURMALINE_WOOD_PRESSURE_PLATE = BLOCKS.register("tourmaline_wood_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(0.5F).noCollission().sound(SoundType.WOOD)));
 
-    public static final RegistryObject<Block> TOURMALINE_LEAVES = BLOCKS.register("tourmaline_leaves", () -> new LeavesBlock(Properties.from(Blocks.ACACIA_LEAVES)));
-    public static final RegistryObject<Block> TOURMALINE_TREE_SAPLING = BLOCKS.register("tourmaline_tree_sapling", () -> new SaplingBlock(new TourmalineTree(), Properties.from(Blocks.ACACIA_SAPLING)));
+    public static final RegistryObject<Block> TOURMALINE_LEAVES = BLOCKS.register("tourmaline_leaves", () -> new LeavesBlock(Properties.copy(Blocks.ACACIA_LEAVES)));
+    public static final RegistryObject<Block> TOURMALINE_TREE_SAPLING = BLOCKS.register("tourmaline_tree_sapling", () -> new SaplingBlock(new TourmalineTree(), Properties.copy(Blocks.ACACIA_SAPLING)));
 
     // Miscellaneous
     public static final RegistryObject<Block> SPECULO_TNT = BLOCKS.register("speculo_tnt", SpeculoTNTBlock::new);
 
     private static Supplier<Block> stone() {
-        return () -> new Block(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 6.0F));
+        return () -> new Block(Properties.of(Material.STONE).strength(1.5F, 6.0F));
     }
 
     private static Supplier<Block> oreBlock(float hardness, float resistance) {
-        return () -> new Block(Properties.create(Material.IRON).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(2).hardnessAndResistance(hardness, resistance));
+        return () -> new Block(Properties.of(Material.METAL).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(2).strength(hardness, resistance));
     }
 
     private static Supplier<Block> logBlock(MaterialColor topColor, MaterialColor barkColor) {
-        return () -> new RotatedPillarBlock(AbstractBlock.Properties.create(Material.WOOD, (state) -> state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : barkColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+        return () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, (state) -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : barkColor).strength(2.0F).sound(SoundType.WOOD));
     }
 
     private static Supplier<Block> dirt() {
-        return () -> new Block(Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND));
+        return () -> new Block(Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL));
     }
 
     private static Supplier<Block> cobblestone() {
-        return () -> new Block(Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 6.0F));
+        return () -> new Block(Properties.of(Material.STONE).strength(2.0F, 6.0F));
     }
 
     public static final class Tags {

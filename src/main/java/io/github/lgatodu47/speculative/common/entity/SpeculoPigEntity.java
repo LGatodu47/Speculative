@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class SpeculoPigEntity extends PigEntity {
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(SpeculativeItems.ORANGE_FRUIT.get());
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(SpeculativeItems.ORANGE_FRUIT.get());
 
     public SpeculoPigEntity(EntityType<? extends SpeculoPigEntity> entityType, World world) {
         super(entityType, world);
@@ -26,7 +26,7 @@ public class SpeculoPigEntity extends PigEntity {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.fromItems(Items.CARROT_ON_A_STICK), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.CARROT_ON_A_STICK), false));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, false, TEMPTATION_ITEMS));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
@@ -35,17 +35,17 @@ public class SpeculoPigEntity extends PigEntity {
     }
 
     @Override
-    public void causeLightningStrike(ServerWorld world, LightningBoltEntity lightning) {
-        super.causeLightningStrike(world, lightning);
+    public void thunderHit(ServerWorld world, LightningBoltEntity lightning) {
+        super.thunderHit(world, lightning);
     }
 
     @Override
-    public PigEntity createChild(ServerWorld world, AgeableEntity ageable) {
-        return SpeculativeEntityTypes.SPECULO_PIG.get().create(this.world);
+    public PigEntity getBreedOffspring(ServerWorld world, AgeableEntity ageable) {
+        return SpeculativeEntityTypes.SPECULO_PIG.get().create(this.level);
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return TEMPTATION_ITEMS.test(stack);
     }
 }

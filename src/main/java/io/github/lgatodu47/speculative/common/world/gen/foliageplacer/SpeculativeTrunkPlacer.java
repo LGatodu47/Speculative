@@ -17,23 +17,23 @@ import java.util.Random;
 import java.util.Set;
 
 public class SpeculativeTrunkPlacer extends AbstractTrunkPlacer {
-    public static final Codec<SpeculativeTrunkPlacer> CODEC = RecordCodecBuilder.create((builder) -> getAbstractTrunkCodec(builder).apply(builder, SpeculativeTrunkPlacer::new));
+    public static final Codec<SpeculativeTrunkPlacer> CODEC = RecordCodecBuilder.create((builder) -> trunkPlacerParts(builder).apply(builder, SpeculativeTrunkPlacer::new));
 
     public SpeculativeTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
         super(baseHeight, heightRandA, heightRandB);
     }
 
     @Override
-    protected TrunkPlacerType<?> getPlacerType() {
+    protected TrunkPlacerType<?> type() {
         return SpeculativePlacerTypes.Trunk.SPECULATIVE;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader reader, Random rand, int treeHeight, BlockPos pos, Set<BlockPos> leaves, MutableBoundingBox bb, BaseTreeFeatureConfig config) {
+    public List<FoliagePlacer.Foliage> placeTrunk(IWorldGenerationReader reader, Random rand, int treeHeight, BlockPos pos, Set<BlockPos> leaves, MutableBoundingBox bb, BaseTreeFeatureConfig config) {
         for(int i = 0; i < treeHeight; ++i) {
-            func_236911_a_(reader, rand, pos.up(i), leaves, bb, config);
+            placeLog(reader, rand, pos.above(i), leaves, bb, config);
         }
 
-        return ImmutableList.of(new FoliagePlacer.Foliage(pos.up(treeHeight), 0, false));
+        return ImmutableList.of(new FoliagePlacer.Foliage(pos.above(treeHeight), 0, false));
     }
 }

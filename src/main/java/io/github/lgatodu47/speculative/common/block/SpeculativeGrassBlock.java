@@ -14,11 +14,13 @@ import net.minecraftforge.common.IPlantable;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class SpeculativeGrassBlock extends Block {
     private final Supplier<Block> dirt;
 
     public SpeculativeGrassBlock(Supplier<Block> dirt) {
-        super(Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.PLANT));
+        super(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS));
         this.dirt = dirt;
     }
 
@@ -28,19 +30,19 @@ public class SpeculativeGrassBlock extends Block {
     }
 
     private static boolean canStay(BlockState state, IWorldReader reader, BlockPos pos) {
-        BlockPos blockpos = pos.up();
+        BlockPos blockpos = pos.above();
         BlockState blockstate = reader.getBlockState(blockpos);
-        if (blockstate.getBlock() == Blocks.SNOW && blockstate.get(SnowBlock.LAYERS) == 1) {
+        if (blockstate.getBlock() == Blocks.SNOW && blockstate.getValue(SnowBlock.LAYERS) == 1) {
             return true;
         } else {
-            int i = LightEngine.func_215613_a(reader, state, pos, blockstate, blockpos, Direction.UP, blockstate.getOpacity(reader, blockpos));
+            int i = LightEngine.getLightBlockInto(reader, state, pos, blockstate, blockpos, Direction.UP, blockstate.getLightBlock(reader, blockpos));
             return i < reader.getMaxLightLevel();
         }
     }
 
     private static boolean canStayGrass(BlockState state, IWorldReader reader, BlockPos pos) {
-        BlockPos blockpos = pos.up();
-        return canStay(state, reader, pos) && !reader.getFluidState(blockpos).isTagged(FluidTags.WATER);
+        BlockPos blockpos = pos.above();
+        return canStay(state, reader, pos) && !reader.getFluidState(blockpos).is(FluidTags.WATER);
     }
 
     @Override
@@ -49,15 +51,15 @@ public class SpeculativeGrassBlock extends Block {
             if (!worldIn.isAreaLoaded(pos, 3))
                 return;
 
-            worldIn.setBlockState(pos, this.dirt.get().getDefaultState());
+            worldIn.setBlockAndUpdate(pos, this.dirt.get().defaultBlockState());
         } else {
-            if (worldIn.getLight(pos.up()) >= 9) {
-                BlockState blockstate = this.getDefaultState();
+            if (worldIn.getMaxLocalRawBrightness(pos.above()) >= 9) {
+                BlockState blockstate = this.defaultBlockState();
 
                 for (int i = 0; i < 4; ++i) {
-                    BlockPos blockpos = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1);
+                    BlockPos blockpos = pos.offset(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1);
                     if (worldIn.getBlockState(blockpos).getBlock() == this.dirt.get() && canStayGrass(blockstate, worldIn, blockpos)) {
-                        worldIn.setBlockState(blockpos, blockstate);
+                        worldIn.setBlockAndUpdate(blockpos, blockstate);
                     }
                 }
             }

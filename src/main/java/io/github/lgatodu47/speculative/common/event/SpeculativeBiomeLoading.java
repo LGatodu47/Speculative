@@ -14,9 +14,9 @@ import java.util.stream.Stream;
 
 public class SpeculativeBiomeLoading {
     public static void addFeatures(BiomeLoadingEvent event) {
-        generateOre(event, 3, 8, 25, SpeculativeBlocks.SPECULO_ORE.get().getDefaultState(), Biomes.JUNGLE);
-        generateOre(event, 5, 6, 42, SpeculativeBlocks.URANIUM_ORE.get().getDefaultState(), Biomes.MOUNTAINS, Biomes.DESERT);
-        generateOre(event, 7, 8, 50, SpeculativeBlocks.URANIUM_ORE.get().getDefaultState(), Biomes.BADLANDS);
+        generateOre(event, 3, 8, 25, SpeculativeBlocks.SPECULO_ORE.get().defaultBlockState(), Biomes.JUNGLE);
+        generateOre(event, 5, 6, 42, SpeculativeBlocks.URANIUM_ORE.get().defaultBlockState(), Biomes.MOUNTAINS, Biomes.DESERT);
+        generateOre(event, 7, 8, 50, SpeculativeBlocks.URANIUM_ORE.get().defaultBlockState(), Biomes.BADLANDS);
     }
 
     @SafeVarargs
@@ -25,11 +25,11 @@ public class SpeculativeBiomeLoading {
             return;
         }
 
-        if (Stream.of(biomes).map(RegistryKey::getLocation).anyMatch(event.getName()::equals)) {
-            event.getGeneration().withFeature(
+        if (Stream.of(biomes).map(RegistryKey::location).anyMatch(event.getName()::equals)) {
+            event.getGeneration().addFeature(
                     GenerationStage.Decoration.UNDERGROUND_ORES,
-                    Feature.ORE.withConfiguration(
-                            new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, state, size)
+                    Feature.ORE.configured(
+                            new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, state, size)
                     ).count(count).range(maximumHeight)
             );
         }

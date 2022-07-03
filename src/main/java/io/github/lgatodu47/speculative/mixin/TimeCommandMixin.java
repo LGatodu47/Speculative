@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class TimeCommandMixin {
     @Redirect(method = "setTime(Lnet/minecraft/command/CommandSource;I)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ServerWorld;setDayTime(J)V"))
     private static void redirect_setDayTime(ServerWorld world, long time, CommandSource source) {
-        if(source.getWorld().getWorldInfo() instanceof DimensionWorldInfo) {
-            if(world.getDimensionKey().equals(source.getWorld().getDimensionKey())) {
+        if(source.getLevel().getLevelData() instanceof DimensionWorldInfo) {
+            if(world.dimension().equals(source.getLevel().dimension())) {
                 world.setDayTime(time);
             }
         } else {
-            if(!(world.getWorldInfo() instanceof DimensionWorldInfo)) {
+            if(!(world.getLevelData() instanceof DimensionWorldInfo)) {
                 world.setDayTime(time);
             }
         }

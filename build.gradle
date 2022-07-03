@@ -11,7 +11,6 @@ buildscript {
 
 plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -25,7 +24,7 @@ java {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20210309-1.16.5'
+    mappings channel: 'official', version: '1.16.5'
 
      accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -35,9 +34,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
 
-
             property 'forge.logging.console.level', 'debug'
-
 
             mods {
                 speculative {
@@ -87,15 +84,7 @@ mixin {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-configurations {
-    shade
-}
-
 repositories {
-    maven {
-        url "https://maven.tterrag.com/"
-    }
-
     maven {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
@@ -111,9 +100,6 @@ dependencies {
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
-
-    def registrate = "com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}"
-    implementation fg.deobf(registrate)
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
@@ -134,18 +120,6 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
-
-shadowJar {
-    configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'io.github.lgatodu47.registrate'
-}
-
-reobf {
-    shadowJar {}
-}
-
-build.dependsOn shadowJar
-build.dependsOn reobfShadowJar
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation

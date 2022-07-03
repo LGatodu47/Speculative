@@ -16,7 +16,7 @@ public abstract class SpeculativeContainer<T extends TileEntity> extends Contain
         super(type, id);
 
         this.tile = tileEntity;
-        this.worldPosCallable = IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos());
+        this.worldPosCallable = IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos());
 
         this.createInventorySlots(tileEntity);
     }
@@ -39,7 +39,7 @@ public abstract class SpeculativeContainer<T extends TileEntity> extends Contain
     protected abstract void createInventorySlots(T tile);
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(worldPosCallable, playerIn, tile.getBlockState().getBlock());
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(worldPosCallable, playerIn, tile.getBlockState().getBlock());
     }
 }

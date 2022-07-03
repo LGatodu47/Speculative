@@ -22,13 +22,13 @@ public class SpeculativeFluids {
             .build();
 
     public static final SpeculativeFluid UNSTABLE_WATER = new SpeculativeFluid.Builder("unstable_water", SpeculativeFluidAttributes.UNSTABLE_WATER)
-            .withBlockProperties(props -> props.setLightLevel(state -> 7))
+            .withBlockProperties(props -> props.lightLevel(state -> 7))
             .withProperties(props -> props.canMultiply().bucket(SpeculativeItems.UNSTABLE_WATER_BUCKET).tickRate(5))
             .build();
 
     public static final SpeculativeFluid LIQUID_NITROGEN = new SpeculativeFluid.Builder("liquid_nitrogen", SpeculativeFluidAttributes.LIQUID_NITROGEN)
             .withProperties(props -> props.bucket(SpeculativeItems.LIQUID_NITROGEN_BUCKET).tickRate(20).levelDecreasePerBlock(2))
-            .setBlockFactory((fluidSupplier, properties) -> new EffectFlowingFluidBlock(fluidSupplier, properties, () -> new EffectInstance(Effects.SLOWNESS, 20 * 2, 99)))
+            .setBlockFactory((fluidSupplier, properties) -> new EffectFlowingFluidBlock(fluidSupplier, properties, () -> new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 20 * 2, 99)))
             .build();
 
     public static class Tags {

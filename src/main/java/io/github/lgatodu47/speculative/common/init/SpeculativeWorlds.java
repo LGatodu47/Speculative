@@ -9,6 +9,6 @@ import net.minecraft.world.World;
 
 public class SpeculativeWorlds
 {
-    public static final RegistryKey<World> SPECULO_WORLD = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(Speculative.MODID, "speculo_world"));
+    public static final RegistryKey<World> SPECULO_WORLD = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(Speculative.MODID, "speculo_world"));
 //    public static final RegistryKey<DimensionType> SPECULO_WORLD_DIMENSION = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(Speculative.MODID, "speculo_world"));
 }

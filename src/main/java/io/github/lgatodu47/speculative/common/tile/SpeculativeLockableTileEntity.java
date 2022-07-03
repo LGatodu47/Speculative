@@ -30,23 +30,23 @@ public abstract class SpeculativeLockableTileEntity extends LockableLootTileEnti
     }
 
     protected <C extends IInventory, R extends IRecipe<C>> Optional<R> findRecipe(IRecipeType<R> type, Class<R> recipeClass, C inventory) {
-        return SpeculativeUtils.findRecipesByType(type, world)
+        return SpeculativeUtils.findRecipesByType(type, level)
                 .stream()
                 .filter(recipeClass::isInstance)
                 .map(recipeClass::cast)
-                .filter(recipe -> recipe.matches(inventory, world))
+                .filter(recipe -> recipe.matches(inventory, level))
                 .findFirst();
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
         this.inv.deserializeNBT(nbt.getCompound("Inventory"));
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
-        super.write(nbt);
+    public CompoundNBT save(CompoundNBT nbt) {
+        super.save(nbt);
         nbt.put("Inventory", this.inv.serializeNBT());
         return nbt;
     }
@@ -62,7 +62,7 @@ public abstract class SpeculativeLockableTileEntity extends LockableLootTileEnti
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return this.inv.getSlots();
     }
 
@@ -73,21 +73,21 @@ public abstract class SpeculativeLockableTileEntity extends LockableLootTileEnti
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 1, this.write(new CompoundNBT()));
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 1, this.save(new CompoundNBT()));
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
+        this.load(level.getBlockState(pkt.getPos()), pkt.getTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        return this.write(new CompoundNBT());
+        return this.save(new CompoundNBT());
     }
 
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-        this.read(state, tag);
+        this.load(state, tag);
     }
 }

@@ -15,7 +15,7 @@ public class SpeculoPigRenderer extends MobRenderer<SpeculoPigEntity, PigModel<S
     }
 
     @Override
-    public ResourceLocation getEntityTexture(SpeculoPigEntity entity) {
+    public ResourceLocation getTextureLocation(SpeculoPigEntity entity) {
         return TEXTURE;
     }
 }

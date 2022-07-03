@@ -26,11 +26,11 @@ public class SpeculoWorldDimensionSettings {
     }
 
     public BlockState getDefaultBlock() {
-        return SpeculativeBlocks.SPECULO_STONE.get().getDefaultState();
+        return SpeculativeBlocks.SPECULO_STONE.get().defaultBlockState();
     }
 
     public BlockState getDefaultFluidBlock() {
-        return SpeculativeFluids.SULFURIC_WATER.getBlock().get().getDefaultState();
+        return SpeculativeFluids.SULFURIC_WATER.getBlock().get().defaultBlockState();
     }
 
     public DimensionSettings createSettings() {

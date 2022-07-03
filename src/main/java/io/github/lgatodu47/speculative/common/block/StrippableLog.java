@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class StrippableLog extends RotatedPillarBlock {
     private final Supplier<Block> strippedVariant;
 
@@ -26,18 +28,18 @@ public class StrippableLog extends RotatedPillarBlock {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (player.getHeldItem(handIn).getItem() instanceof AxeItem) {
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (player.getItemInHand(handIn).getItem() instanceof AxeItem) {
             if (this.strippedVariant.get() == null) {
                 Speculative.LOGGER.error(getRegistryName() + " is missing a stripped variant! This class shouldn't be used if this block is not strippable!");
                 return ActionResultType.FAIL;
             } else {
-                world.playSound(player, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                if (!world.isRemote) {
-                    world.setBlockState(pos, strippedVariant.get().getDefaultState().with(RotatedPillarBlock.AXIS, state.get(RotatedPillarBlock.AXIS)), 11);
+                world.playSound(player, pos, SoundEvents.AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                if (!world.isClientSide) {
+                    world.setBlock(pos, strippedVariant.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)), 11);
 					EquipmentSlotType slotType = handIn.equals(Hand.MAIN_HAND) ? EquipmentSlotType.MAINHAND : EquipmentSlotType.OFFHAND;
-					player.getHeldItem(handIn).damageItem(1, player, (living) -> {
-						living.sendBreakAnimation(slotType);
+					player.getItemInHand(handIn).hurtAndBreak(1, player, (living) -> {
+						living.broadcastBreakEvent(slotType);
 					});
 					return ActionResultType.SUCCESS;
 				}

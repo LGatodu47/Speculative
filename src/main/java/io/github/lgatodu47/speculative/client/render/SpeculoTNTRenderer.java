@@ -16,15 +16,15 @@ import net.minecraft.util.math.vector.Vector3f;
 public class SpeculoTNTRenderer extends EntityRenderer<SpeculoTNTEntity> {
     public SpeculoTNTRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
-        this.shadowSize = 0.5f;
+        this.shadowRadius = 0.5f;
     }
 
     @Override
     public void render(SpeculoTNTEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         matrixStackIn.translate(0.0D, 0.5D, 0.0D);
-        if ((float) entityIn.getFuse() - partialTicks + 1.0F < 10.0F) {
-            float f = 1.0F - ((float) entityIn.getFuse() - partialTicks + 1.0F) / 10.0F;
+        if ((float) entityIn.getLife() - partialTicks + 1.0F < 10.0F) {
+            float f = 1.0F - ((float) entityIn.getLife() - partialTicks + 1.0F) / 10.0F;
             f = MathHelper.clamp(f, 0.0F, 1.0F);
             f = f * f;
             f = f * f;
@@ -32,18 +32,18 @@ public class SpeculoTNTRenderer extends EntityRenderer<SpeculoTNTEntity> {
             matrixStackIn.scale(scaleFactor, scaleFactor, scaleFactor);
         }
 
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-90.0F));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
         matrixStackIn.translate(-0.5D, -0.5D, 0.5D);
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90.0F));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
 
-        TNTMinecartRenderer.renderTntFlash(SpeculativeBlocks.SPECULO_TNT.get().getDefaultState(), matrixStackIn, bufferIn, packedLightIn, entityIn.getFuse() / 5 % 2 == 0);
+        TNTMinecartRenderer.renderWhiteSolidBlock(SpeculativeBlocks.SPECULO_TNT.get().defaultBlockState(), matrixStackIn, bufferIn, packedLightIn, entityIn.getLife() / 5 % 2 == 0);
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(SpeculoTNTEntity entity) {
-        return PlayerContainer.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(SpeculoTNTEntity entity) {
+        return PlayerContainer.BLOCK_ATLAS;
     }
 }

@@ -22,14 +22,14 @@ public final class SpeculativeFluidAttributes {
             )
             .overlay(new ResourceLocation(Speculative.MODID, "misc/unstable_water_overlay"))
             .color(3473300)
-            .sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY)
+            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
             .translationKey("fluid.speculative.unstable_water");
 
     public static final FluidAttributes.Builder LIQUID_NITROGEN = FluidAttributes.builder(
                     new ResourceLocation("block/water_still"), new ResourceLocation("block/water_flow")
             )
             .color(526411)
-            .sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY)
+            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
             .translationKey("fluid.speculative.liquid_nitrogen");
 
 }

@@ -23,20 +23,22 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class MangoBush extends Block implements IGrowable {
-    private static final IntegerProperty AGE = BlockStateProperties.AGE_0_1;
+    private static final IntegerProperty AGE = BlockStateProperties.AGE_1;
 
     public MangoBush() {
-        super(Properties.create(Material.LEAVES).hardnessAndResistance(0.5F).sound(SoundType.PLANT).notSolid().tickRandomly());
-        setDefaultState(this.stateContainer.getBaseState().with(AGE, 0));
+        super(Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).noOcclusion().randomTicks());
+        registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (state.get(AGE) == 1) {
-            player.addItemStackToInventory(new ItemStack(SpeculativeItems.STRANGE_MANGO.get()));
-            worldIn.setBlockState(pos, state.with(AGE, 0), 2);
-            player.playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 0.5F, 2F);
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (state.getValue(AGE) == 1) {
+            player.addItem(new ItemStack(SpeculativeItems.STRANGE_MANGO.get()));
+            worldIn.setBlock(pos, state.setValue(AGE, 0), 2);
+            player.playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 0.5F, 2F);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
@@ -44,38 +46,38 @@ public class MangoBush extends Block implements IGrowable {
 
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (!this.isValidPosition(state, worldIn, pos)) {
+        if (!this.canSurvive(state, worldIn, pos)) {
             worldIn.destroyBlock(pos, false);
         } else {
             int chance = rand.nextInt(10);
             if (chance == 0) {
-                this.grow(worldIn, rand, pos, state);
+                this.performBonemeal(worldIn, rand, pos, state);
             }
         }
     }
 
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return (worldIn.getLightSubtracted(pos, 0) >= 8 || worldIn.canSeeSky(pos));
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        return (worldIn.getRawBrightness(pos, 0) >= 8 || worldIn.canSeeSky(pos));
     }
 
     @Override
-    public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-        return state.get(AGE) < 1;
+    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
+        return state.getValue(AGE) < 1;
     }
 
     @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
-        worldIn.setBlockState(pos, state.with(AGE, 1), 2);
+    public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
+        worldIn.setBlock(pos, state.setValue(AGE, 1), 2);
     }
 
     @Override
-    protected void fillStateContainer(Builder<Block, BlockState> builder) {
-        super.fillStateContainer(builder);
+    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(AGE);
     }
 }

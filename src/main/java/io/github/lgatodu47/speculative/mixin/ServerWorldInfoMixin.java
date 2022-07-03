@@ -26,10 +26,10 @@ public class ServerWorldInfoMixin implements ExtendedServerWorldInfo {
     @Unique
     private final Map<RegistryKey<World>, DimensionWorldInfo> dimensionWorldInfo = new HashMap<>();
 
-    @Inject(method = "serialize(Lnet/minecraft/util/registry/DynamicRegistries;Lnet/minecraft/nbt/CompoundNBT;Lnet/minecraft/nbt/CompoundNBT;)V", at = @At("TAIL"))
-    private void inject_serialize(DynamicRegistries registry, CompoundNBT nbt, CompoundNBT playerNBT, CallbackInfo ci) {
+    @Inject(method = "setTagData", at = @At("TAIL"))
+    private void inject_setTagData(DynamicRegistries registry, CompoundNBT nbt, CompoundNBT playerNBT, CallbackInfo ci) {
         CompoundNBT infoNbt = new CompoundNBT();
-        dimensionWorldInfo.forEach((key, info) -> infoNbt.put(key.getLocation().toString(), info.serializeData()));
+        dimensionWorldInfo.forEach((key, info) -> infoNbt.put(key.location().toString(), info.serializeData()));
         nbt.put("speculative:dimension_info", infoNbt);
     }
 
@@ -53,8 +53,8 @@ public class ServerWorldInfoMixin implements ExtendedServerWorldInfo {
     @Override
     public void deserializeDimensionWorldInfo(Dynamic<INBT> dynamic) {
         dynamic.get("speculative:dimension_info").result().map(Dynamic::getValue).filter(CompoundNBT.class::isInstance).map(CompoundNBT.class::cast).ifPresent(nbt -> {
-            for(String key : nbt.keySet()) {
-                RegistryKey<World> dimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(key));
+            for(String key : nbt.getAllKeys()) {
+                RegistryKey<World> dimension = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(key));
                 DimensionWorldInfo info = DimensionWorldInfo.deserialize(nbt.getCompound(key), (ServerWorldInfo) (Object) this, (ServerWorldInfo) (Object) this);
                 if(info != null) {
                     dimensionWorldInfo.put(dimension, info);

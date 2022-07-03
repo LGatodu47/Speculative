@@ -28,7 +28,7 @@ public class NuclearWorkbenchContainer extends Container {
     private final IWorldPosCallable worldPosCallable;
 
     public NuclearWorkbenchContainer(int windowId, PlayerInventory playerInv, PacketBuffer data) {
-        this(windowId, playerInv, IWorldPosCallable.DUMMY);
+        this(windowId, playerInv, IWorldPosCallable.NULL);
     }
 
     public NuclearWorkbenchContainer(int windowId, PlayerInventory playerInv, IWorldPosCallable worldPosCallable) {
@@ -56,73 +56,73 @@ public class NuclearWorkbenchContainer extends Container {
     }
 
     protected void updateCraftingResult(World world) {
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             ServerPlayerEntity player = (ServerPlayerEntity) this.player;
             ItemStack result = ItemStack.EMPTY;
-            Optional<NuclearWorkbenchShapedRecipe> opt = world.getServer().getRecipeManager().getRecipe(SpeculativeRecipeSerializers.NUCLEAR_WORKBENCH_TYPE, this.craftMatrix, world);
+            Optional<NuclearWorkbenchShapedRecipe> opt = world.getServer().getRecipeManager().getRecipeFor(SpeculativeRecipeSerializers.NUCLEAR_WORKBENCH_TYPE, this.craftMatrix, world);
 
             if (opt.isPresent()) {
                 NuclearWorkbenchShapedRecipe recipe = opt.get();
-                if (this.craftResult.canUseRecipe(world, player, recipe)) {
-                    result = recipe.getCraftingResult(this.craftMatrix);
+                if (this.craftResult.setRecipeUsed(world, player, recipe)) {
+                    result = recipe.assemble(this.craftMatrix);
                 }
             }
 
-            this.craftResult.setInventorySlotContents(0, result);
-            player.connection.sendPacket(new SSetSlotPacket(this.windowId, 0, result));
+            this.craftResult.setItem(0, result);
+            player.connection.send(new SSetSlotPacket(this.containerId, 0, result));
         }
     }
 
     @Override
-    public void onCraftMatrixChanged(IInventory inv) {
-        this.worldPosCallable.consume((world, pos) -> updateCraftingResult(world));
+    public void slotsChanged(IInventory inv) {
+        this.worldPosCallable.execute((world, pos) -> updateCraftingResult(world));
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity player) {
-        super.onContainerClosed(player);
-        this.worldPosCallable.consume((world, pos) -> {
+    public void removed(PlayerEntity player) {
+        super.removed(player);
+        this.worldPosCallable.execute((world, pos) -> {
             this.clearContainer(player, world, this.craftMatrix);
         });
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(worldPosCallable, playerIn, SpeculativeBlocks.NUCLEAR_WORKBENCH.get());
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(worldPosCallable, playerIn, SpeculativeBlocks.NUCLEAR_WORKBENCH.get());
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(PlayerEntity player, int index) {
         ItemStack old = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
             old = stack.copy();
             if (index == 0) {
-                this.worldPosCallable.consume((world, pos) -> stack.getItem().onCreated(stack, world, player));
-                if (!this.mergeItemStack(stack, 10, 46, true)) {
+                this.worldPosCallable.execute((world, pos) -> stack.getItem().onCraftedBy(stack, world, player));
+                if (!this.moveItemStackTo(stack, 10, 46, true)) {
                     return ItemStack.EMPTY;
                 }
 
-                slot.onSlotChange(stack, old);
+                slot.onQuickCraft(stack, old);
             } else if (index >= 10 && index < 46) {
-                if (!this.mergeItemStack(stack, 1, 10, false)) {
+                if (!this.moveItemStackTo(stack, 1, 10, false)) {
                     if (index < 37) {
-                        if (!this.mergeItemStack(stack, 37, 46, false)) {
+                        if (!this.moveItemStackTo(stack, 37, 46, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (!this.mergeItemStack(stack, 10, 37, false)) {
+                    } else if (!this.moveItemStackTo(stack, 10, 37, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
-            } else if (!this.mergeItemStack(stack, 10, 46, false)) {
+            } else if (!this.moveItemStackTo(stack, 10, 46, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (stack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (stack.getCount() == old.getCount()) {
@@ -131,7 +131,7 @@ public class NuclearWorkbenchContainer extends Container {
 
             ItemStack taken = slot.onTake(player, stack);
             if (index == 0) {
-                player.dropItem(taken, false);
+                player.drop(taken, false);
             }
         }
 
@@ -139,7 +139,7 @@ public class NuclearWorkbenchContainer extends Container {
     }
 
     @Override
-    public boolean canMergeSlot(ItemStack stack, Slot slot) {
-        return slot.inventory != this.craftResult && super.canMergeSlot(stack, slot);
+    public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+        return slot.container != this.craftResult && super.canTakeItemForPickAll(stack, slot);
     }
 }

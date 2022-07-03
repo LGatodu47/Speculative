@@ -15,6 +15,8 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import net.minecraft.world.gen.feature.structure.Structure.IStartFactory;
+
 public class SpeculoPyramidStructure extends Structure<NoFeatureConfig> {
     public SpeculoPyramidStructure(Codec<NoFeatureConfig> codec) {
         super(codec);
@@ -26,12 +28,12 @@ public class SpeculoPyramidStructure extends Structure<NoFeatureConfig> {
     }
 
     @Override
-    public String getStructureName() {
+    public String getFeatureName() {
         return Speculative.MODID + ":speculo_pyramid";
     }
 
     @Override
-    public GenerationStage.Decoration getDecorationStage() {
+    public GenerationStage.Decoration step() {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
@@ -41,19 +43,19 @@ public class SpeculoPyramidStructure extends Structure<NoFeatureConfig> {
         }
 
         @Override
-        public void func_230364_a_(DynamicRegistries reg, ChunkGenerator generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, NoFeatureConfig config) {
-            Rotation rotation = Rotation.randomRotation(rand);
+        public void generatePieces(DynamicRegistries reg, ChunkGenerator generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, NoFeatureConfig config) {
+            Rotation rotation = Rotation.getRandom(random);
 
             int x = (chunkX << 4) + 7;
             int z = (chunkZ << 4) + 7;
-            int y = generator.getHeight(x, z, Heightmap.Type.WORLD_SURFACE_WG);
+            int y = generator.getBaseHeight(x, z, Heightmap.Type.WORLD_SURFACE_WG);
             BlockPos pos = new BlockPos(x, y, z);
 
-            SpeculoPyramidStructurePiece piece = new SpeculoPyramidStructurePiece(manager, new BlockPos(0, -15, 0).rotate(rotation).add(pos), rotation);
+            SpeculoPyramidStructurePiece piece = new SpeculoPyramidStructurePiece(manager, new BlockPos(0, -15, 0).rotate(rotation).offset(pos), rotation);
 
-            this.components.add(piece);
+            this.pieces.add(piece);
 
-            this.recalculateStructureSize();
+            this.calculateBoundingBox();
         }
     }
 }

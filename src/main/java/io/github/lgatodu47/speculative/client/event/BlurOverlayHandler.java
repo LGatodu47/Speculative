@@ -14,11 +14,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class BlurOverlayHandler {
     @SubscribeEvent
     public static void renderOverlay(ClientTickEvent event) {
-        if (Minecraft.getInstance().world != null) {
-            if (Minecraft.getInstance().player.isPotionActive(SpeculativeEffects.C6_BLINDNESS.get())) {
-                Minecraft.getInstance().gameRenderer.loadShader(new ResourceLocation(Speculative.MODID, "shaders/post/blur.json"));
+        if (Minecraft.getInstance().level != null) {
+            if (Minecraft.getInstance().player.hasEffect(SpeculativeEffects.C6_BLINDNESS.get())) {
+                Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation(Speculative.MODID, "shaders/post/blur.json"));
             } else {
-                Minecraft.getInstance().gameRenderer.stopUseShader();
+                Minecraft.getInstance().gameRenderer.shutdownEffect();
             }
         }
     }

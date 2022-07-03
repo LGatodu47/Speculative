@@ -15,20 +15,20 @@ import java.util.Random;
 
 public class SpeculoTree extends Tree {
     public static final BaseTreeFeatureConfig SPECULO_TREE_CONFIG = (new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LOG.get().getDefaultState()),
-            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LEAVES.get().getDefaultState()),
-            new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3),
+            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LOG.get().defaultBlockState()),
+            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LEAVES.get().defaultBlockState()),
+            new BlobFoliagePlacer(FeatureSpread.fixed(2), FeatureSpread.fixed(0), 3),
             new SpeculativeTrunkPlacer(5, 4, 0),
-            new TwoLayerFeature(1, 0, 1)).setIgnoreVines().build());
+            new TwoLayerFeature(1, 0, 1)).ignoreVines().build());
     public static final BaseTreeFeatureConfig SPECULO_FANCY_TREE_CONFIG = new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LOG.get().getDefaultState()),
-            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LEAVES.get().getDefaultState()),
-            new FancyFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(4), 4),
+            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LOG.get().defaultBlockState()),
+            new SimpleBlockStateProvider(SpeculativeBlocks.SPECULO_LEAVES.get().defaultBlockState()),
+            new FancyFoliagePlacer(FeatureSpread.fixed(2), FeatureSpread.fixed(4), 4),
             new FancyTrunkPlacer(3, 11, 0),
-            new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))).setIgnoreVines().setHeightmap(Heightmap.Type.MOTION_BLOCKING).build();
+            new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))).ignoreVines().heightmap(Heightmap.Type.MOTION_BLOCKING).build();
 
     @Override
-    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean p_225546_2_) {
-        return Feature.TREE.withConfiguration(SPECULO_TREE_CONFIG);
+    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random randomIn, boolean p_225546_2_) {
+        return Feature.TREE.configured(SPECULO_TREE_CONFIG);
     }
 }

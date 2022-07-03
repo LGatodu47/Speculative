@@ -24,14 +24,14 @@ public abstract class SpeculativeDimensionRenderInfo extends DimensionRenderInfo
     }
 
     @Override
-    public Vector3d func_230494_a_(Vector3d fogColor, float dayTime) {
+    public Vector3d getBrightnessDependentFogColor(Vector3d fogColor, float dayTime) {
         return getFogColor(fogColor, dayTime);
     }
 
     protected abstract Vector3d getFogColor(Vector3d initialFogColor, float dayTime);
 
     @Override
-    public boolean func_230493_a_(int x, int y) {
+    public boolean isFoggyAt(int x, int y) {
         return hasNearFog(x, y);
     }
 
@@ -54,7 +54,7 @@ public abstract class SpeculativeDimensionRenderInfo extends DimensionRenderInfo
     @SuppressWarnings("unchecked")
     private static void registerInfo(String name, DimensionRenderInfo info) {
         if(ID_TO_INFO_MAP == null) {
-            ID_TO_INFO_MAP = ObfuscationReflectionHelper.findField(DimensionRenderInfo.class, "field_239208_a_");
+            ID_TO_INFO_MAP = ObfuscationReflectionHelper.findField(DimensionRenderInfo.class, "EFFECTS");
             ID_TO_INFO_MAP.setAccessible(true);
         }
 
