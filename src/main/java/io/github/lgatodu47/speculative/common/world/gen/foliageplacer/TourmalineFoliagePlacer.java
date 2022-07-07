@@ -1,22 +1,30 @@
 package io.github.lgatodu47.speculative.common.world.gen.foliageplacer;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.lgatodu47.speculative.common.init.SpeculativePlacerTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.AcaciaFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 import java.util.Random;
-import java.util.Set;
-
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer.Foliage;
+import java.util.function.BiConsumer;
 
 public class TourmalineFoliagePlacer extends FoliagePlacer {
-    public TourmalineFoliagePlacer(int radius, int radiusRandom) {
-        super(FeatureSpread.fixed(radius), FeatureSpread.fixed(radiusRandom));
+    public static final Codec<TourmalineFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> foliagePlacerParts(instance).apply(instance, TourmalineFoliagePlacer::new));
+
+    public TourmalineFoliagePlacer(int radius, int offset) {
+        this(ConstantInt.of(radius), ConstantInt.of(offset));
+    }
+
+    public TourmalineFoliagePlacer(IntProvider radius, IntProvider offset) {
+        super(radius, offset);
     }
 
     @Override
@@ -24,18 +32,17 @@ public class TourmalineFoliagePlacer extends FoliagePlacer {
         return SpeculativePlacerTypes.Foliage.TOURMALINE.get();
     }
 
-    //place
     @Override
-    protected void createFoliage(IWorldGenerationReader reader, Random rand, BaseTreeFeatureConfig config, int baseHeight, Foliage foliage, int p, int p1, Set<BlockPos> poses, int p_230372_9_, MutableBoundingBox box) {
-        boolean flag = foliage.doubleTrunk();
-        BlockPos blockpos = foliage.foliagePos().above(p_230372_9_);
-        this.placeLeavesRow(reader, rand, config, blockpos, p1 + foliage.radiusOffset(), poses, -1 - p, flag, box);
-        this.placeLeavesRow(reader, rand, config, blockpos, p1 - 1, poses, -p, flag, box);
-        this.placeLeavesRow(reader, rand, config, blockpos, p1 + foliage.radiusOffset() - 1, poses, 0, flag, box);
+    protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random rand, TreeConfiguration config, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
+        boolean flag = pAttachment.doubleTrunk();
+        BlockPos blockpos = pAttachment.pos().above(pOffset);
+        this.placeLeavesRow(pLevel, pBlockSetter, rand, config, blockpos, pFoliageRadius + pAttachment.radiusOffset(), -1 - pFoliageHeight, flag);
+        this.placeLeavesRow(pLevel, pBlockSetter, rand, config, blockpos, pFoliageRadius - 1, -pFoliageHeight, flag);
+        this.placeLeavesRow(pLevel, pBlockSetter, rand, config, blockpos, pFoliageRadius + pAttachment.radiusOffset() - 1, 0, flag);
     }
 
     @Override
-    public int foliageHeight(Random rand, int p_230374_2_, BaseTreeFeatureConfig config) {
+    public int foliageHeight(Random rand, int p_230374_2_, TreeConfiguration config) {
         return 0;
     }
 

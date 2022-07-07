@@ -1,20 +1,18 @@
 package io.github.lgatodu47.speculative.common.item;
 
 import io.github.lgatodu47.speculative.Speculative;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.item.Item.Properties;
 
 public class SpeculativeFoodItem extends Item {
     private SoundEvent eatSound = super.getEatingSound();
     private int eatTicks = 32;
 
-    public SpeculativeFoodItem(Food food) {
+    public SpeculativeFoodItem(FoodProperties food) {
         super(new Properties().tab(Speculative.tab()).food(food));
     }
 

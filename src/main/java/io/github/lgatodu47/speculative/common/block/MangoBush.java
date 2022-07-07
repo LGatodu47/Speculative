@@ -1,31 +1,29 @@
 package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.common.init.SpeculativeItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
-public class MangoBush extends Block implements IGrowable {
+public class MangoBush extends Block implements BonemealableBlock {
     private static final IntegerProperty AGE = BlockStateProperties.AGE_1;
 
     public MangoBush() {
@@ -34,18 +32,18 @@ public class MangoBush extends Block implements IGrowable {
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (state.getValue(AGE) == 1) {
             player.addItem(new ItemStack(SpeculativeItems.STRANGE_MANGO.get()));
             worldIn.setBlock(pos, state.setValue(AGE, 0), 2);
             player.playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 0.5F, 2F);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
         if (!this.canSurvive(state, worldIn, pos)) {
             worldIn.destroyBlock(pos, false);
         } else {
@@ -56,22 +54,22 @@ public class MangoBush extends Block implements IGrowable {
         }
     }
 
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         return (worldIn.getRawBrightness(pos, 0) >= 8 || worldIn.canSeeSky(pos));
     }
 
     @Override
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient) {
         return state.getValue(AGE) < 1;
     }
 
     @Override
-    public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
         worldIn.setBlock(pos, state.setValue(AGE, 1), 2);
     }
 

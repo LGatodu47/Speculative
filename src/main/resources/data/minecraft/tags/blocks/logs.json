@@ -1,13 +1,13 @@
 {
-  "replace": false,
-  "values": [
-    "speculative:speculo_log",
-	"speculative:stripped_speculo_log",
-	"speculative:speculo_bark",
-	"speculative:stripped_speculo_bark",
-	"speculative:tourmaline_log",
-	"speculative:stripped_tourmaline_log",
-	"speculative:tourmaline_bark",
-	"speculative:stripped_tourmaline_bark"
-  ]
+	"replace": false,
+	"values": [
+		"speculative:speculo_log",
+		"speculative:stripped_speculo_log",
+		"speculative:speculo_bark",
+		"speculative:stripped_speculo_bark",
+		"speculative:tourmaline_log",
+		"speculative:stripped_tourmaline_log",
+		"speculative:tourmaline_bark",
+		"speculative:stripped_tourmaline_bark"
+	]
 }

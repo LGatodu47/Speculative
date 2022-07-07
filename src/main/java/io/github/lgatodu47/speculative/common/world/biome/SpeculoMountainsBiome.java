@@ -1,20 +1,19 @@
 package io.github.lgatodu47.speculative.common.world.biome;
 
 import io.github.lgatodu47.speculative.common.world.feature.DefaultSpeculativeFeatures;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.Features;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Set;
 
 public class SpeculoMountainsBiome extends SpeculoWorldBiome {
     @Override
-    protected Biome.Builder create() {
-        return new Biome.Builder().precipitation(Biome.RainType.RAIN).temperature(0.3F).biomeCategory(Biome.Category.EXTREME_HILLS).depth(1.25F).scale(0.75F).downfall(0.2F);
+    protected Biome.BiomeBuilder create() {
+        return new Biome.BiomeBuilder().precipitation(Biome.Precipitation.RAIN).temperature(0.3F).biomeCategory(Biome.BiomeCategory.EXTREME_HILLS).downfall(0.2F);
     }
 
     @Override
@@ -23,8 +22,8 @@ public class SpeculoMountainsBiome extends SpeculoWorldBiome {
         DefaultSpeculativeFeatures.addSpeculoMountainsCarvers(builder);
         DefaultSpeculativeFeatures.addSpeculoworldOres(builder);
         DefaultSpeculativeFeatures.addSpeculoworldFlowers(builder);
-        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.configured(Features.Configs.DEFAULT_GRASS_CONFIG).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE));
-        DefaultBiomeFeatures.addSurfaceFreezing(builder);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_NORMAL);
+        BiomeDefaultFeatures.addSurfaceFreezing(builder);
         return builder;
     }
 

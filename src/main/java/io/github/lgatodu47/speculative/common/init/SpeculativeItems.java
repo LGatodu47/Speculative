@@ -4,15 +4,15 @@ import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.item.SpeculativeFoodItem;
 import io.github.lgatodu47.speculative.common.item.SpeculativeFoods;
 import io.github.lgatodu47.speculative.common.item.SpeculoosItem;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.Properties;
-import net.minecraft.item.SignItem;
-import net.minecraft.item.WallOrFloorItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -33,7 +33,7 @@ public class SpeculativeItems {
     public static final RegistryObject<Item> URANINITE_INGOT = ITEMS.register("uraninite_ingot", basicItem());
     public static final RegistryObject<Item> SPECULO_PIG_SPAWN_EGG = ITEMS.register("speculo_pig_spawn_egg", () -> new ForgeSpawnEggItem(SpeculativeEntityTypes.SPECULO_PIG, 15552522, 16743462, props()));
     public static final RegistryObject<Item> STRANGE_MANGO = ITEMS.register("strange_mango", () -> new SpeculativeFoodItem(SpeculativeFoods.STRANGE_MANGO));
-    public static final RegistryObject<Item> GREENSTONE_TORCH = ITEMS.register("greenstone_torch", () -> new WallOrFloorItem(SpeculativeBlocks.GREENSTONE_TORCH.get(), SpeculativeBlocks.GREENSTONE_WALL_TORCH.get(), props()));
+    public static final RegistryObject<Item> GREENSTONE_TORCH = ITEMS.register("greenstone_torch", () -> new StandingAndWallBlockItem(SpeculativeBlocks.GREENSTONE_TORCH.get(), SpeculativeBlocks.GREENSTONE_WALL_TORCH.get(), props()));
     public static final RegistryObject<Item> UNSTABLE_WATER_BUCKET = ITEMS.register("unstable_water_bucket", () -> new BucketItem(SpeculativeFluids.UNSTABLE_WATER.getStillFluid(), props().stacksTo(1)));
     public static final RegistryObject<Item> SPECULO_PORKCHOP = ITEMS.register("speculo_porkchop", () -> new SpeculativeFoodItem(SpeculativeFoods.SPECULO_PORKCHOP));
     public static final RegistryObject<Item> COOKED_SPECULO_PORKCHOP = ITEMS.register("cooked_speculo_porkchop", () -> new SpeculativeFoodItem(SpeculativeFoods.COOKED_SPECULO_PORKCHOP));

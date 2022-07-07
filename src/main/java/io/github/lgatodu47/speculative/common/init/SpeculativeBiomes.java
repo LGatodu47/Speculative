@@ -2,17 +2,19 @@ package io.github.lgatodu47.speculative.common.init;
 
 import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.world.biome.*;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.Util;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.BiomeManager;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,12 +48,19 @@ public class SpeculativeBiomes {
     }
 
     private static void addBiomeTypes(RegistryObject<Biome> biome, Type... types) {
-        BiomeDictionary.addTypes(RegistryKey.create(ForgeRegistries.Keys.BIOMES, biome.getId()), types);
+        BiomeDictionary.addTypes(biome.getKey(), types);
     }
 
     private static void addOverworldBiomeTypes(RegistryObject<Biome> biome, BiomeManager.BiomeType type, int weight, Type... types) {
-        RegistryKey<Biome> key = RegistryKey.create(ForgeRegistries.Keys.BIOMES, biome.getId());
-        BiomeDictionary.addTypes(key, types);
-        BiomeManager.addBiome(type, new BiomeManager.BiomeEntry(key, weight));
+        BiomeDictionary.addTypes(biome.getKey(), types);
+        BiomeManager.addBiome(type, new BiomeManager.BiomeEntry(biome.getKey(), weight));
+    }
+
+    public static final class Tags {
+        public static final TagKey<Biome> HAS_SPECULO_PYRAMID = create("has_structure/speculo_pyramid");
+
+        private static TagKey<Biome> create(String name) {
+            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Speculative.MODID, name));
+        }
     }
 }

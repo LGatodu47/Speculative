@@ -1,17 +1,18 @@
 package io.github.lgatodu47.speculative.client.screens;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.lgatodu47.speculative.common.container.NuclearWorkbenchContainer;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import io.github.lgatodu47.speculative.common.container.NuclearWorkbenchMenu;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
-public class NuclearWorkbenchScreen extends ContainerScreen<NuclearWorkbenchContainer> {
+public class NuclearWorkbenchScreen extends AbstractContainerScreen<NuclearWorkbenchMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/crafting_table.png");
 
-    public NuclearWorkbenchScreen(NuclearWorkbenchContainer container, PlayerInventory playerInv, ITextComponent title) {
+    public NuclearWorkbenchScreen(NuclearWorkbenchMenu container, Inventory playerInv, Component title) {
         super(container, playerInv, title);
     }
 
@@ -22,16 +23,17 @@ public class NuclearWorkbenchScreen extends ContainerScreen<NuclearWorkbenchCont
     }
 
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         super.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
         super.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(TEXTURE);
+    protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         this.blit(matrixStack, this.leftPos, (this.height - this.imageHeight) / 2, 0, 0, this.imageWidth, this.imageHeight);
     }
 }

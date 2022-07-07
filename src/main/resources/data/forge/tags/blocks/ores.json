@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "speculative:speculo_ore",
-	"speculative:speculo_world_speculo_ore",
-	"speculative:radioactive_diamond_ore"
+    "speculative:speculo_world_speculo_ore",
+    "speculative:radioactive_diamond_ore"
   ]
 }

@@ -1,8 +1,7 @@
 package io.github.lgatodu47.speculative.util;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class SpeculativeItemStackHandler extends ItemStackHandler implements ISpeculativeItemHandler {

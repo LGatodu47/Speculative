@@ -1,62 +1,61 @@
 package io.github.lgatodu47.speculative.common.block;
 
-import io.github.lgatodu47.speculative.common.tile.UraniumBlockTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Color;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import io.github.lgatodu47.speculative.common.block.entity.UraniumBlockEntity;
+import io.github.lgatodu47.speculative.common.init.SpeculativeBlockEntityTypes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
-public class UraniumBlock extends Block {
+public class UraniumBlock extends Block implements ISpeculativeEntityBlock {
     private final UraniumType type;
 
     public UraniumBlock(UraniumType type) {
-        super(Properties.of(Material.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(1).sound(SoundType.METAL).strength(5F, 1F));
+        super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(5F, 1F).requiresCorrectToolForDrops());
         this.type = type;
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return type != UraniumType.U238;
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return type == UraniumType.U238 ? null : new UraniumBlockTileEntity(type == UraniumType.U234);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return type == UraniumType.U238 ? null : new UraniumBlockEntity(pos, state, type == UraniumType.U234);
     }
 
     @Override
-    public void playerWillDestroy(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockEntityType<?> getBlockEntityType() {
+        return SpeculativeBlockEntityTypes.URANIUM_BLOCK.get();
+    }
+
+    @Override
+    public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         if(type != UraniumType.U238) {
-            TileEntity te = world.getBlockEntity(pos);
-            if (te instanceof UraniumBlockTileEntity) {
-                UraniumBlockTileEntity uraniumBlockTe = (UraniumBlockTileEntity)te;
+            BlockEntity te = world.getBlockEntity(pos);
+            if (te instanceof UraniumBlockEntity) {
+                UraniumBlockEntity uraniumBlockTe = (UraniumBlockEntity)te;
                 if (!world.isClientSide) {
                     ItemStack stack = new ItemStack(this);
-                    CompoundNBT nbt = uraniumBlockTe.serialize(new CompoundNBT());
+                    CompoundTag nbt = uraniumBlockTe.serialize(new CompoundTag());
 
                     if (!nbt.isEmpty()) {
                         stack.addTagElement("BlockEntityTag", nbt);
@@ -73,32 +72,32 @@ public class UraniumBlock extends Block {
     }
 
     @Override
-    public void wasExploded(World world, BlockPos pos, Explosion explosion) {
+    public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
         if(type != UraniumType.U238) {
-            world.explode(explosion.getExploder(), pos.getX(), pos.getY(), pos.getZ(), 4, true, Explosion.Mode.DESTROY);
+            world.explode(explosion.getExploder(), pos.getX(), pos.getY(), pos.getZ(), 4, true, Explosion.BlockInteraction.DESTROY);
         }
         super.wasExploded(world, pos, explosion);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable IBlockReader reader, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter reader, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, reader, tooltip, flag);
         if(type == UraniumType.U238) {
-            tooltip.add(new TranslationTextComponent("tooltip.speculative.uranium_block.not_radioactive").withStyle(style -> style.withColor(type.getColor())));
+            tooltip.add(new TranslatableComponent("tooltip.speculative.uranium_block.not_radioactive").withStyle(style -> style.withColor(type.getColor())));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.speculative.uranium_block.radioactive").withStyle(style -> style.withColor(type.getColor())));
+            tooltip.add(new TranslatableComponent("tooltip.speculative.uranium_block.radioactive").withStyle(style -> style.withColor(type.getColor())));
 
-            CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
+            CompoundTag nbt = stack.getTagElement("BlockEntityTag");
             if(nbt != null) {
                 if(nbt.contains("CurrentRadiationTime")) {
-                    tooltip.add(new TranslationTextComponent("tooltip.speculative.uranium_block.radiation_time", nbt.getInt("CurrentRadiationTime")).withStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
+                    tooltip.add(new TranslatableComponent("tooltip.speculative.uranium_block.radiation_time", nbt.getInt("CurrentRadiationTime")).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
                 }
             }
         }
     }
 
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
         if(type != UraniumType.U238) {
             final int loopTimes = type == UraniumType.U234 ? 3 : 1;
             for(int i = 0; i < loopTimes; i++) {
@@ -126,8 +125,8 @@ public class UraniumBlock extends Block {
             this.hexColor = color;
         }
 
-        public Color getColor() {
-            return Color.parseColor(hexColor);
+        public TextColor getColor() {
+            return TextColor.parseColor(hexColor);
         }
     }
 }

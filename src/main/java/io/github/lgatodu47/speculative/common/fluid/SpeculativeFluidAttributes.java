@@ -2,8 +2,8 @@ package io.github.lgatodu47.speculative.common.fluid;
 
 import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.init.SpeculativeSounds;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public final class SpeculativeFluidAttributes {

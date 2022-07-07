@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:speculo_ore",
+    "speculative:speculo_block",
+    "speculative:speculo_world_speculo_ore",
+    "speculative:radioactive_diamond_ore",
+    "speculative:radioactive_diamond_block",
+    "speculative:uranium_ore",
+    "speculative:graphite_ore",
+    "speculative:graphite_block",
+    "speculative:uranium_238_block",
+    "speculative:uranium_235_block",
+    "speculative:uranium_234_block",
+    "speculative:speculoos_summoner",
+    "speculative:centrifuge",
+    "speculative:nuclear_workbench"
+  ]
+}

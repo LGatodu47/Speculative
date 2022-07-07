@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[36,)"
+loaderVersion = "[38,)"
 license = "All Rights Reserved"
 #issueTrackerURL="http://my.issue.tracker/"
 
@@ -19,13 +19,13 @@ A mod filled with new ores, blocks, dimensions, biomes, items and much more!
 [[dependencies.speculative]]
 modId = "forge"
 mandatory = true
-versionRange = "[36,)"
+versionRange = "[38,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.speculative]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.5,1.17)"
+versionRange = "[1.18.2,1.19)"
 ordering = "NONE"
 side = "BOTH"

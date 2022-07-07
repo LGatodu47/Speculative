@@ -7,23 +7,23 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import io.github.lgatodu47.speculative.common.init.SpeculativeRecipeSerializers;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import java.util.Map;
 import java.util.Set;
 
-public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInventory> {
+public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingContainer> {
     private final ResourceLocation id;
     private final NonNullList<Ingredient> ingredients;
     private final ItemStack result;
@@ -38,7 +38,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World worldIn) {
+    public boolean matches(CraftingContainer inv, Level worldIn) {
         for (int x = 0; x <= inv.getWidth() - this.recipeWidth; ++x) {
             for (int y = 0; y <= inv.getHeight() - this.recipeHeight; ++y) {
                 if (this.checkMatch(inv, x, y, true)) {
@@ -54,7 +54,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
         return false;
     }
 
-    private boolean checkMatch(CraftingInventory inv, int width, int height, boolean reverse) {
+    private boolean checkMatch(CraftingContainer inv, int width, int height, boolean reverse) {
         for (int x = 0; x < inv.getWidth(); ++x) {
             for (int y = 0; y < inv.getHeight(); ++y) {
                 int offsetX = x - width;
@@ -79,7 +79,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
     }
 
     @Override
-    public ItemStack assemble(CraftingInventory inv) {
+    public ItemStack assemble(CraftingContainer inv) {
         return this.result.copy();
     }
 
@@ -99,12 +99,12 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return null;
     }
 
     @Override
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return SpeculativeRecipeSerializers.NUCLEAR_WORKBENCH_TYPE;
     }
 
@@ -125,16 +125,16 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
 
     public static class Serializer extends AbstractRecipeSerializer<NuclearWorkbenchShapedRecipe> {
         public NuclearWorkbenchShapedRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            Map<String, Ingredient> key = deserializeKey(JSONUtils.getAsJsonObject(json, "key"));
-            String[] pattern = shrink(patternFromJson(JSONUtils.getAsJsonArray(json, "pattern"), 3, 3));
+            Map<String, Ingredient> key = deserializeKey(GsonHelper.getAsJsonObject(json, "key"));
+            String[] pattern = shrink(patternFromJson(GsonHelper.getAsJsonArray(json, "pattern"), 3, 3));
             int recipeWidth = pattern[0].length();
             int recipeHeight = pattern.length;
             NonNullList<Ingredient> ingredients = deserializeIngredients(pattern, key, recipeWidth, recipeHeight);
-            ItemStack result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            ItemStack result = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(json, "result"), true);
             return new NuclearWorkbenchShapedRecipe(recipeId, ingredients, result, recipeWidth, recipeHeight);
         }
 
-        public NuclearWorkbenchShapedRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer) {
+        public NuclearWorkbenchShapedRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
             int recipeWidth = buffer.readVarInt();
             int recipeHeight = buffer.readVarInt();
             NonNullList<Ingredient> ingredients = NonNullList.withSize(recipeWidth * recipeHeight, Ingredient.EMPTY);
@@ -147,7 +147,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
             return new NuclearWorkbenchShapedRecipe(id, ingredients, result, recipeWidth, recipeHeight);
         }
 
-        public void toNetwork(PacketBuffer buffer, NuclearWorkbenchShapedRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, NuclearWorkbenchShapedRecipe recipe) {
             buffer.writeVarInt(recipe.recipeWidth);
             buffer.writeVarInt(recipe.recipeHeight);
 
@@ -244,7 +244,7 @@ public class NuclearWorkbenchShapedRecipe implements IShapedRecipe<CraftingInven
                 throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
             } else {
                 for (int i = 0; i < rows.length; ++i) {
-                    String row = JSONUtils.convertToString(array.get(i), "pattern[" + i + "]");
+                    String row = GsonHelper.convertToString(array.get(i), "pattern[" + i + "]");
                     if (row.length() > maxWidth) {
                         throw new JsonSyntaxException("Invalid pattern: too many columns, " + maxWidth + " is maximum");
                     }

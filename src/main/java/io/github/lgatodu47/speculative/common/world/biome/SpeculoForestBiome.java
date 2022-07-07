@@ -1,36 +1,31 @@
 package io.github.lgatodu47.speculative.common.world.biome;
 
-import com.google.common.collect.ImmutableList;
+import io.github.lgatodu47.speculative.common.init.SpeculativeConfiguredFeatures;
 import io.github.lgatodu47.speculative.common.world.feature.DefaultSpeculativeFeatures;
-import io.github.lgatodu47.speculative.common.world.feature.SpeculoTree;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.Features;
-import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
-import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Set;
 
 public class SpeculoForestBiome extends SpeculoWorldBiome {
     @Override
-    protected Biome.Builder create() {
-        return new Biome.Builder().precipitation(Biome.RainType.RAIN).temperature(0.7F).biomeCategory(Biome.Category.FOREST).depth(0.105F).scale(0.205F).downfall(0.6F);
+    protected Biome.BiomeBuilder create() {
+        return new Biome.BiomeBuilder().precipitation(Biome.Precipitation.RAIN).temperature(0.7F).biomeCategory(Biome.BiomeCategory.FOREST).downfall(0.6F);
     }
 
     @Override
     protected BiomeGenerationSettings.Builder configureGeneration() {
         BiomeGenerationSettings.Builder builder = super.configureGeneration();
-        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.configured(new MultipleRandomFeatureConfig(ImmutableList.of(Feature.TREE.configured(SpeculoTree.SPECULO_FANCY_TREE_CONFIG).weighted(0.33333334F)), Feature.TREE.configured(SpeculoTree.SPECULO_TREE_CONFIG))).decorated(Features.Placements.HEIGHTMAP_SQUARE).decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(10, 0.1F, 1))));
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, SpeculativeConfiguredFeatures.TREES_SPECULO_FOREST.getPlacedFeature());
         DefaultSpeculativeFeatures.addSpeculoworldCarvers(builder);
         DefaultSpeculativeFeatures.addSpeculoworldOres(builder);
         DefaultSpeculativeFeatures.addSpeculoworldFlowers(builder);
-        builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.configured(Features.Configs.DEFAULT_GRASS_CONFIG).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).count(2));
-        DefaultBiomeFeatures.addSurfaceFreezing(builder);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_FOREST);
+        BiomeDefaultFeatures.addSurfaceFreezing(builder);
         return builder;
     }
 

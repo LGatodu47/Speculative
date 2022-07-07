@@ -1,20 +1,22 @@
 package io.github.lgatodu47.speculative.common.block;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.lighting.LightEngine;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.lighting.LayerLightEngine;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 import java.util.function.Supplier;
-
-import net.minecraft.block.AbstractBlock.Properties;
 
 public class SpeculativeGrassBlock extends Block {
     private final Supplier<Block> dirt;
@@ -25,28 +27,28 @@ public class SpeculativeGrassBlock extends Block {
     }
 
     @Override
-    public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
+    public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
         return true;
     }
 
-    private static boolean canStay(BlockState state, IWorldReader reader, BlockPos pos) {
+    private static boolean canStay(BlockState state, LevelReader reader, BlockPos pos) {
         BlockPos blockpos = pos.above();
         BlockState blockstate = reader.getBlockState(blockpos);
-        if (blockstate.getBlock() == Blocks.SNOW && blockstate.getValue(SnowBlock.LAYERS) == 1) {
+        if (blockstate.getBlock() == Blocks.SNOW && blockstate.getValue(SnowLayerBlock.LAYERS) == 1) {
             return true;
         } else {
-            int i = LightEngine.getLightBlockInto(reader, state, pos, blockstate, blockpos, Direction.UP, blockstate.getLightBlock(reader, blockpos));
+            int i = LayerLightEngine.getLightBlockInto(reader, state, pos, blockstate, blockpos, Direction.UP, blockstate.getLightBlock(reader, blockpos));
             return i < reader.getMaxLightLevel();
         }
     }
 
-    private static boolean canStayGrass(BlockState state, IWorldReader reader, BlockPos pos) {
+    private static boolean canStayGrass(BlockState state, LevelReader reader, BlockPos pos) {
         BlockPos blockpos = pos.above();
         return canStay(state, reader, pos) && !reader.getFluidState(blockpos).is(FluidTags.WATER);
     }
 
     @Override
-    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
         if (!canStay(state, worldIn, pos)) {
             if (!worldIn.isAreaLoaded(pos, 3))
                 return;

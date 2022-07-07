@@ -2,18 +2,69 @@ package io.github.lgatodu47.speculative.common.world.gen.carver;
 
 import com.mojang.serialization.Codec;
 import io.github.lgatodu47.speculative.common.init.SpeculativeBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.world.gen.carver.CaveWorldCarver;
-import net.minecraft.world.gen.feature.ProbabilityConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.CarvingMask;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.carver.CarvingContext;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
+import org.apache.commons.lang3.mutable.MutableBoolean;
+
+import java.util.function.Function;
 
 public class SpeculativeCaveWorldCarver extends CaveWorldCarver {
-    public SpeculativeCaveWorldCarver(Codec<ProbabilityConfig> codec, int maxHeight) {
-        super(codec, maxHeight);
+    public SpeculativeCaveWorldCarver(Codec<CaveCarverConfiguration> codec) {
+        super(codec);
         setRegistryName("cave_world_carver");
     }
 
     @Override
     protected boolean canReplaceBlock(BlockState state) {
         return state.is(SpeculativeBlocks.Tags.CARVABLE_BLOCKS);
+    }
+
+    @Override
+    protected boolean carveBlock(CarvingContext pContext, CaveCarverConfiguration pConfig, ChunkAccess pChunk, Function<BlockPos, Holder<Biome>> pBiomeAccessor, CarvingMask pCarvingMask, BlockPos.MutableBlockPos pPos, BlockPos.MutableBlockPos pCheckPos, Aquifer pAquifer, MutableBoolean pReachedSurface) {
+        BlockState blockstate = pChunk.getBlockState(pPos);
+        if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM)) {
+            pReachedSurface.setTrue();
+        }
+
+        if (!this.canReplaceBlock(blockstate) && !pConfig.debugSettings.isDebugMode()) {
+            return false;
+        } else if(pChunk.getFluidState(pPos.above()).isEmpty()) {
+            BlockState blockstate1 = ISpeculativeWorldCarver.getCarveState(pContext, pConfig, pPos, pAquifer);
+            if (blockstate1 == null) {
+                return false;
+            } else {
+                pChunk.setBlockState(pPos, blockstate1, false);
+                if (pAquifer.shouldScheduleFluidUpdate() && !blockstate1.getFluidState().isEmpty()) {
+                    pChunk.markPosForPostprocessing(pPos);
+                }
+
+                if (pReachedSurface.isTrue()) {
+                    pCheckPos.setWithOffset(pPos, Direction.DOWN);
+                    if (pChunk.getBlockState(pCheckPos).is(Blocks.DIRT)) {
+                        pContext.topMaterial(pBiomeAccessor, pChunk, pCheckPos, !blockstate1.getFluidState().isEmpty()).ifPresent((p_190743_) -> {
+                            pChunk.setBlockState(pCheckPos, p_190743_, false);
+                            if (!p_190743_.getFluidState().isEmpty()) {
+                                pChunk.markPosForPostprocessing(pCheckPos);
+                            }
+
+                        });
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -1,13 +1,13 @@
 package io.github.lgatodu47.speculative.common.fluid;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
@@ -17,7 +17,7 @@ import static io.github.lgatodu47.speculative.common.init.SpeculativeBlocks.BLOC
 import static io.github.lgatodu47.speculative.common.init.SpeculativeFluids.FLUIDS;
 
 public class SpeculativeFluid {
-    private final RegistryObject<FlowingFluidBlock> block;
+    private final RegistryObject<LiquidBlock> block;
     private final RegistryObject<FlowingFluid> still;
     private final RegistryObject<FlowingFluid> flowing;
     private final ForgeFlowingFluid.Properties properties;
@@ -29,7 +29,7 @@ public class SpeculativeFluid {
         this.properties = builder.fluidPropertiesOperator.apply(new ForgeFlowingFluid.Properties(getStillFluid(), getFlowingFluid(), builder.attributesBuilder).block(getBlock()));
     }
 
-    public RegistryObject<FlowingFluidBlock> getBlock() {
+    public RegistryObject<LiquidBlock> getBlock() {
         return block;
     }
 
@@ -50,11 +50,11 @@ public class SpeculativeFluid {
         private String stillFluidName;
         private String flowingFluidName;
         private final FluidAttributes.Builder attributesBuilder;
-        private AbstractBlock.Properties blockProperties = Block.Properties.of(Material.WATER).strength(100F).noDrops();
+        private BlockBehaviour.Properties blockProperties = Block.Properties.of(Material.WATER).strength(100F).noDrops();
         private UnaryOperator<ForgeFlowingFluid.Properties> fluidPropertiesOperator = UnaryOperator.identity();
         private FluidFactory stillFactory = SpeculativeFlowingFluid::new;
         private FluidFactory flowingFactory = SpeculativeFlowingFluid::new;
-        private FluidBlockFactory blockFactory = FlowingFluidBlock::new;
+        private FluidBlockFactory blockFactory = LiquidBlock::new;
 
         public Builder(String name, FluidAttributes.Builder attributesBuilder) {
             this.blockName = name;
@@ -78,12 +78,12 @@ public class SpeculativeFluid {
             return this;
         }
 
-        public Builder setBlockProperties(@Nonnull AbstractBlock.Properties blockProperties) {
+        public Builder setBlockProperties(@Nonnull BlockBehaviour.Properties blockProperties) {
             this.blockProperties = blockProperties;
             return this;
         }
 
-        public Builder withBlockProperties(@Nonnull UnaryOperator<AbstractBlock.Properties> operator) {
+        public Builder withBlockProperties(@Nonnull UnaryOperator<BlockBehaviour.Properties> operator) {
             return setBlockProperties(operator.apply(this.blockProperties));
         }
 
@@ -117,6 +117,6 @@ public class SpeculativeFluid {
     }
 
     public interface FluidBlockFactory {
-        FlowingFluidBlock create(Supplier<? extends FlowingFluid> fluidSupplier, AbstractBlock.Properties properties);
+        LiquidBlock create(Supplier<? extends FlowingFluid> fluidSupplier, BlockBehaviour.Properties properties);
     }
 }

@@ -2,22 +2,22 @@ package io.github.lgatodu47.speculative.common.world.feature.structure;
 
 import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.init.SpeculativeStructures;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.DispenserTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +30,17 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
     private final List<BlockPos> badChests = new ArrayList<>();
     private final Rotation rot;
 
-    public SpeculoPyramidStructurePiece(TemplateManager manager, BlockPos pos, Rotation rot) {
-        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE, 0);
+    public SpeculoPyramidStructurePiece(StructureManager manager, BlockPos pos, Rotation rot) {
+        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE.get(), 0, manager, new ResourceLocation(Speculative.MODID, "speculo_pyramid"), new ResourceLocation(Speculative.MODID, "speculo_pyramid").toString(), new StructurePlaceSettings().setRotation(rot).setMirror(Mirror.NONE), pos);
         this.templatePosition = pos;
         this.rot = rot;
         this.getLootTablesForChests();
-        this.setupPiece(manager);
     }
 
-    public SpeculoPyramidStructurePiece(TemplateManager manager, CompoundNBT nbt) {
-        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE, nbt);
+    public SpeculoPyramidStructurePiece(StructureManager manager, CompoundTag nbt) {
+        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE.get(), nbt, manager, id -> new StructurePlaceSettings().setRotation(Rotation.valueOf(nbt.getString("Rot"))).setMirror(Mirror.NONE));
         this.rot = Rotation.valueOf(nbt.getString("Rot"));
         this.getLootTablesForChests();
-        this.setupPiece(manager);
     }
 
     private void getLootTablesForChests() {
@@ -60,17 +58,10 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
         }
     }
 
-    private void setupPiece(TemplateManager manager) {
-        Template template = manager.getOrCreate(new ResourceLocation(Speculative.MODID, "speculo_pyramid"));
-        PlacementSettings placementSettings = (new PlacementSettings()).setRotation(rot).setMirror(Mirror.NONE);
-
-        this.setup(template, templatePosition, placementSettings);
-    }
-
     @Override
-    protected void addAdditionalSaveData(CompoundNBT tagCompound) {
-        super.addAdditionalSaveData(tagCompound);
-        tagCompound.putString("Rot", this.rot.name());
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag nbt) {
+        super.addAdditionalSaveData(ctx, nbt);
+        nbt.putString("Rot", this.rot.name());
     }
 
     private void createLoot(BlockPos pos, Random rand) {
@@ -92,7 +83,7 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
     }
 
     @Override
-    protected void handleDataMarker(String function, BlockPos pos, IServerWorld worldIn, Random rand, MutableBoundingBox sbb) {
+    protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, Random rand, BoundingBox sbb) {
         if (function.startsWith("Loot")) {
             BlockPos chestPos = pos.below();
             if (sbb.isInside(chestPos)) {
@@ -111,18 +102,16 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
                     return;
                 }
 
-                TileEntity tile = worldIn.getBlockEntity(chestPos);
+                BlockEntity tile = worldIn.getBlockEntity(chestPos);
 
-                if (tile instanceof ChestTileEntity) {
-                    ChestTileEntity chest = (ChestTileEntity) tile;
+                if (tile instanceof ChestBlockEntity chest) {
                     chest.setLootTable(new ResourceLocation(Speculative.MODID, chestLootTable), rand.nextLong());
                 }
 
                 BlockPos dispenserPos = pos.relative(worldIn.getBlockState(chestPos).getValue(ChestBlock.FACING).getOpposite());
-                TileEntity tile2 = worldIn.getBlockEntity(dispenserPos);
+                BlockEntity tile2 = worldIn.getBlockEntity(dispenserPos);
 
-                if (tile2 instanceof DispenserTileEntity) {
-                    DispenserTileEntity dispenser = (DispenserTileEntity) tile2;
+                if (tile2 instanceof DispenserBlockEntity dispenser) {
                     dispenser.setLootTable(new ResourceLocation(Speculative.MODID, dispenserLootTable), rand.nextLong());
                 }
 

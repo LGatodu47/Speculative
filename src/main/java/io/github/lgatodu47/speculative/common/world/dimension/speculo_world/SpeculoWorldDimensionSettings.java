@@ -2,15 +2,7 @@ package io.github.lgatodu47.speculative.common.world.dimension.speculo_world;
 
 import io.github.lgatodu47.speculative.common.init.SpeculativeBlocks;
 import io.github.lgatodu47.speculative.common.init.SpeculativeFluids;
-import net.minecraft.block.BlockState;
-import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.NoiseSettings;
-import net.minecraft.world.gen.settings.ScalingSettings;
-import net.minecraft.world.gen.settings.SlideSettings;
-
-import java.util.Collections;
-import java.util.Optional;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SpeculoWorldDimensionSettings {
     public int getBedrockFloorPosition() {
@@ -33,13 +25,13 @@ public class SpeculoWorldDimensionSettings {
         return SpeculativeFluids.SULFURIC_WATER.getBlock().get().defaultBlockState();
     }
 
-    public DimensionSettings createSettings() {
-        return new DimensionSettings(new DimensionStructuresSettings(Optional.empty(), Collections.emptyMap()),
+    /*public NoiseGeneratorSettings createSettings() {
+        return new NoiseGeneratorSettings(new StructureSettings(Optional.empty(), Collections.emptyMap()),
                 new NoiseSettings(256,
-                        new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-                        new SlideSettings(-10, 3, 0),
-                        new SlideSettings(-30, 0, 0),
+                        new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+                        new NoiseSlideSettings(-10, 3, 0),
+                        new NoiseSlideSettings(-30, 0, 0),
                         1, 2, 1.0D, -0.46875D, true, true, false, false),
                 getDefaultBlock(), getDefaultFluidBlock(), getBedrockRoofPosition(), getBedrockFloorPosition(), getSeaLevel(), false);
-    }
+    }*/
 }

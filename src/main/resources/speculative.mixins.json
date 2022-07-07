@@ -2,22 +2,19 @@
   "required": true,
   "minVersion": "0.8",
   "package": "io.github.lgatodu47.speculative.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "speculative.refmap.json",
   "mixins": [
-    "DerivedWorldInfoMixin",
-    "EarlyLoaderGUIMixin",
+    "BlockEntityTypeAccessor",
+    "DerivedLevelDataMixin",
+    "LevelStorageSourceMixin",
     "LivingEntityMixin",
     "MinecraftServerMixin",
-    "SaveFormatMixin",
-    "ServerWorldInfoMixin",
-    "ServerWorldMixin",
-    "TileEntityTypeAccessor",
+    "PrimaryLevelDataMixin",
+    "ServerLevelMixin",
     "TimeCommandMixin"
   ],
   "client": [
-    "ClientPlayNetHandlerMixin",
-    "ResourceLoadProgressGuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

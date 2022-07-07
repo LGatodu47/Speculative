@@ -1,20 +1,14 @@
 package io.github.lgatodu47.speculative.server.commands;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.lgatodu47.speculative.common.init.SpeculativeFeatures;
-import io.github.lgatodu47.speculative.common.init.SpeculativeFluids;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.server.level.ServerPlayer;
 
 public class DevCommand {
-    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         //LiteralArgumentBuilder<CommandSource> args = Commands.literal("dev");
 
         //args.then(Commands.argument("structureName", StringArgumentType.string())).requires(s -> s.hasPermissionLevel(2)).executes(DevCommand::spawnStructure);
@@ -27,9 +21,9 @@ public class DevCommand {
     }
 
     //@SuppressWarnings("unchecked")
-    private static int spawnStructure(CommandContext<CommandSource> ctx) {
+    private static int spawnStructure(CommandContext<CommandSourceStack> ctx) {
         try {
-            ServerPlayerEntity player = ctx.getSource().getPlayerOrException();
+            ServerPlayer player = ctx.getSource().getPlayerOrException();
             //String structure = StringArgumentType.getString(ctx, "structureName");
 
             //if (structure.equalsIgnoreCase("oasis"))
@@ -54,9 +48,9 @@ public class DevCommand {
 								return pos;
 							}
 						}).apply(player));*/
-            SpeculativeFeatures.OASIS.configured(new BlockStateFeatureConfig(SpeculativeFluids.UNSTABLE_WATER.getBlock().get().defaultBlockState())).place(player.getLevel(), player.getLevel().getChunkSource().getGenerator(), player.getLevel().getRandom(), (new Function<ServerPlayerEntity, BlockPos>() {
+            /*SpeculativeConfiguredFeatures.OASIS.place(player.getLevel(), player.getLevel().getChunkSource().getGenerator(), player.getLevel().getRandom(), (new Function<ServerPlayer, BlockPos>() {
                 @Override
-                public BlockPos apply(ServerPlayerEntity player) {
+                public BlockPos apply(ServerPlayer player) {
                     BlockPos pos = player.blockPosition();
 
                     if (pos.getY() - 4 > 4) {
@@ -67,7 +61,7 @@ public class DevCommand {
 
                     return pos;
                 }
-            }).apply(player));
+            }).apply(player));*/
             //}
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
@@ -76,7 +70,7 @@ public class DevCommand {
         return 0;
     }
 
-    private static int debug(CommandContext<CommandSource> ctx) {
+    private static int debug(CommandContext<CommandSourceStack> ctx) {
         return 0;
     }
 }

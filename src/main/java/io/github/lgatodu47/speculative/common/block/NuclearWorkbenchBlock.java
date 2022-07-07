@@ -1,50 +1,47 @@
 package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.Speculative;
-import io.github.lgatodu47.speculative.common.container.NuclearWorkbenchContainer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
+import io.github.lgatodu47.speculative.common.container.NuclearWorkbenchMenu;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 public class NuclearWorkbenchBlock extends Block {
-    private static final ITextComponent TITLE = new TranslationTextComponent("container." + Speculative.MODID + ".nuclear_workbench");
+    private static final Component TITLE = new TranslatableComponent("container." + Speculative.MODID + ".nuclear_workbench");
 
     public NuclearWorkbenchBlock() {
-        super(Properties.of(Material.METAL).strength(8.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE).sound(SoundType.NETHERITE_BLOCK));
+        super(Properties.of(Material.METAL).strength(8.0F).sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops());
     }
 
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if(!world.isClientSide) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, state.getMenuProvider(world, pos));
-            return ActionResultType.CONSUME;
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
+        if (!world.isClientSide) {
+            NetworkHooks.openGui((ServerPlayer) player, state.getMenuProvider(world, pos));
+            return InteractionResult.CONSUME;
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable
     @Override
-    public INamedContainerProvider getMenuProvider(BlockState state, World world, BlockPos pos) {
-        return new SimpleNamedContainerProvider((windowId, playerInv, player) -> new NuclearWorkbenchContainer(windowId, playerInv, IWorldPosCallable.create(world, pos)), TITLE);
+    public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos) {
+        return new SimpleMenuProvider((windowId, playerInv, player) -> new NuclearWorkbenchMenu(windowId, playerInv, ContainerLevelAccess.create(world, pos)), TITLE);
     }
 }

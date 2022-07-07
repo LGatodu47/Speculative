@@ -1,34 +1,27 @@
 package io.github.lgatodu47.speculative.common.block;
 
-import net.minecraft.block.OreBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.ToolType;
-
-import java.util.Random;
-
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.OreBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 public class SpeculativeOre extends OreBlock {
-    protected int minXp;
-    protected int maxXp;
+    protected UniformInt xpRange;
 
-    public SpeculativeOre(float hardness, float resistance, int harvestLevel) {
-        super(Properties.of(Material.STONE).strength(hardness, resistance).harvestLevel(harvestLevel).harvestTool(ToolType.PICKAXE).sound(SoundType.STONE));
+    public SpeculativeOre(float hardness, float resistance) {
+        super(Properties.of(Material.STONE).strength(hardness, resistance).sound(SoundType.STONE).requiresCorrectToolForDrops());
     }
 
     public SpeculativeOre xp(int min, int max) {
-        this.minXp = min;
-        this.maxXp = max;
+        xpRange = UniformInt.of(min, max);
         return this;
     }
 
     @Override
-    protected int xpOnDrop(Random rand) {
-        if ((minXp < 1 || maxXp < 1) || (maxXp - minXp <= 0)) {
-            return 0;
-        }
-        return MathHelper.nextInt(rand, minXp, maxXp);
+    public int getExpDrop(BlockState state, LevelReader reader, BlockPos pos, int fortune, int silktouch) {
+        return silktouch == 0 ? this.xpRange.sample(RANDOM) : 0;
     }
 }

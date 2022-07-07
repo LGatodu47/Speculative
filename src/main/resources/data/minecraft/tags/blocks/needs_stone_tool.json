@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:graphite_ore",
+    "speculative:speculoos_summoner",
+    "speculative:centrifuge"
+  ]
+}

@@ -1,19 +1,19 @@
 package io.github.lgatodu47.speculative.util;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class DimensionUtil {
-    private static final Set<RegistryKey<World>> DIMENSION_WORLD_INFO = new HashSet<>();
+    private static final Set<ResourceKey<Level>> DIMENSION_WORLD_INFO = new HashSet<>();
 
-    public static void registerDimensionWorldInfo(RegistryKey<World> world) {
+    public static void registerDimensionWorldInfo(ResourceKey<Level> world) {
         DIMENSION_WORLD_INFO.add(world);
     }
 
-    public static boolean hasDimensionWorldInfo(RegistryKey<World> world) {
+    public static boolean hasDimensionWorldInfo(ResourceKey<Level> world) {
         return DIMENSION_WORLD_INFO.contains(world);
     }
 }
