@@ -7,12 +7,15 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class SpeculativeUtils {
     public static Set<Recipe<?>> findRecipesByType(RecipeType<?> type, Level level) {
@@ -35,5 +38,15 @@ public final class SpeculativeUtils {
     @SuppressWarnings("unchecked")
     public static <T> Class<T> classHack(Class<?> clazz) {
         return (Class<T>) clazz;
+    }
+
+    public static <T, I> Collection<I> filterEntries(DeferredRegister<T> register, Class<I> filter) {
+        return register.getEntries()
+                .stream()
+                .filter(RegistryObject::isPresent)
+                .map(RegistryObject::get)
+                .filter(filter::isInstance)
+                .map(filter::cast)
+                .toList();
     }
 }

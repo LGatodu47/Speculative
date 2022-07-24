@@ -2,6 +2,10 @@ package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.container.NuclearWorkbenchMenu;
+import io.github.lgatodu47.speculative.data.loot.ISelfDropBlockLoot;
+import io.github.lgatodu47.speculative.data.models.IDataGenBlockState;
+import io.github.lgatodu47.speculative.data.models.ModelFileHelper;
+import io.github.lgatodu47.speculative.data.tags.IHarvestableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -18,11 +22,14 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
-public class NuclearWorkbenchBlock extends Block {
+public class NuclearWorkbenchBlock extends Block implements ISelfDropBlockLoot, IHarvestableBlock {
     private static final Component TITLE = new TranslatableComponent("container." + Speculative.MODID + ".nuclear_workbench");
 
     public NuclearWorkbenchBlock() {
@@ -43,5 +50,17 @@ public class NuclearWorkbenchBlock extends Block {
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos) {
         return new SimpleMenuProvider((windowId, playerInv, player) -> new NuclearWorkbenchMenu(windowId, playerInv, ContainerLevelAccess.create(world, pos)), TITLE);
+    }
+
+    @Nullable
+    @Override
+    public TierType getTierType() {
+        return TierType.IRON;
+    }
+
+    @Nullable
+    @Override
+    public ToolType getToolType() {
+        return ToolType.PICKAXE;
     }
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom",
+  "textures": {
+    "top": "speculative:block/tourmaline_wood_door_top",
+    "bottom": "speculative:block/tourmaline_wood_door_bottom"
+  }
+}

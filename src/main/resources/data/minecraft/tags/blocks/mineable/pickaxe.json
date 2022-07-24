@@ -1,19 +1,32 @@
 {
   "replace": false,
   "values": [
-    "speculative:speculo_ore",
     "speculative:speculo_block",
+    "speculative:radioactive_diamond_block",
+    "speculative:graphite_block",
+    "speculative:speculo_stone",
+    "speculative:speculo_cobblestone",
+    "speculative:speculo_cobblestone_stairs",
+    "speculative:speculo_cobblestone_slab",
+    "speculative:speculo_cobblestone_wall",
+    "speculative:speculo_sandstone",
+    "speculative:cut_speculo_sandstone",
+    "speculative:chiseled_speculo_sandstone",
+    "speculative:speculo_sandstone_stairs",
+    "speculative:speculo_sandstone_slab",
+    "speculative:speculo_sandstone_wall",
+    "speculative:greenstone_lantern",
+    "speculative:speculo_ore",
     "speculative:speculo_world_speculo_ore",
     "speculative:radioactive_diamond_ore",
-    "speculative:radioactive_diamond_block",
     "speculative:uranium_ore",
     "speculative:graphite_ore",
-    "speculative:graphite_block",
     "speculative:uranium_238_block",
     "speculative:uranium_235_block",
     "speculative:uranium_234_block",
     "speculative:speculoos_summoner",
     "speculative:centrifuge",
-    "speculative:nuclear_workbench"
+    "speculative:nuclear_workbench",
+    "speculative:nuclear_manipulator"
   ]
 }

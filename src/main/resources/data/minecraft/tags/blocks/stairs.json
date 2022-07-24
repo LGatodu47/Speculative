@@ -1,9 +1,7 @@
 {
   "replace": false,
   "values": [
-    "speculative:speculo_wood_stairs",
     "speculative:speculo_cobblestone_stairs",
-    "speculative:speculo_sandstone_stairs",
-    "speculative:tourmaline_wood_stairs"
+    "speculative:speculo_sandstone_stairs"
   ]
 }

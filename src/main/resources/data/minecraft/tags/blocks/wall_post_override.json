@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:greenstone_torch",
+    "speculative:greenstone_wall_torch"
+  ]
+}

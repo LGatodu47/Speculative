@@ -3,7 +3,7 @@
 	"values": [
 		"#forge:stone",
 		"#forge:sand",
-		"#forge:dirt",
+		"#minecraft:dirt",
 		"#forge:sandstone"
 	]
 }

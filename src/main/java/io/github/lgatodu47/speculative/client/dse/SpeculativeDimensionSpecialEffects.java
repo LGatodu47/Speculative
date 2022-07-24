@@ -29,12 +29,12 @@ public abstract class SpeculativeDimensionSpecialEffects extends DimensionSpecia
 
     protected void renderClouds(int ticks, float partialTicks, PoseStack stack, ClientLevel world, Minecraft mc, double viewEntityX, double viewEntityY, double viewEntityZ) {}
 
-    public static void registerDimensionRenderInfo() {
-        registerInfo("speculo_world", new SpeculoWorldEffects());
+    public static void registerDimensionsSpecialEffects() {
+        registerSpecialEffects("speculo_world", new SpeculoWorldEffects());
     }
 
-    private static void registerInfo(String name, DimensionSpecialEffects info) {
+    private static void registerSpecialEffects(String name, DimensionSpecialEffects specialEffects) {
         SpeculativeReflectionHelper.getStaticFieldValue(DimensionSpecialEffects.class, "f_108857_", SpeculativeUtils.<Object2ObjectMap<ResourceLocation, DimensionSpecialEffects>>classHack(Object2ObjectMap.class))
-                .ifPresent(map -> map.put(new ResourceLocation(Speculative.MODID, name), info));
+                .ifPresent(map -> map.put(new ResourceLocation(Speculative.MODID, name), specialEffects));
     }
 }

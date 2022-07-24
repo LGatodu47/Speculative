@@ -3,10 +3,7 @@ package io.github.lgatodu47.speculative.common.init;
 import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.world.biome.*;
 import net.minecraft.Util;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -20,27 +17,28 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class SpeculativeBiomes {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Speculative.MODID);
 
-    private static final Map<ResourceLocation, SpeculativeBiome> SPECULATIVE_BIOME_MAP = new HashMap<>();
+    private static final Map<ResourceLocation, Supplier<SpeculativeBiome>> SPECULATIVE_BIOME_MAP = new HashMap<>();
 
-    public static final RegistryObject<Biome> SPECULO_PLAINS = register("speculo_plains", new SpeculoPlainsBiome());
-    public static final RegistryObject<Biome> SPECULO_FOREST = register("speculo_forest", new SpeculoForestBiome());
-    public static final RegistryObject<Biome> SPECULO_MOUNTAINS = register("speculo_mountains", new SpeculoMountainsBiome());
-    public static final RegistryObject<Biome> SPECULO_DESERT = register("speculo_desert", new SpeculoDesertBiome());
+    public static final RegistryObject<Biome> SPECULO_PLAINS = register("speculo_plains", SpeculoPlainsBiome::new);
+    public static final RegistryObject<Biome> SPECULO_FOREST = register("speculo_forest", SpeculoForestBiome::new);
+    public static final RegistryObject<Biome> SPECULO_MOUNTAINS = register("speculo_mountains", SpeculoMountainsBiome::new);
+    public static final RegistryObject<Biome> SPECULO_DESERT = register("speculo_desert", SpeculoDesertBiome::new);
 
-    private static RegistryObject<Biome> register(String name, SpeculativeBiome biome) {
+    private static RegistryObject<Biome> register(String name, Supplier<SpeculativeBiome> biome) {
         if(SPECULATIVE_BIOME_MAP.putIfAbsent(new ResourceLocation(Speculative.MODID, name), biome) != null) {
             throw new IllegalStateException("Tried to register an already present Speculative biome! id: '" + name + "'.");
         }
 
-        return BIOMES.register(name, biome::build);
+        return BIOMES.register(name, () -> biome.get().build());
     }
 
     public static Optional<SpeculativeBiome> getSpeculativeBiome(ResourceLocation id) {
-        return Optional.ofNullable(SPECULATIVE_BIOME_MAP.get(id));
+        return Optional.ofNullable(SPECULATIVE_BIOME_MAP.getOrDefault(id, () -> null).get());
     }
 
     public static void addTypes() {
@@ -57,10 +55,7 @@ public class SpeculativeBiomes {
     }
 
     public static final class Tags {
-        public static final TagKey<Biome> HAS_SPECULO_PYRAMID = create("has_structure/speculo_pyramid");
-
-        private static TagKey<Biome> create(String name) {
-            return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Speculative.MODID, name));
-        }
+        public static final TagKey<Biome> HAS_SPECULO_PYRAMID = BIOMES.createTagKey("has_structure/speculo_pyramid");
+        public static final TagKey<Biome> HAS_SPECULO_HOUSE = BIOMES.createTagKey("has_structure/speculo_house");
     }
 }

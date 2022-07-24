@@ -2,7 +2,8 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -28,45 +29,17 @@
             },
             {
               "type": "minecraft:item",
-              "name": "speculative:speculo_gem",
               "functions": [
                 {
                   "function": "minecraft:set_count",
-                  "count": 2
-                },
-                {
-                  "function": "minecraft:apply_bonus",
-                  "enchantment": "minecraft:fortune",
-                  "formula": "minecraft:ore_drops"
+                  "count": 1.0,
+                  "add": false
                 },
                 {
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:random_chance",
-                  "chance": 0.1
-                }
-              ]
-            },
-            {
-              "type": "minecraft:item",
-              "name": "speculative:speculo_gem",
-              "functions": [
-                {
-                  "function": "minecraft:set_count",
-                  "count": 1
-                },
-                {
-                  "function": "minecraft:apply_bonus",
-                  "enchantment": "minecraft:fortune",
-                  "formula": "minecraft:ore_drops"
-                },
-                {
-                  "function": "minecraft:explosion_decay"
-                }
-              ]
+              "name": "speculative:speculo_gem"
             }
           ]
         }

@@ -31,7 +31,6 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public final class SpeculativeConfiguredFeatures {
     private static final Set<SpeculativeFeature<?>> SPECULATIVE_FEATURES = new HashSet<>();
@@ -39,7 +38,7 @@ public final class SpeculativeConfiguredFeatures {
     public static final SpeculativeFeature<OreConfiguration> SPECULO_ORE = overworldOre("speculo_ore", 3, 8, 25, SpeculativeBlocks.SPECULO_ORE.get().defaultBlockState(), Biomes.JUNGLE);
     public static final SpeculativeFeature<OreConfiguration> URANIUM_ORE = overworldOre("uranium_ore", 5, 6, 42, SpeculativeBlocks.URANIUM_ORE.get().defaultBlockState(), Biomes.WINDSWEPT_GRAVELLY_HILLS, Biomes.DESERT);
     public static final SpeculativeFeature<OreConfiguration> URANIUM_ORE_BADLANDS = overworldOre("uranium_ore_badlands", 7, 8, 50, SpeculativeBlocks.URANIUM_ORE.get().defaultBlockState(), Biomes.BADLANDS);
-    public static final SpeculativeFeature<OreConfiguration> SPECULO_WORLD_SPECULO_ORE = speculoWorldOre("speculo_world_speculo_ore", 4, 10, 35, SpeculativeBlocks.SPECULO_ORE_W.get().defaultBlockState());
+    public static final SpeculativeFeature<OreConfiguration> SPECULO_WORLD_SPECULO_ORE = speculoWorldOre("speculo_world_speculo_ore", 4, 10, 35, SpeculativeBlocks.SPECULO_WORLD_SPECULO_ORE.get().defaultBlockState());
     public static final SpeculativeFeature<OreConfiguration> RADIOACTIVE_DIAMOND_ORE = speculoWorldOre("radioactive_diamond_ore", 3, 8, 28, SpeculativeBlocks.RADIOACTIVE_DIAMOND_ORE.get().defaultBlockState());
 
     public static final SpeculativeFeature<RandomPatchConfiguration> SPECULO_FLOWER = register("speculo_flower",
@@ -77,9 +76,9 @@ public final class SpeculativeConfiguredFeatures {
             EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.insideWorld(new BlockPos(0, -5, 0)), 32),
             BiomeFilter.biome());
 
-    public static final SpeculativeFeature<TreeConfiguration> SPECULO_TREE = register("speculo_tree", Feature.TREE, SpeculoTreeGrower.SPECULO_TREE_CONFIG);
-    public static final SpeculativeFeature<TreeConfiguration> FANCY_SPECULO_TREE = register("fancy_speculo_tree", Feature.TREE, SpeculoTreeGrower.FANCY_SPECULO_TREE_CONFIG);
-    public static final SpeculativeFeature<TreeConfiguration> TOURMALINE_TREE = register("tourmaline_tree", Feature.TREE, TourmalineTreeGrower.CONFIG);
+    public static final SpeculativeFeature<TreeConfiguration> SPECULO_TREE = register("speculo_tree", Feature.TREE, SpeculoTreeGrower.SPECULO_TREE_CONFIG.get());
+    public static final SpeculativeFeature<TreeConfiguration> FANCY_SPECULO_TREE = register("fancy_speculo_tree", Feature.TREE, SpeculoTreeGrower.FANCY_SPECULO_TREE_CONFIG.get());
+    public static final SpeculativeFeature<TreeConfiguration> TOURMALINE_TREE = register("tourmaline_tree", Feature.TREE, TourmalineTreeGrower.CONFIG.get());
 
     public static final SpeculativeFeature<RandomFeatureConfiguration> TREES_SPECULO_PLAINS = register("trees_speculo_plains",
             Feature.RANDOM_SELECTOR,

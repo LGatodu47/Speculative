@@ -2,6 +2,8 @@ package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.common.block.entity.SpeculoosSummonerBlockEntity;
 import io.github.lgatodu47.speculative.common.init.SpeculativeBlockEntityTypes;
+import io.github.lgatodu47.speculative.data.loot.ISelfDropBlockLoot;
+import io.github.lgatodu47.speculative.data.tags.IHarvestableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -21,7 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class SpeculoosSummonerBlock extends Block implements ISpeculativeEntityBlock {
+public class SpeculoosSummonerBlock extends Block implements ISpeculativeEntityBlock, ISelfDropBlockLoot, IHarvestableBlock {
     public SpeculoosSummonerBlock() {
         super(Properties.of(Material.METAL).strength(4.0F, 5.0F).sound(SoundType.METAL).requiresCorrectToolForDrops());
     }
@@ -64,5 +66,17 @@ public class SpeculoosSummonerBlock extends Block implements ISpeculativeEntityB
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    @Nullable
+    @Override
+    public TierType getTierType() {
+        return TierType.STONE;
+    }
+
+    @Nullable
+    @Override
+    public ToolType getToolType() {
+        return ToolType.PICKAXE;
     }
 }

@@ -19,8 +19,10 @@
 	"block.speculative.speculo_grass": "Speculo Grass",
 	"block.speculative.speculo_dirt": "Speculo Dirt",
 	"block.speculative.speculo_stone": "Speculo Stone",
+
 	"block.speculative.speculo_flower": "Speculo Flower",
-	
+	"block.speculative.potted_speculo_flower": "Potted Speculo Flower",
+
 	"block.speculative.speculo_cobblestone": "Speculo Cobblestone",
 	"block.speculative.speculo_cobblestone_stairs": "Speculo Cobblestone Stairs",
 	"block.speculative.speculo_cobblestone_slab": "Speculo Cobblestone Slab",
@@ -41,9 +43,12 @@
 	"block.speculative.speculo_wood_wall_sign": "Speculo Wood Sign",
 	"block.speculative.speculo_wood_trapdoor": "Speculo Wood Trapdoor",
 	"block.speculative.speculo_wood_pressure_plate": "Speculo Wood Pressure Plate",
-	
+	"block.speculative.speculo_wood_door": "Speculo Wood Door",
+	"block.speculative.speculo_wood_button": "Speculo Wood Button",
+
 	"block.speculative.speculo_tree_sapling": "Speculo Sapling",
-	
+	"block.speculative.potted_speculo_tree_sapling": "Potted Speculo Sapling",
+
 	"block.speculative.sulfuric_glue": "Sulfuric Glue",
 	
 	"block.speculative.mango_bush": "Mango Bush",
@@ -55,9 +60,6 @@
 	"block.speculative.speculo_sandstone_stairs" : "Speculo Sandstone Stairs",
 	"block.speculative.speculo_sandstone_slab" : "Speculo Sandstone Slab",
 	"block.speculative.speculo_sandstone_wall" : "Speculo Sandstone Wall",
-	
-	"block.speculative.greenstone_torch": "Greenstone Torch",
-	"block.speculative.greenstone_wall_torch": "Greenstone Wall Torch",
 	
 	"block.speculative.tourmaline_log": "Tourmaline Log",
 	"block.speculative.stripped_tourmaline_log": "Stripped Tourmaline Log",
@@ -73,11 +75,17 @@
 	"block.speculative.tourmaline_wood_wall_sign": "Tourmaline Wood Sign",
 	"block.speculative.tourmaline_wood_trapdoor": "Tourmaline Wood Trapdoor",
 	"block.speculative.tourmaline_wood_pressure_plate": "Tourmaline Wood Pressure Plate",
+	"block.speculative.tourmaline_wood_door": "Tourmaline Wood Door",
+	"block.speculative.tourmaline_wood_button": "Tourmaline Wood Button",
 	
 	"block.speculative.tourmaline_leaves": "Tourmaline Leaves",
 	"block.speculative.tourmaline_tree_sapling": "Tourmaline Sapling",
+	"block.speculative.potted_tourmaline_tree_sapling": "Potted Tourmaline Sapling",
 
 	"block.speculative.speculo_tnt": "Speculo TNT",
+	"block.speculative.greenstone_torch": "Greenstone Torch",
+	"block.speculative.greenstone_wall_torch": "Greenstone Wall Torch",
+	"block.speculative.greenstone_lantern": "Greenstone Lantern",
 
 	"fluid.speculative.sulfuric_water": "Sulfuric Water",
 	"fluid.speculative.unstable_water": "Unstable Water",
@@ -108,6 +116,11 @@
 	"item.speculative.liquid_nitrogen_bucket": "Liquid Nitrogen Bucket",
 	"item.speculative.speculo_wood_sign": "Speculo Wood Sign",
 	"item.speculative.tourmaline_wood_sign": "Tourmaline Wood Sign",
+	"item.speculative.speculo_wood_door": "Speculo Wood Door",
+	"item.speculative.speculo_wood_boat": "Speculo Wood Boat",
+	"item.speculative.tourmaline_wood_door": "Tourmaline Wood Door",
+	"item.speculative.tourmaline_wood_boat": "Tourmaline Wood Boat",
+	"item.speculative.ancient_lord_spawn_egg": "Ancient Lord Spawn Egg",
 
 	"itemGroup.speculative.display_name" : "Speculative",
 	

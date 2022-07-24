@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:tourmaline_log",
+    "speculative:stripped_tourmaline_log",
+    "speculative:tourmaline_bark",
+    "speculative:stripped_tourmaline_bark"
+  ]
+}

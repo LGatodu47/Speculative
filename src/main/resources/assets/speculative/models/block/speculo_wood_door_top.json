@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top",
+  "textures": {
+    "top": "speculative:block/speculo_wood_door_top",
+    "bottom": "speculative:block/speculo_wood_door_bottom"
+  }
+}

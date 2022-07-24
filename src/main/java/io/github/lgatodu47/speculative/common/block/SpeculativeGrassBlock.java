@@ -1,9 +1,12 @@
 package io.github.lgatodu47.speculative.common.block;
 
+import io.github.lgatodu47.speculative.common.init.SpeculativeBlocks;
+import io.github.lgatodu47.speculative.data.loot.IDataGenLoot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -13,12 +16,16 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LayerLightEngine;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class SpeculativeGrassBlock extends Block {
+public class SpeculativeGrassBlock extends Block implements IDataGenLoot {
     private final Supplier<Block> dirt;
 
     public SpeculativeGrassBlock(Supplier<Block> dirt) {
@@ -65,7 +72,21 @@ public class SpeculativeGrassBlock extends Block {
                     }
                 }
             }
-
         }
+    }
+
+    @Nullable
+    @Override
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
+        if(ToolActions.HOE_TILL.equals(toolAction)) {
+            return Blocks.FARMLAND.defaultBlockState();
+        }
+
+        return null;
+    }
+
+    @Override
+    public LootTable.Builder makeLootTable() {
+        return Helper.createSingleItemTableWithSilkTouch(dirt.get(), this);
     }
 }

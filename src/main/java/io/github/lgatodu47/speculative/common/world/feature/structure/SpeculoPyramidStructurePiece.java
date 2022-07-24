@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
+    private static final ResourceLocation ID = new ResourceLocation(Speculative.MODID, "speculo_pyramid");
     private int goodChestsCount;
     private int badChestsCount;
     private final List<BlockPos> goodChests = new ArrayList<>();
@@ -31,14 +32,14 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
     private final Rotation rot;
 
     public SpeculoPyramidStructurePiece(StructureManager manager, BlockPos pos, Rotation rot) {
-        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE.get(), 0, manager, new ResourceLocation(Speculative.MODID, "speculo_pyramid"), new ResourceLocation(Speculative.MODID, "speculo_pyramid").toString(), new StructurePlaceSettings().setRotation(rot).setMirror(Mirror.NONE), pos);
+        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE.get(), 0, manager, ID, ID.toString(), createSettings(rot), pos);
         this.templatePosition = pos;
         this.rot = rot;
         this.getLootTablesForChests();
     }
 
     public SpeculoPyramidStructurePiece(StructureManager manager, CompoundTag nbt) {
-        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE.get(), nbt, manager, id -> new StructurePlaceSettings().setRotation(Rotation.valueOf(nbt.getString("Rot"))).setMirror(Mirror.NONE));
+        super(SpeculativeStructures.SPECULO_PYRAMID_PIECE.get(), nbt, manager, id -> createSettings(Rotation.valueOf(nbt.getString("Rot"))));
         this.rot = Rotation.valueOf(nbt.getString("Rot"));
         this.getLootTablesForChests();
     }
@@ -92,11 +93,11 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
                 String chestLootTable;
                 String dispenserLootTable;
                 if (this.goodChests.contains(pos)) {
-                    chestLootTable = "chests/speculo_pyramid_good_loot";
-                    dispenserLootTable = "chests/speculo_pyramid_good_splash";
+                    chestLootTable = "chests/speculo_pyramid/good_loot";
+                    dispenserLootTable = "chests/speculo_pyramid/good_splash";
                 } else if (this.badChests.contains(pos)) {
-                    chestLootTable = "chests/speculo_pyramid_bad_loot";
-                    dispenserLootTable = "chests/speculo_pyramid_bad_splash";
+                    chestLootTable = "chests/speculo_pyramid/bad_loot";
+                    dispenserLootTable = "chests/speculo_pyramid/bad_splash";
                 } else {
                     Speculative.LOGGER.error("Failed to create loot tables for speculative:speculo_pyramid at " + pos);
                     return;
@@ -118,5 +119,9 @@ public class SpeculoPyramidStructurePiece extends TemplateStructurePiece {
                 worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
             }
         }
+    }
+
+    private static StructurePlaceSettings createSettings(Rotation rot) {
+        return new StructurePlaceSettings().setRotation(rot).setMirror(Mirror.NONE).setKeepLiquids(false);
     }
 }

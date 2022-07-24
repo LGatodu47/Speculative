@@ -1,18 +1,17 @@
 package io.github.lgatodu47.speculative.client.event;
 
-import com.mojang.blaze3d.shaders.FogShape;
 import io.github.lgatodu47.speculative.Speculative;
 import io.github.lgatodu47.speculative.common.init.SpeculativeBiomes;
 import io.github.lgatodu47.speculative.common.init.SpeculativeFluids;
 import io.github.lgatodu47.speculative.common.init.SpeculativeWorlds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.util.CubicSampler;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
@@ -30,7 +29,7 @@ public class FogHandler {
             if (entity.level.dimension().equals(SpeculativeWorlds.SPECULO_WORLD)) {
                 float density = getDensity(Minecraft.getInstance().options.renderDistance, (ClientLevel) entity.level, event.getCamera()) * 0.03F;
                 if(density >= 0.005F) {
-                    event.setNearPlaneDistance(-0 * (density - 0.005F));
+                    event.setNearPlaneDistance(0 * (density - 0.005F));
                     event.setFarPlaneDistance(event.getFarPlaneDistance() * (1 - density * 24));
                     event.setCanceled(true); // We need to cancel the event in order to apply our fog density.
                 }

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#speculative:speculo_logs",
+    "#speculative:tourmaline_logs"
+  ]
+}

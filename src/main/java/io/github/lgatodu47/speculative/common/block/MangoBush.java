@@ -1,6 +1,8 @@
 package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.common.init.SpeculativeItems;
+import io.github.lgatodu47.speculative.data.loot.IDataGenLoot;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -19,11 +21,14 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.Random;
 
-public class MangoBush extends Block implements BonemealableBlock {
+public class MangoBush extends Block implements BonemealableBlock, IDataGenLoot {
     private static final IntegerProperty AGE = BlockStateProperties.AGE_1;
 
     public MangoBush() {
@@ -77,5 +82,13 @@ public class MangoBush extends Block implements BonemealableBlock {
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(AGE);
+    }
+
+    @Override
+    public LootTable.Builder makeLootTable() {
+        return Helper.createShearsDispatchTable(this,
+                LootItem.lootTableItem(SpeculativeItems.STRANGE_MANGO.get())
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(this)
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(MangoBush.AGE, 1))));
     }
 }

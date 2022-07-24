@@ -1,43 +1,29 @@
 {
+  "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:alternatives",
           "children": [
             {
               "type": "minecraft:item",
-              "name": "speculative:mango_bush",
               "conditions": [
                 {
-                  "condition": "minecraft:alternative",
-                  "terms": [
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "items": [
-                          "minecraft:shears"
-                        ]
-                      }
-                    },
-                    {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "enchantments": [
-                          {
-                            "enchantment": "minecraft:silk_touch"
-                          }
-                        ]
-                      }
-                    }
-                  ]
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": [
+                      "minecraft:shears"
+                    ]
+                  }
                 }
-              ]
+              ],
+              "name": "speculative:mango_bush"
             },
             {
               "type": "minecraft:item",
-              "name": "speculative:strange_mango",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -46,7 +32,8 @@
                     "age": "1"
                   }
                 }
-              ]
+              ],
+              "name": "speculative:strange_mango"
             }
           ]
         }

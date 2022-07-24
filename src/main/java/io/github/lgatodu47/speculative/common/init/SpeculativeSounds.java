@@ -10,9 +10,29 @@ import net.minecraftforge.registries.RegistryObject;
 public class SpeculativeSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Speculative.MODID);
 
-    public static final SoundEvent SULFURIC_WATER_BUCKET_FILL_SE = new SoundEvent(new ResourceLocation(Speculative.MODID, "item.sulfuric_water_bucket.fill"));
-    public static final SoundEvent SULFURIC_WATER_BUCKET_EMPTY_SE = new SoundEvent(new ResourceLocation(Speculative.MODID, "item.sulfuric_water_bucket.empty"));
-    public static final RegistryObject<SoundEvent> SULFURIC_WATER_BUCKET_FILL = SOUNDS.register("item.sulfuric_water_bucket.fill", () -> SULFURIC_WATER_BUCKET_FILL_SE);
-    public static final RegistryObject<SoundEvent> SULFURIC_WATER_BUCKET_EMPTY = SOUNDS.register("item.sulfuric_water_bucket.empty", () -> SULFURIC_WATER_BUCKET_EMPTY_SE);
-    public static final RegistryObject<SoundEvent> SULFURIC_WATER_AMBIENT = SOUNDS.register("block.sulfuric_water.ambient", () -> new SoundEvent(new ResourceLocation(Speculative.MODID, "block.sulfuric_water.ambient")));
+    public static final RegistryObject<SoundEvent> SULFURIC_WATER_BUCKET_FILL = register("item.sulfuric_water_bucket.fill");
+    public static final RegistryObject<SoundEvent> SULFURIC_WATER_BUCKET_EMPTY = register("item.sulfuric_water_bucket.empty");
+    public static final RegistryObject<SoundEvent> SULFURIC_WATER_AMBIENT = register("block.sulfuric_water.ambient");
+
+    private static RegistryObject<SoundEvent> register(String name) {
+        return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(Speculative.MODID, name)));
+    }
+
+    public static SoundEvent lazy(RegistryObject<SoundEvent> sound) {
+        return new LazySoundEvent(sound);
+    }
+
+    private static final class LazySoundEvent extends SoundEvent {
+        private final RegistryObject<SoundEvent> obj;
+
+        private LazySoundEvent(RegistryObject<SoundEvent> obj) {
+            super(obj.getId());
+            this.obj = obj;
+        }
+
+        @Override
+        public ResourceLocation getLocation() {
+            return obj.get().getLocation();
+        }
+    }
 }

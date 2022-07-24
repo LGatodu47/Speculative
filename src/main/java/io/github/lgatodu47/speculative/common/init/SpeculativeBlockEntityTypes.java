@@ -1,10 +1,7 @@
 package io.github.lgatodu47.speculative.common.init;
 
 import io.github.lgatodu47.speculative.Speculative;
-import io.github.lgatodu47.speculative.common.block.entity.BossSummonerBlockEntity;
-import io.github.lgatodu47.speculative.common.block.entity.CentrifugeBlockEntity;
-import io.github.lgatodu47.speculative.common.block.entity.SpeculoosSummonerBlockEntity;
-import io.github.lgatodu47.speculative.common.block.entity.UraniumBlockEntity;
+import io.github.lgatodu47.speculative.common.block.entity.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -17,4 +14,5 @@ public class SpeculativeBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE = BLOCK_ENTITY_TYPES.register("centrifuge", () -> BlockEntityType.Builder.of(CentrifugeBlockEntity::new, SpeculativeBlocks.CENTRIFUGE.get()).build(null));
     public static final RegistryObject<BlockEntityType<BossSummonerBlockEntity>> BOSS_SUMMONER = BLOCK_ENTITY_TYPES.register("boss_summoner", () -> BlockEntityType.Builder.of(BossSummonerBlockEntity::new, SpeculativeBlocks.SPECULO_BOSS_SUMMONER.get()).build(null));
     public static final RegistryObject<BlockEntityType<UraniumBlockEntity>> URANIUM_BLOCK = BLOCK_ENTITY_TYPES.register("uranium_block", () -> BlockEntityType.Builder.of(UraniumBlockEntity::new, SpeculativeBlocks.URANIUM_238_BLOCK.get(), SpeculativeBlocks.URANIUM_235_BLOCK.get(), SpeculativeBlocks.URANIUM_234_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<NuclearManipulatorBlockEntity>> NUCLEAR_MANIPULATOR = BLOCK_ENTITY_TYPES.register("nuclear_manipulator", () -> BlockEntityType.Builder.of(NuclearManipulatorBlockEntity::new, SpeculativeBlocks.NUCLEAR_MANIPULATOR.get()).build(null));
 }

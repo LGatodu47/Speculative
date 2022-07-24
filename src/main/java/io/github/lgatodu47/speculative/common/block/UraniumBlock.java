@@ -2,6 +2,7 @@ package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.common.block.entity.UraniumBlockEntity;
 import io.github.lgatodu47.speculative.common.init.SpeculativeBlockEntityTypes;
+import io.github.lgatodu47.speculative.data.tags.IHarvestableBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,7 +29,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class UraniumBlock extends Block implements ISpeculativeEntityBlock {
+public class UraniumBlock extends Block implements ISpeculativeEntityBlock, IHarvestableBlock {
     private final UraniumType type;
 
     public UraniumBlock(UraniumType type) {
@@ -112,6 +113,18 @@ public class UraniumBlock extends Block implements ISpeculativeEntityBlock {
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
+    }
+
+    @Nullable
+    @Override
+    public TierType getTierType() {
+        return TierType.IRON;
+    }
+
+    @Nullable
+    @Override
+    public ToolType getToolType() {
+        return ToolType.PICKAXE;
     }
 
     public enum UraniumType {

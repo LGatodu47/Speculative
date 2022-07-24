@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:speculo_ore",
+    "speculative:graphite_ore",
+    "speculative:uranium_ore"
+  ]
+}

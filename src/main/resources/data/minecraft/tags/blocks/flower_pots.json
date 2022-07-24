@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:potted_speculo_flower",
+    "speculative:potted_speculo_tree_sapling",
+    "speculative:potted_tourmaline_tree_sapling"
+  ]
+}

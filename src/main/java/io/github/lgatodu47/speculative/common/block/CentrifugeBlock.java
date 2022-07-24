@@ -2,6 +2,8 @@ package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.common.block.entity.CentrifugeBlockEntity;
 import io.github.lgatodu47.speculative.common.init.SpeculativeBlockEntityTypes;
+import io.github.lgatodu47.speculative.data.loot.ISelfDropBlockLoot;
+import io.github.lgatodu47.speculative.data.tags.IHarvestableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -39,9 +41,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
-public class CentrifugeBlock extends Block implements ISpeculativeEntityBlock {
+public class CentrifugeBlock extends Block implements ISpeculativeEntityBlock, ISelfDropBlockLoot, IHarvestableBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
 
@@ -162,4 +165,36 @@ public class CentrifugeBlock extends Block implements ISpeculativeEntityBlock {
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
     }
+
+    @Nullable
+    @Override
+    public TierType getTierType() {
+        return TierType.STONE;
+    }
+
+    @Nullable
+    @Override
+    public ToolType getToolType() {
+        return ToolType.PICKAXE;
+    }
+
+    private static final List<Direction> FACING_VALUES = FACING.getPossibleValues().stream().toList();
+
+    /*@Override
+    public void assignModelsToState(BlockState state, ConfiguredModels models, ModelFileHelper helper) {
+        int model = state.getValue(LIT) ? 1 : 0;
+        models.add(ConfiguredModel.allYRotations(helper.generated(model), 0, false)[FACING_VALUES.indexOf(state.getValue(FACING))]);
+    }
+
+    @Override
+    public void makeBlockModels(BlockModelProvider provider, ModelFileList list) {
+        list.add(provider.orientable("centrifuge/centrifuge",
+                provider.modLoc("block/centrifuge_side"),
+                provider.modLoc("block/centrifuge_front"),
+                provider.modLoc("block/centrifuge_top")));
+        list.add(provider.orientable("centrifuge/lit_centrifuge",
+                provider.modLoc("block/centrifuge_side"),
+                provider.modLoc("block/centrifuge_front"),
+                provider.modLoc("block/centrifuge_top")));
+    }*/
 }

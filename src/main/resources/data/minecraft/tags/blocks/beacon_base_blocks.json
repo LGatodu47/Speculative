@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:speculo_block",
+    "speculative:radioactive_diamond_block",
+    "speculative:uranium_235_block"
+  ]
+}

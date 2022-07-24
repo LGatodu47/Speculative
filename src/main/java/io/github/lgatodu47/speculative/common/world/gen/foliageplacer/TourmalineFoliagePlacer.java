@@ -2,14 +2,13 @@ package io.github.lgatodu47.speculative.common.world.gen.foliageplacer;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.lgatodu47.speculative.common.init.SpeculativePlacerTypes;
+import io.github.lgatodu47.speculative.common.init.SpeculativeWorldGenRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.AcaciaFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
@@ -29,7 +28,7 @@ public class TourmalineFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return SpeculativePlacerTypes.Foliage.TOURMALINE.get();
+        return SpeculativeWorldGenRegistries.FoliagePlacers.TOURMALINE.get();
     }
 
     @Override

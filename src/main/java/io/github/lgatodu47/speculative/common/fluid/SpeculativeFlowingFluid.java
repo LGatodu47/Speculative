@@ -1,12 +1,17 @@
 package io.github.lgatodu47.speculative.common.fluid;
 
+import io.github.lgatodu47.speculative.common.init.SpeculativeFluids;
+import io.github.lgatodu47.speculative.common.init.SpeculativeSounds;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
+import java.util.Random;
 
 public class SpeculativeFlowingFluid extends ForgeFlowingFluid {
     private final boolean isSource;
@@ -41,6 +46,23 @@ public class SpeculativeFlowingFluid extends ForgeFlowingFluid {
         super.createFluidStateDefinition(builder);
         if (!this.isSource) {
             builder.add(LEVEL);
+        }
+    }
+
+    @Override
+    protected void animateTick(Level level, BlockPos pos, FluidState state, Random rand) {
+        if(state.is(SpeculativeFluids.Tags.SULFURIC_WATER)) {
+            if (!state.isSource() && !state.getValue(FALLING)) {
+                if (rand.nextInt(64) == 0) {
+                    level.playSound(null,
+                            (double) pos.getX() + 0.5D,
+                            (double) pos.getY() + 0.5D,
+                            (double) pos.getZ() + 0.5D,
+                            SpeculativeSounds.SULFURIC_WATER_AMBIENT.get(),
+                            SoundSource.BLOCKS, rand.nextFloat() * 0.25F + 0.75F,
+                            rand.nextFloat() + 0.5F);
+                }
+            }
         }
     }
 

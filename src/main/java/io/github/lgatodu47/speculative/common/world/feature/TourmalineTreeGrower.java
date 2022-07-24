@@ -10,18 +10,19 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class TourmalineTreeGrower extends AbstractTreeGrower {
-    public static final TreeConfiguration CONFIG = new TreeConfiguration.TreeConfigurationBuilder(
+    public static final Lazy<TreeConfiguration> CONFIG = Lazy.of(() -> new TreeConfiguration.TreeConfigurationBuilder(
             BlockStateProvider.simple(SpeculativeBlocks.TOURMALINE_LOG.get()),
             new StraightTrunkPlacer(7, 0, 2),
             BlockStateProvider.simple(SpeculativeBlocks.TOURMALINE_LEAVES.get()),
             new TourmalineFoliagePlacer(3, 0),
             new TwoLayersFeatureSize(1, 0, 2)
-    ).ignoreVines().dirt(BlockStateProvider.simple(SpeculativeBlocks.SPECULO_DIRT.get())).build();
+    ).ignoreVines().dirt(BlockStateProvider.simple(SpeculativeBlocks.SPECULO_DIRT.get())).build());
 
     @Nullable
     @Override

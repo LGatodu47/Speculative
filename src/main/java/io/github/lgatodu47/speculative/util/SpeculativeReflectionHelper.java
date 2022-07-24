@@ -5,10 +5,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +16,7 @@ public class SpeculativeReflectionHelper {
     private static final Logger LOGGER = LogManager.getLogger("Speculative Reflection");
     private static final Map<String, Field> FIELD_CACHE = new HashMap<>();
     private static final Map<String, Field> STATIC_FIELD_CACHE = new HashMap<>();
+    
     private static final Map<String, Method> METHOD_CACHE = new HashMap<>();
     private static final Map<String, Method> STATIC_METHOD_CACHE = new HashMap<>();
 
@@ -70,6 +68,49 @@ public class SpeculativeReflectionHelper {
         }
 
         return Optional.empty();
+    }
+
+    public static <T, V> void setStaticFieldValue(Class<T> clazz, String fieldName, V value) {
+        Field field;
+        if(!STATIC_FIELD_CACHE.containsKey(fieldName)) {
+            field = ObfuscationReflectionHelper.findField(clazz, fieldName);
+            if(!Modifier.isStatic(field.getModifiers())) {
+                throw new RuntimeException(new NoSuchFieldException("There is no static field '" + remapName(Domain.FIELD, fieldName) + "' in class '" + clazz.getSimpleName() + "'!"));
+            }
+            STATIC_FIELD_CACHE.put(fieldName, field);
+        }
+        else {
+            field = STATIC_FIELD_CACHE.get(fieldName);
+        }
+
+        try {
+            field.set(null, value);
+        } catch (IllegalAccessException e) {
+            LOGGER.error(String.format("Could not access field '%s' in class '%s'!", remapName(Domain.FIELD, fieldName), clazz.getSimpleName()), e);
+        }
+    }
+
+    public static <T, V> void setFieldValue(Class<T> clazz, T instance, String fieldName, V value) {
+        Field field;
+        if(!FIELD_CACHE.containsKey(fieldName)) {
+            field = ObfuscationReflectionHelper.findField(clazz, fieldName);
+            if(Modifier.isStatic(field.getModifiers())) {
+                LOGGER.warn("Used SpeculativeReflectionHelper#setFieldValue for static field '{}' in class '{}'!", remapName(Domain.FIELD, fieldName), clazz.getSimpleName());
+                STATIC_FIELD_CACHE.putIfAbsent(fieldName, field);
+                setStaticFieldValue(clazz, fieldName, value);
+                return;
+            }
+            FIELD_CACHE.put(fieldName, field);
+        }
+        else {
+            field = FIELD_CACHE.get(fieldName);
+        }
+
+        try {
+            field.set(instance, value);
+        } catch (IllegalAccessException e) {
+            LOGGER.error(String.format("Could not access field '%s' in class '%s'!", remapName(Domain.FIELD, fieldName), clazz.getSimpleName()), e);
+        }
     }
 
     public static <T> ReflectedMethod getStaticMethod(Class<T> clazz, String methodName, Class<?>... parameterTypes) {

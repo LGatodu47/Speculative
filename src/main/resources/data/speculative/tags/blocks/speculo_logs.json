@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "speculative:speculo_log",
+    "speculative:stripped_speculo_log",
+    "speculative:speculo_bark",
+    "speculative:stripped_speculo_bark"
+  ]
+}

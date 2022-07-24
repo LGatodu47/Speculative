@@ -2,7 +2,8 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -24,7 +25,7 @@
                   }
                 }
               ],
-              "name": "speculative:speculo_grass"
+              "name": "speculative:speculo_dirt"
             },
             {
               "type": "minecraft:item",
@@ -33,7 +34,7 @@
                   "condition": "minecraft:survives_explosion"
                 }
               ],
-              "name": "speculative:speculo_dirt"
+              "name": "speculative:speculo_grass"
             }
           ]
         }

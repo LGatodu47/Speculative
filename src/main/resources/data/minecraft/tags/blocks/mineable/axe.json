@@ -1,4 +1,29 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "speculative:speculo_planks",
+    "speculative:speculo_wood_stairs",
+    "speculative:speculo_wood_slab",
+    "speculative:speculo_wood_fence",
+    "speculative:speculo_wood_fence_gate",
+    "speculative:speculo_wood_trapdoor",
+    "speculative:speculo_wood_standing_sign",
+    "speculative:speculo_wood_wall_sign",
+    "speculative:speculo_wood_pressure_plate",
+    "speculative:speculo_wood_door",
+    "speculative:speculo_wood_button",
+    "speculative:tourmaline_planks",
+    "speculative:tourmaline_wood_stairs",
+    "speculative:tourmaline_wood_slab",
+    "speculative:tourmaline_wood_fence",
+    "speculative:tourmaline_wood_fence_gate",
+    "speculative:tourmaline_wood_trapdoor",
+    "speculative:tourmaline_wood_standing_sign",
+    "speculative:tourmaline_wood_wall_sign",
+    "speculative:tourmaline_wood_pressure_plate",
+    "speculative:tourmaline_wood_door",
+    "speculative:tourmaline_wood_button",
+    "#speculative:speculo_logs",
+    "#speculative:tourmaline_logs"
+  ]
 }

@@ -1,6 +1,7 @@
 package io.github.lgatodu47.speculative.common.block;
 
 import io.github.lgatodu47.speculative.common.entity.SpeculoTNTEntity;
+import io.github.lgatodu47.speculative.data.loot.ISelfDropBlockLoot;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TntBlock;
@@ -16,7 +17,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class SpeculoTNTBlock extends TntBlock {
+public class SpeculoTNTBlock extends TntBlock implements ISelfDropBlockLoot {
     public SpeculoTNTBlock() {
         super(Properties.copy(Blocks.TNT));
     }

@@ -1,11 +1,11 @@
 package io.github.lgatodu47.speculative.common.init;
 
 import io.github.lgatodu47.speculative.Speculative;
+import io.github.lgatodu47.speculative.common.world.feature.structure.SpeculoHouseStructure;
+import io.github.lgatodu47.speculative.common.world.feature.structure.SpeculoHouseStructurePiece;
 import io.github.lgatodu47.speculative.common.world.feature.structure.SpeculoPyramidStructure;
 import io.github.lgatodu47.speculative.common.world.feature.structure.SpeculoPyramidStructurePiece;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
@@ -17,8 +17,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class SpeculativeStructures {
@@ -27,6 +25,8 @@ public class SpeculativeStructures {
 
     public static final RegistryObject<StructureFeature<NoneFeatureConfiguration>> SPECULO_PYRAMID = STRUCTURES.register("speculo_pyramid", () -> new SpeculoPyramidStructure(NoneFeatureConfiguration.CODEC));
     public static final RegistryObject<StructurePieceType.StructureTemplateType> SPECULO_PYRAMID_PIECE = STRUCTURE_PIECES.register("speculo_pyramid_piece", () -> SpeculoPyramidStructurePiece::new);
+    public static final RegistryObject<StructureFeature<NoneFeatureConfiguration>> SPECULO_HOUSE = STRUCTURES.register("speculo_house", () -> new SpeculoHouseStructure(NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<StructurePieceType.StructureTemplateType> SPECULO_HOUSE_PIECE = STRUCTURE_PIECES.register("speculo_house_piece", () -> SpeculoHouseStructurePiece::new);
 
     public static void setupStructures() {
 //        StructureFeature.STRUCTURES_REGISTRY.put(SPECULO_PYRAMID.getId().toString(), SPECULO_PYRAMID.get());
@@ -81,21 +81,21 @@ public class SpeculativeStructures {
     }*/
 
     public static final class Configured {
-        private static final Map<String, Supplier<ConfiguredStructureFeature<?, ?>>> CONFIGURED_STRUCTURES_MAP = new HashMap<>();
+        public static final DeferredRegister<ConfiguredStructureFeature<?, ?>> CONFIGURED_STRUCTURES = DeferredRegister.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, Speculative.MODID);
 
-        public static final Supplier<ConfiguredStructureFeature<?, ?>> SPECULO_PYRAMID = register("speculo_pyramid", SpeculativeStructures.SPECULO_PYRAMID, NoneFeatureConfiguration.INSTANCE, SpeculativeBiomes.Tags.HAS_SPECULO_PYRAMID);
+        public static final RegistryObject<ConfiguredStructureFeature<?, ?>> SPECULO_PYRAMID = register("speculo_pyramid", SpeculativeStructures.SPECULO_PYRAMID, NoneFeatureConfiguration.INSTANCE, SpeculativeBiomes.Tags.HAS_SPECULO_PYRAMID);
+        public static final RegistryObject<ConfiguredStructureFeature<?, ?>> SPECULO_HOUSE = registerAdapting("speculo_house", SpeculativeStructures.SPECULO_HOUSE, NoneFeatureConfiguration.INSTANCE, SpeculativeBiomes.Tags.HAS_SPECULO_HOUSE);
 
-        private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>> Supplier<ConfiguredStructureFeature<?, ?>> register(String name, Supplier<F> structure, FC config, TagKey<Biome> biomePredicate) {
-            Supplier<ConfiguredStructureFeature<?, ?>> sup = () -> structure.get().configured(config, biomePredicate);
-            CONFIGURED_STRUCTURES_MAP.put(name, sup);
-            return sup;
+        private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>> RegistryObject<ConfiguredStructureFeature<?, ?>> register(String name, Supplier<F> structure, FC config, TagKey<Biome> biomePredicate) {
+            return CONFIGURED_STRUCTURES.register(name, () -> structure.get().configured(config, biomePredicate));
         }
 
-        public static void registerConfiguredStructures() {
-            CONFIGURED_STRUCTURES_MAP.forEach((name, configured) -> {
-                Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(Speculative.MODID, name), configured.get());
-//                FlatLevelGeneratorSettings.STRUCTURE_FEATURES.put(configured.get().feature, configured.get());
-            });
+        private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>> RegistryObject<ConfiguredStructureFeature<?, ?>> registerAdapting(String name, Supplier<F> structure, FC config, TagKey<Biome> biomePredicate) {
+            return CONFIGURED_STRUCTURES.register(name, () -> structure.get().configured(config, biomePredicate, true));
+        }
+
+        public static final class Tags {
+            public static final TagKey<ConfiguredStructureFeature<?, ?>> ON_DUNGEON_MAP = CONFIGURED_STRUCTURES.createTagKey("on_dungeon_map");
         }
     }
 }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "speculative:block/greenstone_lantern"
+    },
+    "hanging=true": {
+      "model": "speculative:block/greenstone_lantern_hanging"
+    }
+  }
+}

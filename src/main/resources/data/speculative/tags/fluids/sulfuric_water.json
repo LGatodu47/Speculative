@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "speculative:sulfuric_water_still",
+    "speculative:sulfuric_water_flowing"
+  ]
 }

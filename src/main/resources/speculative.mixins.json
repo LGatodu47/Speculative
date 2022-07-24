@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "speculative.refmap.json",
   "mixins": [
-    "BlockEntityTypeAccessor",
+    "BlockEntityTypeMixin",
     "DerivedLevelDataMixin",
     "LevelStorageSourceMixin",
     "LivingEntityMixin",
